@@ -25,6 +25,6 @@ public slots:
     void scale();
 private:
     std::string filename;
-    cube my_cube;
+    cube *my_cube;
 };
 #endif //LAB1_CANVAS_H

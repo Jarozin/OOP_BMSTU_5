@@ -82,7 +82,6 @@ void free_point_data(point_data &src)
     if (src.arr != nullptr) {
         delete[] src.arr;
     }
-    delete &src;
 }
 
 int read_point_data_n(point_data &dst, int n, FILE *in)

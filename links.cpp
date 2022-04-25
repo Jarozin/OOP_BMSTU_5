@@ -41,7 +41,6 @@ void links_free(links_data &connections)
 void free_links_data(links_data &src)
 {
     links_free(src);
-    delete &src;
 }
 
 

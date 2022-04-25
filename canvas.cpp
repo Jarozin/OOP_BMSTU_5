@@ -19,7 +19,7 @@ void Canvas::move() {
     dy = line->text().toDouble();
     line = parent->findChild<QLineEdit *>("dz");
     dz = line->text().toDouble();
-    move_cube(this->my_cube, dx, dy, dz);
+    move_cube(*this->my_cube, dx, dy, dz);
     this->update();
 }
 
@@ -40,7 +40,7 @@ void Canvas::scale() {
     line = parent->findChild<QLineEdit *>("cz");
     cz = line->text().toDouble();
     point *center = create_point(cx, cy, cz);
-    scale_cube(this->my_cube, *center, kx, ky, kz);
+    scale_cube(*this->my_cube, *center, kx, ky, kz);
     free_point(*center);
     this->update();
 }
@@ -53,7 +53,8 @@ Canvas::Canvas(QWidget *parent) : QWidget(parent)
 }
 
 Canvas::~Canvas() {
-
+    free_cube(*this->my_cube);
+    //delete &this->my_cube;
 }
 
 void Canvas::paintEvent(QPaintEvent *event)
@@ -61,7 +62,7 @@ void Canvas::paintEvent(QPaintEvent *event)
     QPainter painter(this);
 
     painter.setPen(Qt::black);
-    draw_cube(this->my_cube, painter);
+    draw_cube(*this->my_cube, painter);
    // painter.setFont(QFont("Arial", 30));
     //painter.drawText(rect(), Qt::AlignCenter, "Qt");
 }
@@ -73,8 +74,8 @@ int Canvas::setup_cube() {
     new_cube = alloc_cube();
     if (new_cube != nullptr)
     {
-        this->my_cube = *new_cube;
-        err = read_cube(this->my_cube, in);
+        this->my_cube = new_cube;
+        err = read_cube(*this->my_cube, in);
     }
     else
     {
