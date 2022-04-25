@@ -7,11 +7,11 @@
 
 #endif //LAB1_POINT_H
 struct Point{
-    int x;
-    int y;
-    int z;
+    double x;
+    double y;
+    double z;
 };
 
-Point* create_point(int x, int y, int z);
+Point* create_point(double x, double y, double z);
 void delete_point(Point *point);
 void copy(Point &dst, Point src);

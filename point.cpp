@@ -3,7 +3,7 @@
 //
 
 #include "point.h"
-Point* create_point(int x, int y, int z)
+Point* create_point(double x, double y, double z)
 {
     Point *newPoint = new Point;
     newPoint->x = x;
