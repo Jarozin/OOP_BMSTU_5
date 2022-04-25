@@ -3,22 +3,39 @@
 //
 #include "error_handling.h"
 #include "links.h"
+
 int links_alloc(links_data &connections, int len)
 {
     connections.n = len;
 
-    connections.arr = (link*) calloc(len, sizeof(link));
+    connections.arr = new link[len];
     if (!connections.arr)
         return EMPTY_PTR_ERR;
 
     return NONE;
 }
 
+links_data *alloc_link_data(int len)
+{
+    int err = NONE;
+    links_data *new_links_data = new links_data;
+    if (new_links_data != nullptr)
+    {
+        err = links_alloc(*new_links_data, len);
+        if (!err)
+        {
+            links_free(*new_links_data);
+            delete new_links_data;
+            new_links_data = nullptr;
+        }
+    }
+    return new_links_data;
+}
 
 void links_free(links_data &connections)
 {
     if (connections.arr)
-        free(connections.arr);
+        delete[] connections.arr;
 }
 
 
