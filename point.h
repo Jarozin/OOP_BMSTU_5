@@ -29,4 +29,7 @@ point_data *alloc_point_data_n(int n);
 void free_point_data(point_data &src);
 int read_point_data_n(point_data &dst, int n, FILE *in);
 int setup_points_list_n(point_data *dst, int n, FILE *in);
+int inc_point(point &dst, double dx, double dy, double dz);
+int inc_all_points_data(point_data &dst, double dx, double dy, double dz);
+
 #endif //LAB1_POINT_H

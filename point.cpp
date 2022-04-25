@@ -118,3 +118,20 @@ int setup_points_list_n(point_data *dst, int n, FILE *in)
     }
     return err;
 }
+
+int inc_point(point &dst, double dx, double dy, double dz)
+{
+    dst.x += dx;
+    dst.y += dy;
+    dst.z += dz;
+    return NONE;
+}
+
+int inc_all_points_data(point_data &dst, double dx, double dy, double dz)
+{
+    for (int i = 0; i < dst.n; i++)
+    {
+        inc_point(dst.arr[i], dx, dy, dz);
+    }
+    return NONE;
+}
