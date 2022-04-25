@@ -28,3 +28,4 @@ int setup_n_points(point *dst, FILE *in, int n);
 point_data *alloc_point_data_n(int n);
 void free_point_data(point_data &src);
 int read_point_data_n(point_data &dst, int n, FILE *in);
+int setup_points_list_n(point_data *dst, int n, FILE *in);

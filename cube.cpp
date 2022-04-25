@@ -3,30 +3,38 @@
 //
 
 #include "cube.h"
-cube *create_cube(point (&vertexes)[N])
+void free_cube(cube &src)
 {
-    if (vertexes == nullptr)
-        return nullptr;
+    free_point_data(src.points);
+    free_links_data(src.links);
+    delete &src;
+}
+cube* alloc_cube()
+{
+    point_data *new_points = alloc_point_data_n(POINTS_NUM);
+    links_data *new_links = alloc_link_data(LINKS_AMOUNT);
     cube *new_cube = new cube;
-    for (int i = 0; i < N; i++)
+    if (new_cube == nullptr || new_links == nullptr || new_points == nullptr)
     {
-        copy(new_cube->vertexes[i], vertexes[i]);
+        free_links_data(*new_links);
+        free_point_data(*new_points);
+        delete new_cube;
+        new_cube = nullptr;
+    }
+    else
+    {
+        new_cube->points = *new_points;
+        new_cube->links = *new_links;
     }
     return new_cube;
 }
-void free_cube(cube &cube)
+int read_cube(cube &my_cube, FILE *in)
 {
-    delete &cube;
-}
-int read_cube(cube *, FILE *in)
-{
-    errors rc = NONE;
-    if (in == nullptr)
-        rc = EMPTY_PTR_ERR;
-    if (rc == NONE)
+    int err = NONE;
+    err = read_point_data_n(my_cube.points, POINTS_NUM, in);
+    if (!err)
     {
-
+        err = read_n_links(my_cube.links.arr, my_cube.links.n, in);
     }
-    return rc;
+    return err;
 }
-int print_cube(cube &, FILE *out);
