@@ -7,10 +7,6 @@
 #include <iostream>
 #include "QMessageBox"
 #include <QObject>
-#define EMPTY_FILE 1
-#define EMPTY_PTR 2
-#define FILE_DOESNT_EXIST 3
-
 
 enum errors
 {

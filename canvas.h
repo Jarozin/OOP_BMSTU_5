@@ -8,6 +8,7 @@
 #define SRC_FILE "../cube.txt"
 #include "cube.h"
 #include "painter.h"
+#include "funcs.h"
 class Canvas: public QWidget
 {
     Q_OBJECT

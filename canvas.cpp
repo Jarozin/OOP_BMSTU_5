@@ -3,16 +3,46 @@
 //
 #include "canvas.h"
 
-void Canvas::rotate() {
+void Canvas::rotate()
+{
+    QObject *parent = this->parent();
+
 
 }
 
 void Canvas::move() {
-
+    QObject *parent = this->parent();
+    double dx, dy, dz;
+    QLineEdit *line = parent->findChild<QLineEdit *>("dx");
+    dx = line->text().toDouble();
+    line = parent->findChild<QLineEdit *>("dy");
+    dy = line->text().toDouble();
+    line = parent->findChild<QLineEdit *>("dz");
+    dz = line->text().toDouble();
+    move_cube(this->my_cube, dx, dy, dz);
+    this->update();
 }
 
 void Canvas::scale() {
-
+    QObject *parent = this->parent();
+    double kx, ky, kz;
+    QLineEdit *line = parent->findChild<QLineEdit *>("kx");
+    kx = line->text().toDouble();
+    line = parent->findChild<QLineEdit *>("ky");
+    ky = line->text().toDouble();
+    line = parent->findChild<QLineEdit *>("kz");
+    kz = line->text().toDouble();
+    double cx, cy, cz;
+    line = parent->findChild<QLineEdit *>("cx");
+    cx = line->text().toDouble();
+    line = parent->findChild<QLineEdit *>("cy");
+    cy = line->text().toDouble();
+    line = parent->findChild<QLineEdit *>("cz");
+    cz = line->text().toDouble();
+    point *center = create_point(cx, cy, cz);
+    scale_cube(this->my_cube, *center, kx, ky, kz);
+    free_point(*center);
+    this->update();
 }
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent)

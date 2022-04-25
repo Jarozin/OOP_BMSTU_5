@@ -19,7 +19,7 @@ struct point_data{
     int n;
 };
 point* create_point(double x, double y, double z);
-void delete_point(point *point);
+void free_point(point &point);
 void copy(point &dst, point src);
 int read_point(point &dst, FILE *in);
 int read_n_points(point *arr, FILE *in, int n);
