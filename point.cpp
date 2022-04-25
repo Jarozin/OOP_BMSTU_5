@@ -29,7 +29,7 @@ int read_point(point &dst, FILE *in)
         err = EMPTY_PTR_ERR;
     if (!err)
     {
-        if (fscanf(in, "%lf%lf", &dst.x, &dst.y) != 2)
+        if (fscanf(in, "%lf%lf%lf", &dst.x, &dst.y, &dst.z) != 3)
             err = FILE_CONTENT_ERR;
     }
     return err;
