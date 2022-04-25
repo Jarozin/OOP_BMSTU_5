@@ -18,3 +18,8 @@ void free_cube(Cube &cube)
 {
     delete &cube;
 }
+int read_cube(Cube &, FILE *in)
+{
+
+}
+int print_cube(Cube &, FILE *out);
