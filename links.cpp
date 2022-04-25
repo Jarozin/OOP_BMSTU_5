@@ -38,6 +38,12 @@ void links_free(links_data &connections)
         delete[] connections.arr;
 }
 
+void free_links_data(links_data &src)
+{
+    links_free(src);
+    delete &src;
+}
+
 
 int read_link(link* joints, FILE* f)
 {
@@ -57,19 +63,5 @@ int read_n_links(link* joints, int n, FILE *f)
             err = FILE_FORMAT_ERR;
     }
 
-    return err;
-}
-
-//всегда читает 12
-int process_links(links_data& connections, FILE* f)
-{
-    int n = LINKS_AMOUNT;
-    int err;
-    err = links_alloc(connections, n);
-    if (!err)
-    {
-        if ((err = read_n_links(connections.arr, n, f)) == FILE_FORMAT_ERR)
-            links_free(connections);
-    }
     return err;
 }
