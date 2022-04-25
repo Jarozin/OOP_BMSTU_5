@@ -102,3 +102,19 @@ int read_point_list_n(point_list &dst, int n, FILE *in)
     }
     return err;
 }
+
+int setup_points_list_n(point_list *dst, int n, FILE *in)
+{
+    int err = NONE;
+    if (n < 1)
+        err = NO_DOTS;
+    if (!err)
+    {
+        dst = alloc_point_list_n(n);
+        if (dst != nullptr)
+        {
+            err = read_point_list_n(*dst, n, in);
+        }
+    }
+    return err;
+}
