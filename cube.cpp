@@ -18,8 +18,15 @@ void free_cube(Cube &cube)
 {
     delete &cube;
 }
-int read_cube(Cube &, FILE *in)
+int read_cube(Cube *, FILE *in)
 {
+    errors rc = NONE;
+    if (in == nullptr)
+        rc = EMPTY_PTR_ERR;
+    if (rc == NONE)
+    {
 
+    }
+    return rc;
 }
 int print_cube(Cube &, FILE *out);

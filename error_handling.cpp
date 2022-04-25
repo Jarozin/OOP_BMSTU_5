@@ -20,6 +20,12 @@ int error_handling(errors rc)
         case NO_DOTS:
             QMessageBox::critical(NULL, "ERROR", "File is empty, or array is empty!");
             break;
+        case FILE_FORMAT_ERR:
+            QMessageBox::critical(NULL, "ERROR", "File format error");
+            break;
+        case NO_LINKS:
+            QMessageBox::critical(NULL, "ERROR", "Cube has no links");
+            break;
     }
     return rc;
 }
