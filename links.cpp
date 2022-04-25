@@ -22,7 +22,7 @@ links_data *alloc_link_data(int len)
     if (new_links_data != nullptr)
     {
         err = links_alloc(*new_links_data, len);
-        if (!err)
+        if (err)
         {
             links_free(*new_links_data);
             delete new_links_data;

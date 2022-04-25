@@ -18,5 +18,5 @@ struct cube{
 
 void free_cube(cube &);
 cube* alloc_cube();
-int read_cube(cube &);
+int read_cube(cube &my_cube, FILE *in);
 #endif //LAB1_CUBE_H

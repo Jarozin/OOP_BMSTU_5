@@ -5,7 +5,7 @@
 #ifndef LAB1_POINT_H
 #define LAB1_POINT_H
 
-#endif //LAB1_POINT_H
+
 #include <iostream>
 #include "error_handling.h"
 struct point{
@@ -29,3 +29,4 @@ point_data *alloc_point_data_n(int n);
 void free_point_data(point_data &src);
 int read_point_data_n(point_data &dst, int n, FILE *in);
 int setup_points_list_n(point_data *dst, int n, FILE *in);
+#endif //LAB1_POINT_H

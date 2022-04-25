@@ -1,21 +1,28 @@
 //
 // Created by jarozin on 25.04.22.
 //
-#include "headers.h"
+
 #ifndef LAB1_CANVAS_H
 #define LAB1_CANVAS_H
+#include "headers.h"
+#define SRC_FILE "../cube.txt"
+#include "cube.h"
 class Canvas: public QWidget
 {
     Q_OBJECT
 public:
     explicit Canvas(QWidget *parent = nullptr);
     ~Canvas();
-
+    void paintEvent(QPaintEvent *event) override;
+    int setup_cube();
 signals:
 
 public slots:
     void rotate();
     void move();
     void scale();
+private:
+    std::string filename;
+    cube my_cube;
 };
 #endif //LAB1_CANVAS_H
