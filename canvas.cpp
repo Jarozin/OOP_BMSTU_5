@@ -29,9 +29,11 @@ Canvas::~Canvas() {
 void Canvas::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.setPen(Qt::blue);
-    painter.setFont(QFont("Arial", 30));
-    painter.drawText(rect(), Qt::AlignCenter, "Qt");
+
+    painter.setPen(Qt::black);
+    draw_cube(this->my_cube, painter);
+   // painter.setFont(QFont("Arial", 30));
+    //painter.drawText(rect(), Qt::AlignCenter, "Qt");
 }
 
 int Canvas::setup_cube() {
