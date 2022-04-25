@@ -14,7 +14,7 @@ struct point{
     double z;
 };
 
-struct point_list{
+struct point_data{
     point *arr;
     int n;
 };
@@ -25,6 +25,6 @@ int read_point(point &dst, FILE *in);
 int read_n_points(point *arr, FILE *in, int n);
 int setup_n_points(point *dst, FILE *in, int n);
 
-point_list *alloc_point_list_n(int n);
-void free_point_list(point_list &src);
-int read_point_list_n(point_list &dst, int n, FILE *in);
+point_data *alloc_point_data_n(int n);
+void free_point_data(point_data &src);
+int read_point_data_n(point_data &dst, int n, FILE *in);

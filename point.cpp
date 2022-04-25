@@ -64,20 +64,20 @@ int setup_n_points(point *dst, FILE *in, int n)
 }
 
 
-point_list *alloc_point_list_n(int n)
+point_data *alloc_point_data_n(int n)
 {
-    point_list *new_list = new point_list;
+    point_data *new_list = new point_data;
     if (new_list != nullptr) {
         new_list->n = n;
         new_list->arr = new point[n];
         if (new_list->arr == nullptr) {
-            free_point_list(*new_list);
+            free_point_data(*new_list);
             return nullptr;
         }
     }
     return new_list;
 }
-void free_point_list(point_list &src)
+void free_point_data(point_data &src)
 {
     if (src.arr != nullptr) {
         delete[] src.arr;
@@ -85,7 +85,7 @@ void free_point_list(point_list &src)
     delete &src;
 }
 
-int read_point_list_n(point_list &dst, int n, FILE *in)
+int read_point_data_n(point_data &dst, int n, FILE *in)
 {
     int err = NONE;
     if (in == nullptr)
@@ -103,17 +103,17 @@ int read_point_list_n(point_list &dst, int n, FILE *in)
     return err;
 }
 
-int setup_points_list_n(point_list *dst, int n, FILE *in)
+int setup_points_list_n(point_data *dst, int n, FILE *in)
 {
     int err = NONE;
     if (n < 1)
         err = NO_DOTS;
     if (!err)
     {
-        dst = alloc_point_list_n(n);
+        dst = alloc_point_data_n(n);
         if (dst != nullptr)
         {
-            err = read_point_list_n(*dst, n, in);
+            err = read_point_data_n(*dst, n, in);
         }
     }
     return err;
