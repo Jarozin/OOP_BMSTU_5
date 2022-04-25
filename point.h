@@ -31,5 +31,6 @@ int read_point_data_n(point_data &dst, int n, FILE *in);
 int setup_points_list_n(point_data *dst, int n, FILE *in);
 int inc_point(point &dst, double dx, double dy, double dz);
 int inc_all_points_data(point_data &dst, double dx, double dy, double dz);
-
+int scale_point(point &my_point, point &center, double kx, double ky, double kz);
+int scale_point_data(point_data &my_points, point &center, double kx, double ky, double kz);
 #endif //LAB1_POINT_H

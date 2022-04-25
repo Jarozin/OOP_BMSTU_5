@@ -135,3 +135,18 @@ int inc_all_points_data(point_data &dst, double dx, double dy, double dz)
     }
     return NONE;
 }
+int scale_point(point &my_point, point &center, double kx, double ky, double kz)
+{
+    my_point.x = my_point.x + kx * (center.x - my_point.x);
+    my_point.y = my_point.y + ky * (center.y - my_point.y);
+    my_point.z = my_point.z + kz * (center.z - my_point.z);
+    return NONE;
+}
+int scale_point_data(point_data &my_points, point &center, double kx, double ky, double kz)
+{
+    for (int i = 0; i < my_points.n; i++)
+    {
+        scale_point(my_points.arr[i], center, kx, ky, kz);
+    }
+    return NONE;
+}
