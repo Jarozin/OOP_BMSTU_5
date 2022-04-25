@@ -62,3 +62,43 @@ int setup_n_points(point *dst, FILE *in, int n)
     }
     return err;
 }
+
+
+point_list *alloc_point_list_n(int n)
+{
+    point_list *new_list = new point_list;
+    if (new_list != nullptr) {
+        new_list->n = n;
+        new_list->arr = new point[n];
+        if (new_list->arr == nullptr) {
+            free_point_list(*new_list);
+            return nullptr;
+        }
+    }
+    return new_list;
+}
+void free_point_list(point_list &src)
+{
+    if (src.arr != nullptr) {
+        delete[] src.arr;
+    }
+    delete &src;
+}
+
+int read_point_list_n(point_list &dst, int n, FILE *in)
+{
+    int err = NONE;
+    if (in == nullptr)
+        err = EMPTY_PTR_ERR;
+    if (!err)
+    {
+        if (n < 1)
+            err = NO_DOTS;
+        if (!err)
+        {
+            dst.n = n;
+            err = read_n_points(dst.arr, in, n);
+        }
+    }
+    return err;
+}
