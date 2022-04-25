@@ -3,7 +3,10 @@
 //
 
 #include "funcs.h"
-int rotate_cube(cube &);
+int rotate_cube(cube &my_cube, point &center, double ax, double ay, double az)
+{
+    rotate_point_data(my_cube.points, center, ax, ay, az);
+}
 int scale_cube(cube &my_cube, point &center, double kx, double ky, double kz)
 {
     scale_point_data(my_cube.points, center, kx, ky, kz);

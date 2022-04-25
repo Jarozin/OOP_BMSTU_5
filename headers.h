@@ -14,5 +14,4 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 #include <QPainter>
-
 #endif //LAB1_HEADERS_H

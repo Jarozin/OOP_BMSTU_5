@@ -149,3 +149,38 @@ int scale_point_data(point_data &my_points, point &center, double kx, double ky,
     }
     return NONE;
 }
+
+int rotate_point(point &my_point, point &center, double ax, double ay, double az)
+{
+    //inc_point(my_point, -center.x, -center.y, -center.z);
+    double x = my_point.x;
+    double y = my_point.y;
+    double z = my_point.z;
+
+
+    my_point.y = y * std::cos(ax * PI / 180) - z * std::sin(ax * PI / 180);
+    my_point.z = y * std::sin(ax * PI / 180) + z * std::cos(ax * PI / 180);
+
+    x = my_point.x;
+    y = my_point.y;
+    z = my_point.z;
+    my_point.x = z * std::sin(ay * PI / 180) + x * std::cos(ay * PI / 180);
+    my_point.z = z * std::sin(ay * PI / 180) - x * std::sin(ay * PI / 180);
+
+    x = my_point.x;
+    y = my_point.y;
+    z = my_point.z;
+    my_point.x = x * std::cos(az * PI / 180) - y * std::sin(az * PI / 180);
+    my_point.y = y * std::cos(az * PI / 180) + x * std::sin(az * PI / 180);
+    //inc_point(my_point, center.x, center.y, center.z);
+    return NONE;
+}
+
+int rotate_point_data(point_data &my_points, point &center, double ax, double ay, double az)
+{
+    for (int i = 0; i < my_points.n; i++)
+    {
+        rotate_point(my_points.arr[i], center, ax, ay, az);
+    }
+    return NONE;
+}

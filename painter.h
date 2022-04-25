@@ -6,6 +6,7 @@
 #define LAB1_PAINTER_H
 #include "headers.h"
 #include "cube.h"
+
 QPointF convert_point(point &a);
 int draw_cube(cube &my_cube, QPainter &qp);
 int draw_point(point &a, QPainter &qp);

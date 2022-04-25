@@ -8,6 +8,9 @@
 
 #include <iostream>
 #include "error_handling.h"
+#include <cmath>
+#define PI 3.14159265
+
 struct point{
     double x;
     double y;
@@ -33,4 +36,7 @@ int inc_point(point &dst, double dx, double dy, double dz);
 int inc_all_points_data(point_data &dst, double dx, double dy, double dz);
 int scale_point(point &my_point, point &center, double kx, double ky, double kz);
 int scale_point_data(point_data &my_points, point &center, double kx, double ky, double kz);
+int rotate_point_data(point_data &my_points, point &center, double ax, double ay, double az);
+int rotate_point(point &my_point, point &center, double ax, double ay, double az);
+
 #endif //LAB1_POINT_H
