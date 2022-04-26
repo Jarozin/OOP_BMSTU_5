@@ -13,23 +13,6 @@ int links_alloc(links_data &connections, int len)
 
     return NONE;
 }
-// TODO vozvrashat ssilku na object cheres ampersand, return int(tak vezde)
-links_data *alloc_link_data(int len)
-{
-    int err = NONE;
-    links_data *new_links_data = (links_data *)malloc(sizeof(links_data));
-    if (new_links_data != nullptr)
-    {
-        err = links_alloc(*new_links_data, len);
-        if (err)
-        {
-            links_free(*new_links_data);
-            free(new_links_data);
-            new_links_data = nullptr;
-        }
-    }
-    return new_links_data;
-}
 
 void links_free(links_data &connections)
 {

@@ -5,18 +5,12 @@
 #include "point.h"
 #include "error_handling.h"
 #include <iostream>
-point* create_point(double x, double y, double z)
+int create_point(point &new_point, double x, double y, double z)
 {
-    point *newPoint = (point *)malloc(sizeof(point));
-    newPoint->x = x;
-    newPoint->y = y;
-    newPoint->z = z;
-    return newPoint;
-}
-
-void free_point(point &point)
-{
-    free(&point);
+    new_point.x = x;
+    new_point.y = y;
+    new_point.z = z;
+    return NONE;
 }
 
 int read_point(point &dst, FILE *in)
@@ -44,18 +38,16 @@ int read_n_points(point *arr, FILE *in, int n)
     return err;
 }
 
-point_data *alloc_point_data_n(int n)
+int alloc_point_data_n(point_data &dst, int n)
 {
-    point_data *new_list = (point_data *)malloc(sizeof(point_data));
-    if (new_list != nullptr) {
-        new_list->n = n;
-        new_list->arr = (point *)malloc(sizeof(point) * n);
-        if (new_list->arr == nullptr) {
-            free_point_data(*new_list);
-            return nullptr;
-        }
+    int err = NONE;
+    dst.n = n;
+    dst.arr = (point *)malloc(sizeof(point) * n);
+    if (!dst.arr) {
+        free_point_data(dst);
+        err = EMPTY_PTR_ERR;
     }
-    return new_list;
+    return err;
 }
 void free_point_data(point_data &src)
 {

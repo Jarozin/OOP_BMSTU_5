@@ -13,24 +13,14 @@ void free_figure(figure &src)
     free_links_data(src.links);
     free(&src);
 }
-figure* alloc_figure()
+int alloc_figure(figure &new_fig)
 {
-    point_data *new_points = alloc_point_data_n(POINTS_NUM);
-    links_data *new_links = alloc_link_data(LINKS_AMOUNT);
-    figure *new_cube = (figure *)malloc(sizeof(figure));
-    if (new_cube == nullptr || new_links == nullptr || new_points == nullptr)
-    {
-        free_links_data(*new_links);
-        free_point_data(*new_points);
-        free(new_cube);
-        new_cube = nullptr;
+    int err = NONE;
+    err = alloc_point_data_n(new_fig.points, POINTS_NUM);
+    if (!err) {
+        err = links_alloc(new_fig.links, LINKS_AMOUNT);
     }
-    else
-    {
-        new_cube->points = *new_points;
-        new_cube->links = *new_links;
-    }
-    return new_cube;
+    return err;
 }
 // TODO количества надо вводить
 int read_figure(figure &my_cube, FILE *in)

@@ -104,22 +104,23 @@ void Canvas::paintEvent(QPaintEvent *event)
    // painter.setFont(QFont("Arial", 30));
     //painter.drawText(rect(), Qt::AlignCenter, "Qt");
 }
-
+// TODO нужно сделать так чтобы создавался один статический куб вместо куба на куче(наверно, моя догадка)
+// TODO ошибки скорее всего тоже надо кастить из одного места
 int Canvas::setup_cube() {
     int err = NONE;
     FILE *in = fopen(SRC_FILE, "r");
-    figure *new_cube = nullptr;
-    new_cube = alloc_figure();
-    if (new_cube != nullptr)
+    figure *new_figure = (figure *)malloc(sizeof(figure));
+    err = alloc_figure(*new_figure);
+    if (!err)
     {
-        this->my_cube = new_cube;
+        this->my_cube = new_figure;
         err = read_figure(*this->my_cube, in);
     }
     else
     {
         err = EMPTY_PTR_ERR;
     }
-    error_handling(static_cast<errors>(err));
+    //error_handling(static_cast<errors>(err));
     fclose(in);
     return err;
 }

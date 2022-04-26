@@ -16,6 +16,6 @@ struct figure{
 //ввод сначала координаты 8 вершин потом 12 ребер связи
 
 void free_figure(figure &);
-figure* alloc_figure();
+int alloc_figure(figure &new_fig);
 int read_figure(figure &my_cube, FILE *in);
 #endif //LAB1_FIGURE_H

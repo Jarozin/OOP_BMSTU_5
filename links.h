@@ -24,6 +24,5 @@ int links_alloc(links_data &connections, int len);
 void links_free(links_data &connections);
 int read_link(link* joints, FILE* f);
 void free_links_data(links_data &src);
-links_data *alloc_link_data(int len);
 int read_link_data(links_data &dst, FILE *f);
 #endif

@@ -38,7 +38,7 @@ int scale_point_data(point_data &my_points, point &center, point &scale)
     }
     return NONE;
 }
-// TODO поворот разделить на 3 функции по каждой оси
+
 int rotate_point(point &my_point, point &center, point &rot)
 {
     move_point(my_point, -center.x, -center.y, -center.z);
