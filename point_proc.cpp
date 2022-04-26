@@ -61,7 +61,7 @@ int rotate_point_y(point &my_point, point &center, double ay)
 {
     double buf = my_point.x;
     my_point.x = my_point.z * sin(to_rad(ay)) + my_point.x * cos(to_rad(ay));
-    my_point.z = my_point.z * sin(to_rad(ay)) - buf * sin(to_rad(ay));
+    my_point.z = my_point.z * cos(to_rad(ay)) - buf * sin(to_rad(ay));
     return NONE;
 }
 int rotate_point_z(point &my_point, point &center, double az)

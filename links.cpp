@@ -3,7 +3,6 @@
 //
 #include "error_handling.h"
 #include "links.h"
-// TODO uberi new ili ubiet(i del tozhe)
 int links_alloc(links_data &connections, int len)
 {
     connections.n = len;
