@@ -4,9 +4,8 @@
 
 #ifndef LAB1_FUNCS_H
 #define LAB1_FUNCS_H
-#include "cube.h"
-#include "canvas.h"
-int rotate_cube(cube &my_cube, point &center, double ax, double ay, double az);
-int scale_cube(cube &, point& center, double kx, double ky, double kz);
-int move_cube(cube &, double dx, double dy, double dz);
+#include "figure.h"
+int rotate_cube(figure &my_cube, point &center, double ax, double ay, double az);
+int scale_cube(figure &my_cube, point &center, point &scale);
+int move_cube(figure &, double dx, double dy, double dz);
 #endif //LAB1_FUNCS_H

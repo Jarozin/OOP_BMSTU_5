@@ -2,18 +2,22 @@
 // Created by jarozin on 25.04.22.
 //
 
-#include "cube.h"
-void free_cube(cube &src)
+#include "figure.h"
+#include "links.h"
+#include "point.h"
+#include <iostream>
+#include "error_handling.h"
+void free_figure(figure &src)
 {
     free_point_data(src.points);
     free_links_data(src.links);
     delete &src;
 }
-cube* alloc_cube()
+figure* alloc_figure()
 {
     point_data *new_points = alloc_point_data_n(POINTS_NUM);
     links_data *new_links = alloc_link_data(LINKS_AMOUNT);
-    cube *new_cube = new cube;
+    figure *new_cube = new figure;
     if (new_cube == nullptr || new_links == nullptr || new_points == nullptr)
     {
         free_links_data(*new_links);
@@ -29,7 +33,7 @@ cube* alloc_cube()
     return new_cube;
 }
 //количества надо вводить
-int read_cube(cube &my_cube, FILE *in)
+int read_figure(figure &my_cube, FILE *in)
 {
     int err = NONE;
     err = read_point_data_n(my_cube.points, POINTS_NUM, in);

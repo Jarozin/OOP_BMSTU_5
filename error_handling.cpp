@@ -24,7 +24,7 @@ int error_handling(errors rc)
             QMessageBox::critical(NULL, "ERROR", "File format error");
             break;
         case NO_LINKS:
-            QMessageBox::critical(NULL, "ERROR", "cube has no links");
+            QMessageBox::critical(NULL, "ERROR", "figure has no links");
             break;
     }
     return rc;

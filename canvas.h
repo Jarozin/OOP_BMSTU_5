@@ -6,7 +6,7 @@
 #define LAB1_CANVAS_H
 #include "headers.h"
 #define SRC_FILE "../cube.txt"
-#include "cube.h"
+#include "figure.h"
 #include "painter.h"
 #include "funcs.h"
 class Canvas: public QWidget
@@ -24,6 +24,6 @@ public slots:
     void move();
     void scale();
 private:
-    cube *my_cube;
+    figure *my_cube;
 };
 #endif //LAB1_CANVAS_H

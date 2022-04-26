@@ -61,9 +61,15 @@ void Canvas::scale() {
     cy = line->text().toDouble();
     line = parent->findChild<QLineEdit *>("cz");
     cz = line->text().toDouble();
-    point *center = create_point(cx, cy, cz);
-    scale_cube(*this->my_cube, *center, kx, ky, kz);
-    free_point(*center);
+    point center;
+    center.x = cx;
+    center.y = cy;
+    center.z = cz;
+    point scale_data;
+    scale_data.x = kx;
+    scale_data.y = ky;
+    scale_data.z = kz;
+    scale_cube(*this->my_cube, center, scale_data);
     this->update();
 }
 
@@ -74,7 +80,7 @@ Canvas::Canvas(QWidget *parent) : QWidget(parent)
 }
 
 Canvas::~Canvas() {
-    free_cube(*this->my_cube);
+    free_figure(*this->my_cube);
     //delete &this->my_cube;
 }
 
@@ -91,12 +97,12 @@ void Canvas::paintEvent(QPaintEvent *event)
 int Canvas::setup_cube() {
     int err = NONE;
     FILE *in = fopen(SRC_FILE, "r");
-    cube *new_cube = nullptr;
-    new_cube = alloc_cube();
+    figure *new_cube = nullptr;
+    new_cube = alloc_figure();
     if (new_cube != nullptr)
     {
         this->my_cube = new_cube;
-        err = read_cube(*this->my_cube, in);
+        err = read_figure(*this->my_cube, in);
     }
     else
     {
