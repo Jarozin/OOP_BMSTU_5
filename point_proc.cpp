@@ -7,19 +7,19 @@
 #include "error_handling.h"
 #include "point.h"
 #define _USE_MATH_DEFINES
-int move_point(point &dst, double dx, double dy, double dz)
+int add_point(point &dst, point &d_point)
 {
-    dst.x += dx;
-    dst.y += dy;
-    dst.z += dz;
+    dst.x += d_point.x;
+    dst.y += d_point.y;
+    dst.z += d_point.z;
     return NONE;
 }
 
-int move_all_points_data(point_data &dst, double dx, double dy, double dz)
+int move_all_points_data(point_data &dst, point &d_point)
 {
     for (int i = 0; i < dst.n; i++)
     {
-        move_point(dst.arr[i], dx, dy, dz);
+        add_point(dst.arr[i], d_point);
     }
     return NONE;
 }

@@ -6,7 +6,7 @@
 #define SRC_FILE "../cube.txt"
 #include "figure.h"
 #include "painter.h"
-#include "funcs.h"
+#include "transform_fig.h"
 #include "error_handling.h"
 //создать отдельную струтктуру со всеми возможными параметрами для преобразования и указанием нужной функции
 void Canvas::rotate()
@@ -28,14 +28,16 @@ void Canvas::rotate()
     line = parent->findChild<QLineEdit *>("cz");
     cz = line->text().toDouble();
     point center;
-    center.x = cx;
-    center.y = cy;
-    center.z = cz;
+    create_point(center, cx, cy ,cz);
     point rot;
-    rot.x = ax;
-    rot.y = ay;
-    rot.z = az;
-    rotate_cube(*this->my_cube, center, rot);
+    create_point(rot, ax, ay, az);
+
+    request req;
+    req.tu.rot_point = rot;
+    req.tu.center = center;
+    req.t = TURN;
+    task_manager(req);
+
     this->update();
 }
 
@@ -49,11 +51,17 @@ void Canvas::move() {
     dy = line->text().toDouble();
     line = parent->findChild<QLineEdit *>("dz");
     dz = line->text().toDouble();
+    point m_point;
+    create_point(m_point, dx, dy, dz);
 
-    move_cube(*this->my_cube, dx, dy, dz);
+    request req;
+    req.mo.d_point = m_point;
+    req.t = MOVE;
+    task_manager(req);
+
     this->update();
 }
-
+// TODO этот код скорее всего стоит сократить
 void Canvas::scale() {
     QObject *parent = this->parent();
 
@@ -73,54 +81,35 @@ void Canvas::scale() {
     line = parent->findChild<QLineEdit *>("cz");
     cz = line->text().toDouble();
     point center;
-    center.x = cx;
-    center.y = cy;
-    center.z = cz;
+    create_point(center, cx, cy, cz);
     point scale_data;
-    scale_data.x = kx;
-    scale_data.y = ky;
-    scale_data.z = kz;
-    scale_cube(*this->my_cube, center, scale_data);
+    create_point(scale_data, kx, ky, kz);
+
+    request req;
+    req.sc.k_point = scale_data;
+    req.sc.center = center;
+    req.t = SCALE;
+    task_manager(req);
     this->update();
 }
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
     int err = NONE;
-    err = this->setup_cube();
+    request req;
+    req.t = INIT;
+    task_manager(req);
 }
 
 Canvas::~Canvas() {
-    free_figure(*this->my_cube);
-    //delete &this->my_cube;
 }
 
 void Canvas::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-
     painter.setPen(Qt::black);
-    draw_cube(*this->my_cube, painter);
-   // painter.setFont(QFont("Arial", 30));
-    //painter.drawText(rect(), Qt::AlignCenter, "Qt");
+    //draw_figure(this->my_cube, painter);
+
 }
 // TODO нужно сделать так чтобы создавался один статический куб вместо куба на куче(наверно, моя догадка)
 // TODO ошибки скорее всего тоже надо кастить из одного места
-int Canvas::setup_cube() {
-    int err = NONE;
-    FILE *in = fopen(SRC_FILE, "r");
-    figure *new_figure = (figure *)malloc(sizeof(figure));
-    err = alloc_figure(*new_figure);
-    if (!err)
-    {
-        this->my_cube = new_figure;
-        err = read_figure(*this->my_cube, in);
-    }
-    else
-    {
-        err = EMPTY_PTR_ERR;
-    }
-    //error_handling(static_cast<errors>(err));
-    fclose(in);
-    return err;
-}

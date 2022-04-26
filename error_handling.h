@@ -16,7 +16,8 @@ enum errors
     EMPTY_PTR_ERR,
     NO_DOTS,
     FILE_FORMAT_ERR,
-    NO_LINKS
+    NO_LINKS,
+    UNKNOWN_COMMAND
 };
 int error_handling(errors rc);
 #endif //LAB1_ERROR_HANDLING_H
