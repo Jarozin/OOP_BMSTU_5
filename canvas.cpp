@@ -2,7 +2,7 @@
 // Created by jarozin on 25.04.22.
 //
 #include "canvas.h"
-
+//создать отдельную струтктуру со всеми возможными параметрами для преобразования и указанием нужной функции
 void Canvas::rotate()
 {
     QObject *parent = this->parent();
@@ -70,7 +70,6 @@ void Canvas::scale() {
 Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
     int err = NONE;
-    this->filename = SRC_FILE;
     err = this->setup_cube();
 }
 
@@ -91,7 +90,7 @@ void Canvas::paintEvent(QPaintEvent *event)
 
 int Canvas::setup_cube() {
     int err = NONE;
-    FILE *in = fopen(this->filename.c_str(), "r");
+    FILE *in = fopen(SRC_FILE, "r");
     cube *new_cube = nullptr;
     new_cube = alloc_cube();
     if (new_cube != nullptr)

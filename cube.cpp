@@ -28,12 +28,14 @@ cube* alloc_cube()
     }
     return new_cube;
 }
+//количества надо вводить
 int read_cube(cube &my_cube, FILE *in)
 {
     int err = NONE;
     err = read_point_data_n(my_cube.points, POINTS_NUM, in);
     if (!err)
     {
+        //нужно будет не передавать по два аргумента, а просто саму структуру
         err = read_n_links(my_cube.links.arr, my_cube.links.n, in);
     }
     return err;

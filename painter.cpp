@@ -1,7 +1,7 @@
 //
 // Created by jarozin on 25.04.22.
 //
-
+//сделать точки хода с выбором в меню
 #include "painter.h"
 QPointF convert_point(point &a)
 {

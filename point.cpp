@@ -118,7 +118,7 @@ int setup_points_list_n(point_data *dst, int n, FILE *in)
     return err;
 }
 
-int inc_point(point &dst, double dx, double dy, double dz)
+int move_point(point &dst, double dx, double dy, double dz)
 {
     dst.x += dx;
     dst.y += dy;
@@ -126,11 +126,11 @@ int inc_point(point &dst, double dx, double dy, double dz)
     return NONE;
 }
 
-int inc_all_points_data(point_data &dst, double dx, double dy, double dz)
+int move_all_points_data(point_data &dst, double dx, double dy, double dz)
 {
     for (int i = 0; i < dst.n; i++)
     {
-        inc_point(dst.arr[i], dx, dy, dz);
+        move_point(dst.arr[i], dx, dy, dz);
     }
     return NONE;
 }
@@ -149,10 +149,10 @@ int scale_point_data(point_data &my_points, point &center, double kx, double ky,
     }
     return NONE;
 }
-
+// TODO поворот разделить на 3 функции по каждой оси
 int rotate_point(point &my_point, point &center, double ax, double ay, double az)
 {
-    //inc_point(my_point, -center.x, -center.y, -center.z);
+    move_point(my_point, -center.x, -center.y, -center.z);
     double x = my_point.x;
     double y = my_point.y;
     double z = my_point.z;
@@ -172,10 +172,19 @@ int rotate_point(point &my_point, point &center, double ax, double ay, double az
     z = my_point.z;
     my_point.x = x * std::cos(az * PI / 180) - y * std::sin(az * PI / 180);
     my_point.y = y * std::cos(az * PI / 180) + x * std::sin(az * PI / 180);
-    //inc_point(my_point, center.x, center.y, center.z);
+    move_point(my_point, center.x, center.y, center.z);
     return NONE;
 }
-
+int rotate_point_x(point &my_point, point &center, double ax)
+{
+    move_point(my_point, -center.x, -center.y, -center.z);
+    my_point.y = my_point.y * std::cos(ax * PI / 180) - my_point.z * std::sin(ax * PI / 180);
+    my_point.z = my_point.y * std::sin(ax * PI / 180) + my_point.z * std::cos(ax * PI / 180);
+    move_point(my_point, center.x, center.y, center.z);
+    return NONE;
+}
+int rotate_point_y(point &my_point, point &center, double ay);
+int rotate_point_z(point &my_point, point &center, double az);
 int rotate_point_data(point_data &my_points, point &center, double ax, double ay, double az)
 {
     for (int i = 0; i < my_points.n; i++)
