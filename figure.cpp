@@ -7,6 +7,7 @@
 #include "point.h"
 #include <iostream>
 #include "error_handling.h"
+#include "io.h"
 void free_figure(figure &src)
 {
     free_point_data(src.points);
@@ -26,10 +27,19 @@ int alloc_figure(figure &new_fig)
 int read_figure(figure &my_cube, FILE *in)
 {
     int err = NONE;
-    err = read_point_data_n(my_cube.points, POINTS_NUM, in);
+    int n;
+    err = read_amount(&n, in);
     if (!err)
     {
-        err = read_link_data(my_cube.links, in);
+        err = read_point_data_n(my_cube.points, n, in);
+        if (!err)
+        {
+            err = read_amount(&n, in);
+            if (!err)
+            {
+                err = read_link_data(my_cube.links, in);
+            }
+        }
     }
     return err;
 }
