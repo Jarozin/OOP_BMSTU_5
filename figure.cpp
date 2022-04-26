@@ -11,18 +11,18 @@ void free_figure(figure &src)
 {
     free_point_data(src.points);
     free_links_data(src.links);
-    delete &src;
+    free(&src);
 }
 figure* alloc_figure()
 {
     point_data *new_points = alloc_point_data_n(POINTS_NUM);
     links_data *new_links = alloc_link_data(LINKS_AMOUNT);
-    figure *new_cube = new figure;
+    figure *new_cube = (figure *)malloc(sizeof(figure));
     if (new_cube == nullptr || new_links == nullptr || new_points == nullptr)
     {
         free_links_data(*new_links);
         free_point_data(*new_points);
-        delete new_cube;
+        free(new_cube);
         new_cube = nullptr;
     }
     else
@@ -39,8 +39,7 @@ int read_figure(figure &my_cube, FILE *in)
     err = read_point_data_n(my_cube.points, POINTS_NUM, in);
     if (!err)
     {
-        // TODO нужно будет не передавать по два аргумента, а просто саму структуру
-        err = read_n_links(my_cube.links.arr, my_cube.links.n, in);
+        err = read_link_data(my_cube.links, in);
     }
     return err;
 }

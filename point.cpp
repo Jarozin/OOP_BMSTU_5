@@ -3,12 +3,11 @@
 //
 
 #include "point.h"
-// TODO perenesti vse podkluchenia is .h v .cpp
 #include "error_handling.h"
 #include <iostream>
 point* create_point(double x, double y, double z)
 {
-    point *newPoint = new point;
+    point *newPoint = (point *)malloc(sizeof(point));
     newPoint->x = x;
     newPoint->y = y;
     newPoint->z = z;
@@ -17,7 +16,7 @@ point* create_point(double x, double y, double z)
 
 void free_point(point &point)
 {
-    delete &point;
+    free(&point);
 }
 
 int read_point(point &dst, FILE *in)
@@ -47,10 +46,10 @@ int read_n_points(point *arr, FILE *in, int n)
 
 point_data *alloc_point_data_n(int n)
 {
-    point_data *new_list = new point_data;
+    point_data *new_list = (point_data *)malloc(sizeof(point_data));
     if (new_list != nullptr) {
         new_list->n = n;
-        new_list->arr = new point[n];
+        new_list->arr = (point *)malloc(sizeof(point) * n);
         if (new_list->arr == nullptr) {
             free_point_data(*new_list);
             return nullptr;
@@ -61,7 +60,7 @@ point_data *alloc_point_data_n(int n)
 void free_point_data(point_data &src)
 {
     if (src.arr != nullptr) {
-        delete[] src.arr;
+        free(src.arr);
     }
 }
 
