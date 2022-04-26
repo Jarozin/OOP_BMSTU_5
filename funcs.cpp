@@ -8,10 +8,12 @@
 int rotate_cube(figure &my_cube, point &center, point &rot)
 {
     rotate_point_data(my_cube.points, center, rot);
+    return NONE;
 }
 int scale_cube(figure &my_cube, point &center, point &scale)
 {
     scale_point_data(my_cube.points, center, scale);
+    return NONE;
 }
 int move_cube(figure &my_cube, double dx, double dy, double dz)
 {
