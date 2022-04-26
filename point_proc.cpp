@@ -66,9 +66,11 @@ int rotate_point_y(point &my_point, point &center, double ay)
 }
 int rotate_point_z(point &my_point, point &center, double az)
 {
+    //my_point.x = x * std::cos(az * PI / 180) - y * std::sin(az * PI / 180);
+    //my_point.y = y * std::cos(az * PI / 180) + x * std::sin(az * PI / 180);
     double buf = my_point.x;
-    my_point.x = my_point.z * sin(to_rad(az)) + my_point.x * cos(to_rad(az));
-    my_point.z = my_point.z * sin(to_rad(az)) - buf * sin(to_rad(az));
+    my_point.x = my_point.x * cos(to_rad(az)) - my_point.y * sin(to_rad(az));
+    my_point.y = my_point.y * cos(to_rad(az)) + buf * sin(to_rad(az));
     return NONE;
 }
 int rotate_point_data(point_data &my_points, point &center, point &rot)
@@ -83,3 +85,4 @@ double to_rad(double ax)
 {
     return ax * M_PI / 180;
 }
+
