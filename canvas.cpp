@@ -2,6 +2,12 @@
 // Created by jarozin on 25.04.22.
 //
 #include "canvas.h"
+#include "headers.h"
+#define SRC_FILE "../cube.txt"
+#include "figure.h"
+#include "painter.h"
+#include "funcs.h"
+#include "error_handling.h"
 //создать отдельную струтктуру со всеми возможными параметрами для преобразования и указанием нужной функции
 void Canvas::rotate()
 {
@@ -21,10 +27,15 @@ void Canvas::rotate()
     cy = line->text().toDouble();
     line = parent->findChild<QLineEdit *>("cz");
     cz = line->text().toDouble();
-    point *center = create_point(cx, cy, cz);
-
-    rotate_cube(*this->my_cube, *center, ax, ay, az);
-    free_point(*center);
+    point center;
+    center.x = cx;
+    center.y = cy;
+    center.z = cz;
+    point rot;
+    rot.x = ax;
+    rot.y = ay;
+    rot.z = az;
+    rotate_cube(*this->my_cube, center, rot);
     this->update();
 }
 

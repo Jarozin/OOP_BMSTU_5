@@ -7,7 +7,6 @@
 #include "links.h"
 #include "point.h"
 #include <iostream>
-#include "error_handling.h"
 #define POINTS_NUM 8
 #define LINKS_NUM 12
 struct figure{

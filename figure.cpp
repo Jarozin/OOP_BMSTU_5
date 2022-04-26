@@ -32,14 +32,14 @@ figure* alloc_figure()
     }
     return new_cube;
 }
-//количества надо вводить
+// TODO количества надо вводить
 int read_figure(figure &my_cube, FILE *in)
 {
     int err = NONE;
     err = read_point_data_n(my_cube.points, POINTS_NUM, in);
     if (!err)
     {
-        //нужно будет не передавать по два аргумента, а просто саму структуру
+        // TODO нужно будет не передавать по два аргумента, а просто саму структуру
         err = read_n_links(my_cube.links.arr, my_cube.links.n, in);
     }
     return err;

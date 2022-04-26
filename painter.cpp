@@ -3,6 +3,9 @@
 //
 //сделать точки хода с выбором в меню
 #include "painter.h"
+#include "headers.h"
+#include "figure.h"
+#include "error_handling.h"
 QPointF convert_point(point &a)
 {
     return QPointF(a.x + 300, a.y + 300);

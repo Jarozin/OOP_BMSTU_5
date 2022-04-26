@@ -39,28 +39,14 @@ int scale_point_data(point_data &my_points, point &center, point &scale)
     return NONE;
 }
 // TODO поворот разделить на 3 функции по каждой оси
-int rotate_point(point &my_point, point &center, double ax, double ay, double az)
+int rotate_point(point &my_point, point &center, point &rot)
 {
     move_point(my_point, -center.x, -center.y, -center.z);
-    double x = my_point.x;
-    double y = my_point.y;
-    double z = my_point.z;
 
+    rotate_point_x(my_point, center, rot.x);
+    rotate_point_y(my_point, center, rot.y);
+    rotate_point_z(my_point, center, rot.z);
 
-    my_point.y = y * std::cos(ax * M_PI / 180) - z * std::sin(ax * M_PI / 180);
-    my_point.z = y * std::sin(ax * M_PI / 180) + z * std::cos(ax * M_PI / 180);
-
-    x = my_point.x;
-    y = my_point.y;
-    z = my_point.z;
-    my_point.x = z * std::sin(ay * M_PI / 180) + x * std::cos(ay * M_PI / 180);
-    my_point.z = z * std::sin(ay * M_PI / 180) - x * std::sin(ay * M_PI / 180);
-
-    x = my_point.x;
-    y = my_point.y;
-    z = my_point.z;
-    my_point.x = x * std::cos(az * M_PI / 180) - y * std::sin(az * M_PI / 180);
-    my_point.y = y * std::cos(az * M_PI / 180) + x * std::sin(az * M_PI / 180);
     move_point(my_point, center.x, center.y, center.z);
     return NONE;
 }
@@ -85,11 +71,11 @@ int rotate_point_z(point &my_point, point &center, double az)
     my_point.z = my_point.z * sin(to_rad(az)) - buf * sin(to_rad(az));
     return NONE;
 }
-int rotate_point_data(point_data &my_points, point &center, double ax, double ay, double az)
+int rotate_point_data(point_data &my_points, point &center, point &rot)
 {
     for (int i = 0; i < my_points.n; i++)
     {
-        rotate_point(my_points.arr[i], center, ax, ay, az);
+        rotate_point(my_points.arr[i], center, rot);
     }
     return NONE;
 }

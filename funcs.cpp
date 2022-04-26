@@ -5,9 +5,10 @@
 // TODO ax, ay, az = point sdelat
 #include "funcs.h"
 #include "point_proc.h"
-int rotate_cube(figure &my_cube, point &center, double ax, double ay, double az)
+#include "error_handling.h"
+int rotate_cube(figure &my_cube, point &center, point &rot)
 {
-    rotate_point_data(my_cube.points, center, ax, ay, az);
+    rotate_point_data(my_cube.points, center, rot);
 }
 int scale_cube(figure &my_cube, point &center, point &scale)
 {
