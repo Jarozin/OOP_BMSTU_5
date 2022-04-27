@@ -6,7 +6,8 @@
 #define LAB1_POINT_PROC_H
 #include "point.h"
 double to_rad(double ax);
-int move_point(point &dst, double dx, double dy, double dz);
+int sub_point(point &dst, point &d_point);
+int add_point(point &dst, double dx, double dy, double dz);
 int move_all_points_data(point_data &dst, point &d_point);
 int scale_point(point &my_point, point &center, point &scale);
 int scale_point_data(point_data &my_points, point &center, point &scale);

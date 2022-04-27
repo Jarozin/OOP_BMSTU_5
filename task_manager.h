@@ -7,6 +7,8 @@
 #include "error_handling.h"
 #include "figure.h"
 #include "canvas.h"
+#include "headers.h"
+#include "QObject"
 enum task
 {
     INIT,
@@ -14,6 +16,7 @@ enum task
     MOVE,
     SCALE,
     TURN,
+    DRAW,
     QUIT
 };
 struct move{
@@ -27,15 +30,19 @@ struct turn{
     point rot_point;
     point center;
 };
+struct draw{
+    QPainter *painter;
+};
 struct request
 {
     task t;
-    const char* filename = "cube.txt";
+    const char* filename = "../cube.txt";
     union
     {
         struct move mo;
         struct scale sc;
         struct turn tu;
+        struct draw dr;
     };
 };
 

@@ -15,6 +15,14 @@ int add_point(point &dst, point &d_point)
     return NONE;
 }
 
+int sub_point(point &dst, point &d_point)
+{
+    dst.x -= d_point.x;
+    dst.y -= d_point.y;
+    dst.z -= d_point.z;
+    return NONE;
+}
+
 int move_all_points_data(point_data &dst, point &d_point)
 {
     for (int i = 0; i < dst.n; i++)
@@ -41,13 +49,13 @@ int scale_point_data(point_data &my_points, point &center, point &scale)
 
 int rotate_point(point &my_point, point &center, point &rot)
 {
-    move_point(my_point, -center.x, -center.y, -center.z);
+    sub_point(my_point, center);
 
     rotate_point_x(my_point, center, rot.x);
     rotate_point_y(my_point, center, rot.y);
     rotate_point_z(my_point, center, rot.z);
 
-    move_point(my_point, center.x, center.y, center.z);
+    add_point(my_point, center);
     return NONE;
 }
 int rotate_point_x(point &my_point, point &center, double ax)

@@ -38,6 +38,7 @@ void Canvas::rotate()
     req.t = TURN;
     task_manager(req);
 
+
     this->update();
 }
 
@@ -58,7 +59,6 @@ void Canvas::move() {
     req.mo.d_point = m_point;
     req.t = MOVE;
     task_manager(req);
-
     this->update();
 }
 // TODO этот код скорее всего стоит сократить
@@ -98,7 +98,17 @@ Canvas::Canvas(QWidget *parent) : QWidget(parent)
     int err = NONE;
     request req;
     req.t = INIT;
-    task_manager(req);
+    err = task_manager(req);
+    if (!err)
+    {
+        req.t = LOAD_FILE;
+        err = task_manager(req);
+    }
+    if (err)
+    {
+        error_handling((errors)err);
+    }
+    this->update();
 }
 
 Canvas::~Canvas() {
@@ -107,9 +117,13 @@ Canvas::~Canvas() {
 void Canvas::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+    request req;
+    req.dr.painter = &painter;
     painter.setPen(Qt::black);
-    //draw_figure(this->my_cube, painter);
-
+    req.t = DRAW;
+    errors err = NONE;
+    err = (errors)task_manager(req);
+    error_handling(err);
 }
 // TODO нужно сделать так чтобы создавался один статический куб вместо куба на куче(наверно, моя догадка)
 // TODO ошибки скорее всего тоже надо кастить из одного места

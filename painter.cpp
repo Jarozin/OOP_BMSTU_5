@@ -17,6 +17,12 @@ int draw_figure(figure &my_cube, QPainter &qp)
     draw_links_data(my_cube.points, my_cube.links, qp);
     return NONE;
 }
+int draw_figure_req(figure &my_cube, struct draw &dr)
+{
+    draw_point_data(my_cube.points, *dr.painter);
+    draw_links_data(my_cube.points, my_cube.links, *dr.painter);
+    return NONE;
+}
 int draw_point(point &a, QPainter &qp)
 {
     qp.drawPoint(convert_point(a));

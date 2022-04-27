@@ -16,7 +16,7 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QWidget *canvas;
+    Canvas *canvas;
     QGroupBox *groupBox;
     QLabel *label;
     QLabel *label_2;

@@ -26,6 +26,9 @@ int task_manager(request req)
         case TURN:
             err = rotate_figure_req(fig, req.tu);
             break;
+        case DRAW:
+            err = draw_figure_req(fig, req.dr);
+            break;
         case QUIT:
             free_figure(fig);
             break;
