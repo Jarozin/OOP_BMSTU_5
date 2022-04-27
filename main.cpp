@@ -8,6 +8,5 @@ int main(int argc, char *argv[])
     Ui::MainWindow mainWindow;
     mainWindow.setupUi(&window);
     window.show();
-    //mainWindow.canvas->show();
     return a.exec();
 }

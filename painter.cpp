@@ -11,12 +11,6 @@ QPointF convert_point(point &a)
 {
     return QPointF(a.x + 300, a.y + 300);
 }
-int draw_figure(figure &my_cube, QPainter &qp)
-{
-    draw_point_data(my_cube.points, qp);
-    draw_links_data(my_cube.points, my_cube.links, qp);
-    return NONE;
-}
 int draw_figure_req(figure &my_cube, struct draw &dr)
 {
     draw_point_data(my_cube.points, *dr.painter);

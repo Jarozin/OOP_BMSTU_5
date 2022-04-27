@@ -6,21 +6,6 @@
 #include "point_proc.h"
 #include "error_handling.h"
 #include "task_manager.h"
-int rotate_figure(figure &my_cube, point &center, point &rot)
-{
-    rotate_point_data(my_cube.points, center, rot);
-    return NONE;
-}
-int scale_figure(figure &my_cube, point &center, point &scale)
-{
-    scale_point_data(my_cube.points, center, scale);
-    return NONE;
-}
-int move_figure(figure &my_cube, point &d_point)
-{
-    move_all_points_data(my_cube.points, d_point);
-    return NONE;
-}
 int rotate_figure_req(figure &my_cube, struct turn rot)
 {
     rotate_point_data(my_cube.points, rot.center, rot.rot_point);

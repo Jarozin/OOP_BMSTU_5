@@ -8,7 +8,6 @@
 #include "figure.h"
 #include "task_manager.h"
 QPointF convert_point(point &a);
-int draw_figure(figure &my_cube, QPainter &qp);
 int draw_figure_req(figure &my_cube, struct draw &dr);
 int draw_point(point &a, QPainter &qp);
 int draw_point_data(point_data &a, QPainter &qp);
