@@ -5,9 +5,9 @@
 #include "headers.h"
 #include "figure.h"
 #include "error_handling.h"
-//создать отдельную струтктуру со всеми возможными параметрами для преобразования и указанием нужной функции
 void Canvas::rotate()
 {
+    errors err = NONE;
     QObject *parent = this->parent();
     double ax, ay, az;
     QLineEdit *line = parent->findChild<QLineEdit *>("ax");
@@ -33,15 +33,15 @@ void Canvas::rotate()
     req.tu.rot_point = rot;
     req.tu.center = center;
     req.t = TURN;
-    task_manager(req);
-
+    err = (errors)task_manager(req);
+    error_handling(err);
 
     this->update();
 }
 
 void Canvas::move() {
     QObject *parent = this->parent();
-
+    errors err = NONE;
     double dx, dy, dz;
     QLineEdit *line = parent->findChild<QLineEdit *>("dx");
     dx = line->text().toDouble();
@@ -55,13 +55,14 @@ void Canvas::move() {
     request req;
     req.mo.d_point = m_point;
     req.t = MOVE;
-    task_manager(req);
+    err = (errors)task_manager(req);
+    error_handling(err);
     this->update();
 }
 // TODO этот код скорее всего стоит сократить
 void Canvas::scale() {
     QObject *parent = this->parent();
-
+    errors err = NONE;
     double kx, ky, kz;
     QLineEdit *line = parent->findChild<QLineEdit *>("kx");
     kx = line->text().toDouble();
@@ -86,7 +87,8 @@ void Canvas::scale() {
     req.sc.k_point = scale_data;
     req.sc.center = center;
     req.t = SCALE;
-    task_manager(req);
+    err = (errors)task_manager(req);
+    error_handling(err);
     this->update();
 }
 
@@ -122,5 +124,3 @@ void Canvas::paintEvent(QPaintEvent *event)
     err = (errors)task_manager(req);
     error_handling(err);
 }
-// TODO нужно сделать так чтобы создавался один статический куб вместо куба на куче(наверно, моя догадка)
-// TODO ошибки скорее всего тоже надо кастить из одного места
