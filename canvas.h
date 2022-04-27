@@ -5,7 +5,6 @@
 #ifndef LAB1_CANVAS_H
 #define LAB1_CANVAS_H
 #include "headers.h"
-#define SRC_FILE "../cube.txt"
 #include "figure.h"
 #include "painter.h"
 #include "transform_fig.h"

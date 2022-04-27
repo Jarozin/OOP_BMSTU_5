@@ -4,7 +4,6 @@
 #include "painter.h"
 #include "task_manager.h"
 #include "transform_fig.h"
-#include "canvas.h"
 int task_manager(request req)
 {
     static figure fig = init();

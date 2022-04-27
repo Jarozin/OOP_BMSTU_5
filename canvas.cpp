@@ -3,10 +3,7 @@
 //
 #include "canvas.h"
 #include "headers.h"
-#define SRC_FILE "../cube.txt"
 #include "figure.h"
-#include "painter.h"
-#include "transform_fig.h"
 #include "error_handling.h"
 //создать отдельную струтктуру со всеми возможными параметрами для преобразования и указанием нужной функции
 void Canvas::rotate()

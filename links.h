@@ -4,7 +4,6 @@
 
 #ifndef LAB1_LINKS_H
 #define LAB1_LINKS_H
-#define LINKS_AMOUNT 12
 //структура хранящая связи точек в кубе
 #include "point.h"
 
