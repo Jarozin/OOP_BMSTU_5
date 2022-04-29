@@ -23,4 +23,5 @@ int read_n_points(point *arr, FILE *in, int n);
 int alloc_point_data_n(point_data &dst, int n);
 void free_point_data(point_data &src);
 int read_point_data_n(point_data &dst, int n, FILE *in);
+int alloc_and_read_point_data(point_data &points, FILE *in);
 #endif //LAB1_POINT_H

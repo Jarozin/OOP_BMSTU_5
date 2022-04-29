@@ -3,6 +3,7 @@
 //
 #include "error_handling.h"
 #include "links.h"
+#include "io.h"
 int links_alloc(links_data &connections, int len)
 {
     connections.n = len;
@@ -44,4 +45,20 @@ int read_link_data(links_data &dst, FILE *f)
             err = FILE_FORMAT_ERR;
     }
     return err;
+}
+
+int appoint_and_read_link_data(links_data &links, FILE *in)
+{
+    int n = 0;
+    int err = OK;
+    err = read_amount(&n, in);
+    if (!err) {
+        err = links_alloc(links, n);
+        if (!err)
+        {
+            err = read_link_data(links, in);
+            if (err)
+                free_links_data(links);
+        }
+    }
 }

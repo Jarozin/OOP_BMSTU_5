@@ -29,20 +29,13 @@ int create_and_read_figure(figure &my_fig, FILE *in)
 {
     int err = OK;
     int n;
-    err = read_amount(&n, in);
+    err = alloc_and_read_point_data(my_fig.points, in);
     if (!err)
     {
-        err = alloc_point_data_n(my_fig.points, n);
-        if (!err) {
-            err = read_point_data_n(my_fig.points, n, in);
-            if (!err) {
-                err = read_amount(&n, in);
-                if (!err) {
-                    err = links_alloc(my_fig.links, n);
-                    if (!err)
-                        err = read_link_data(my_fig.links, in);
-                }
-            }
+        err = appoint_and_read_link_data(my_fig.links, in);
+        if (err)
+        {
+            free_point_data(my_fig.points);
         }
     }
     return err;

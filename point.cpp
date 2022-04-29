@@ -5,6 +5,7 @@
 #include "point.h"
 #include "error_handling.h"
 #include <iostream>
+#include "io.h"
 int create_point(point &new_point, double x, double y, double z)
 {
     new_point.x = x;
@@ -73,3 +74,19 @@ int read_point_data_n(point_data &dst, int n, FILE *in)
     return err;
 }
 
+int alloc_and_read_point_data(point_data &points, FILE *in)
+{
+    int err = OK;
+    int n = 0;
+    err = read_amount(&n, in);
+    if (!err) {
+        err = alloc_point_data_n(points, n);
+        if (!err) {
+            err = read_point_data_n(points, n, in);
+            if (err) {
+                free_point_data(points);
+            }
+        }
+    }
+    return err;
+}
