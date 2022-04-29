@@ -10,7 +10,7 @@
 
 enum errors
 {
-    NONE,
+    OK,
     FILE_NOT_FOUND,
     FILE_CONTENT_ERR,
     EMPTY_PTR_ERR,

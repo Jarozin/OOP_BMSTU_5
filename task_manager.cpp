@@ -37,3 +37,25 @@ int task_manager(request req)
 
     return err;
 }
+int init_move(move &mv, point &d_point)
+{
+    mv.d_point = d_point;
+    return OK;
+}
+
+int init_scale(scale &sc, point &k_point, point &center) {
+    sc.center = center;
+    sc.k_point = k_point;
+    return OK;
+}
+
+int init_turn(turn &tr, point &rot_point, point &center) {
+    tr.center = center;
+    tr.rot_point = rot_point;
+    return OK;
+}
+int init_draw(draw &dr, QPainter *painter)
+{
+    dr.painter = painter;
+    return OK;
+}

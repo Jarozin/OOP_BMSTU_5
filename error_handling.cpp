@@ -7,7 +7,7 @@ int error_handling(errors rc)
 {
     switch (rc)
     {
-        case NONE:
+        case OK:
             break;
         case FILE_NOT_FOUND:
             QMessageBox::critical(NULL, "ERROR", "File is broken, or doesn't exist");

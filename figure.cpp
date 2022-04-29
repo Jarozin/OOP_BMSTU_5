@@ -24,9 +24,10 @@ void free_figure(figure &src)
     free_point_data(src.points);
     free_links_data(src.links);
 }
+
 int create_and_read_figure(figure &my_fig, FILE *in)
 {
-    int err = NONE;
+    int err = OK;
     int n;
     err = read_amount(&n, in);
     if (!err)
@@ -48,7 +49,7 @@ int create_and_read_figure(figure &my_fig, FILE *in)
 }
 int load_figure_from_file(figure &new_figure, const char *filename)
 {
-    int err = NONE;
+    int err = OK;
     FILE *in = fopen(filename, "r");
     if (in) {
         err = create_and_read_figure(new_figure, in);

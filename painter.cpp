@@ -15,12 +15,12 @@ int draw_figure_req(figure &my_cube, struct draw &dr)
 {
     draw_point_data(my_cube.points, *dr.painter);
     draw_links_data(my_cube.points, my_cube.links, *dr.painter);
-    return NONE;
+    return OK;
 }
 int draw_point(point &a, QPainter &qp)
 {
     qp.drawPoint(convert_point(a));
-    return NONE;
+    return OK;
 }
 int draw_point_data(point_data &a, QPainter &qp)
 {
@@ -28,7 +28,7 @@ int draw_point_data(point_data &a, QPainter &qp)
     {
         draw_point(a.arr[i], qp);
     }
-    return NONE;
+    return OK;
 }
 int draw_links_data(point_data &points, links_data &links, QPainter &qp)
 {
@@ -42,5 +42,5 @@ int draw_links_data(point_data &points, links_data &links, QPainter &qp)
         p2 = convert_point(points.arr[num.p2]);
         qp.drawLine(p1, p2);
     }
-    return NONE;
+    return OK;
 }

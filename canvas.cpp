@@ -7,7 +7,7 @@
 #include "error_handling.h"
 void Canvas::rotate()
 {
-    errors err = NONE;
+    errors err = OK;
     QObject *parent = this->parent();
     double ax, ay, az;
     QLineEdit *line = parent->findChild<QLineEdit *>("ax");
@@ -30,8 +30,7 @@ void Canvas::rotate()
     create_point(rot, ax, ay, az);
 
     request req;
-    req.tu.rot_point = rot;
-    req.tu.center = center;
+    init_turn(req.tu, rot, center);
     req.t = TURN;
     err = (errors)task_manager(req);
     error_handling(err);
@@ -41,7 +40,7 @@ void Canvas::rotate()
 
 void Canvas::move() {
     QObject *parent = this->parent();
-    errors err = NONE;
+    errors err = OK;
     double dx, dy, dz;
     QLineEdit *line = parent->findChild<QLineEdit *>("dx");
     dx = line->text().toDouble();
@@ -53,16 +52,15 @@ void Canvas::move() {
     create_point(m_point, dx, dy, dz);
 
     request req;
-    req.mo.d_point = m_point;
+    init_move(req.mo, m_point);
     req.t = MOVE;
     err = (errors)task_manager(req);
     error_handling(err);
     this->update();
 }
-// TODO этот код скорее всего стоит сократить
 void Canvas::scale() {
     QObject *parent = this->parent();
-    errors err = NONE;
+    errors err = OK;
     double kx, ky, kz;
     QLineEdit *line = parent->findChild<QLineEdit *>("kx");
     kx = line->text().toDouble();
@@ -84,8 +82,7 @@ void Canvas::scale() {
     create_point(scale_data, kx, ky, kz);
 
     request req;
-    req.sc.k_point = scale_data;
-    req.sc.center = center;
+    init_scale(req.sc, scale_data, center);
     req.t = SCALE;
     err = (errors)task_manager(req);
     error_handling(err);
@@ -94,7 +91,7 @@ void Canvas::scale() {
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
-    int err = NONE;
+    int err = OK;
     request req;
     req.t = INIT;
     err = task_manager(req);
@@ -117,10 +114,10 @@ void Canvas::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     request req;
-    req.dr.painter = &painter;
     painter.setPen(Qt::black);
+    init_draw(req.dr, &painter);
     req.t = DRAW;
-    errors err = NONE;
+    errors err = OK;
     err = (errors)task_manager(req);
     error_handling(err);
 }

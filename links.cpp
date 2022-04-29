@@ -11,7 +11,7 @@ int links_alloc(links_data &connections, int len)
     if (!connections.arr)
         return EMPTY_PTR_ERR;
 
-    return NONE;
+    return OK;
 }
 
 void links_free(links_data &connections)
@@ -31,7 +31,7 @@ int read_link(link* joints, FILE* f)
     if (fscanf(f, "%d%d", &joints->p1, &joints->p2) != 2)
         return FILE_FORMAT_ERR;
 
-    return NONE;
+    return OK;
 }
 
 

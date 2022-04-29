@@ -22,17 +22,21 @@ enum task
 struct move{
     point d_point;
 };
+int init_move(move &mv, point &d_point);
 struct scale{
     point k_point;
     point center;
 };
+int init_scale(scale &sc, point &k_point, point &center);
 struct turn{
     point rot_point;
     point center;
 };
+int init_turn(turn &tr, point &rot_point, point &center);
 struct draw{
     QPainter *painter;
 };
+int init_draw(draw &dr, QPainter *);
 struct request
 {
     task t;

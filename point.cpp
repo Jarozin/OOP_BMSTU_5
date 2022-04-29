@@ -10,12 +10,12 @@ int create_point(point &new_point, double x, double y, double z)
     new_point.x = x;
     new_point.y = y;
     new_point.z = z;
-    return NONE;
+    return OK;
 }
 
 int read_point(point &dst, FILE *in)
 {
-    int err = NONE;
+    int err = OK;
     if (in == nullptr)
         err = EMPTY_PTR_ERR;
     if (!err)
@@ -28,7 +28,7 @@ int read_point(point &dst, FILE *in)
 
 int read_n_points(point *arr, FILE *in, int n)
 {
-    int err = NONE;
+    int err = OK;
     if (n < 1)
         err = NO_DOTS;
     for (int i = 0; i < n && !err; i++)
@@ -40,11 +40,10 @@ int read_n_points(point *arr, FILE *in, int n)
 
 int alloc_point_data_n(point_data &dst, int n)
 {
-    int err = NONE;
+    int err = OK;
     dst.n = n;
     dst.arr = (point *)malloc(sizeof(point) * n);
     if (!dst.arr) {
-        free_point_data(dst);
         err = EMPTY_PTR_ERR;
     }
     return err;
@@ -58,7 +57,7 @@ void free_point_data(point_data &src)
 
 int read_point_data_n(point_data &dst, int n, FILE *in)
 {
-    int err = NONE;
+    int err = OK;
     if (in == nullptr)
         err = EMPTY_PTR_ERR;
     if (!err)
