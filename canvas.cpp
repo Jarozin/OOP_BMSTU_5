@@ -91,19 +91,6 @@ void Canvas::scale() {
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
-    int err = OK;
-    request req;
-    req.t = INIT;
-    err = task_manager(req);
-    if (!err)
-    {
-        req.t = LOAD_FILE;
-        err = task_manager(req);
-    }
-    if (err)
-    {
-        error_handling((errors)err);
-    }
     this->update();
 }
 

@@ -36,6 +36,7 @@ int init_turn(turn &tr, point &rot_point, point &center);
 struct draw{
     QPainter *painter;
 };
+
 int init_draw(draw &dr, QPainter *);
 struct request
 {
