@@ -8,7 +8,6 @@ int task_manager(request req)
 {
     static figure fig = init();
     int  err = 0;
-
     switch (req.t)
     {
         case INIT:
@@ -54,8 +53,8 @@ int init_turn(turn &tr, point &rot_point, point &center) {
     tr.rot_point = rot_point;
     return OK;
 }
-int init_draw(draw &dr, QPainter *painter)
+int init_draw(draw &dr, QGraphicsView *view)
 {
-    dr.painter = painter;
+    dr.view = view;
     return OK;
 }

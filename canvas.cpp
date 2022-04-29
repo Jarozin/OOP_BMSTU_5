@@ -35,7 +35,12 @@ void Canvas::rotate()
     err = (errors)task_manager(req);
     error_handling(err);
 
-    this->update();
+    if (!err) {
+        req.t = DRAW;
+        init_draw(req.dr, this);
+        err = (errors) task_manager(req);
+        error_handling(err);
+    }
 }
 
 void Canvas::move() {
@@ -56,7 +61,13 @@ void Canvas::move() {
     req.t = MOVE;
     err = (errors)task_manager(req);
     error_handling(err);
-    this->update();
+
+    if (!err) {
+        req.t = DRAW;
+        init_draw(req.dr, this);
+        err = (errors) task_manager(req);
+        error_handling(err);
+    }
 }
 void Canvas::scale() {
     QObject *parent = this->parent();
@@ -86,25 +97,18 @@ void Canvas::scale() {
     req.t = SCALE;
     err = (errors)task_manager(req);
     error_handling(err);
-    this->update();
+
+    if (!err) {
+        req.t = DRAW;
+        init_draw(req.dr, this);
+        err = (errors) task_manager(req);
+        error_handling(err);
+    }
 }
 
-Canvas::Canvas(QWidget *parent) : QWidget(parent)
+Canvas::Canvas(QWidget *parent) : QGraphicsView(parent)
 {
-    this->update();
 }
 
 Canvas::~Canvas() {
-}
-
-void Canvas::paintEvent(QPaintEvent *event)
-{
-    QPainter painter(this);
-    request req;
-    painter.setPen(Qt::black);
-    init_draw(req.dr, &painter);
-    req.t = DRAW;
-    errors err = OK;
-    err = (errors)task_manager(req);
-    error_handling(err);
 }

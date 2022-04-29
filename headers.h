@@ -14,4 +14,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 #include <QPainter>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+
 #endif //LAB1_HEADERS_H

@@ -9,13 +9,12 @@
 #include "painter.h"
 #include "transform_fig.h"
 #include "task_manager.h"
-class Canvas: public QWidget
+class Canvas: public QGraphicsView
 {
     Q_OBJECT
 public:
     explicit Canvas(QWidget *parent = nullptr);
     ~Canvas();
-    void paintEvent(QPaintEvent *event) override;
 signals:
 
 public slots:

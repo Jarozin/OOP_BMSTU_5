@@ -9,6 +9,7 @@
 #include "canvas.h"
 #include "headers.h"
 #include "QObject"
+#include "graph.h"
 enum task
 {
     INIT,
@@ -34,10 +35,10 @@ struct turn{
 };
 int init_turn(turn &tr, point &rot_point, point &center);
 struct draw{
-    QPainter *painter;
+    QGraphicsView *view;
 };
 
-int init_draw(draw &dr, QPainter *);
+int init_draw(draw &dr, QGraphicsView *view);
 struct request
 {
     task t;

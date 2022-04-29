@@ -7,40 +7,32 @@
 #include "figure.h"
 #include "error_handling.h"
 #include "task_manager.h"
+#include "graph.h"
 QPointF convert_point(point &a)
 {
     return QPointF(a.x + 300, a.y + 300);
 }
-int draw_figure_req(figure &my_cube, struct draw &dr)
+
+QLineF convert_to_line(point &a, point &b)
 {
-    draw_point_data(my_cube.points, *dr.painter);
-    draw_links_data(my_cube.points, my_cube.links, *dr.painter);
+    return QLineF(convert_point(a), convert_point(b));
+}
+int draw_figure_req(figure &fig, struct draw &dr)
+{
+    graphics a;
+    int err = init_graph(a, dr.view);
+    draw_links_data(fig.points, fig.links, a.scene);
+    set(dr.view, a);
+    dr.view->show();
     return OK;
 }
-int draw_point(point &a, QPainter &qp)
+int draw_links_data(point_data &points, links_data &links, QGraphicsScene *scene)
 {
-    qp.drawPoint(convert_point(a));
-    return OK;
-}
-int draw_point_data(point_data &a, QPainter &qp)
-{
-    for (int i = 0; i < a.n; i++)
-    {
-        draw_point(a.arr[i], qp);
-    }
-    return OK;
-}
-int draw_links_data(point_data &points, links_data &links, QPainter &qp)
-{
-    QPointF p1;
-    QPointF p2;
     link num;
     for (int i = 0; i < links.n; i++)
     {
         num = links.arr[i];
-        p1 = convert_point(points.arr[num.p1]);
-        p2 = convert_point(points.arr[num.p2]);
-        qp.drawLine(p1, p2);
+        scene->addLine(convert_to_line(points.arr[num.p1], points.arr[num.p2]));
     }
     return OK;
 }
