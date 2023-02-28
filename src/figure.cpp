@@ -21,14 +21,14 @@ void free_figure(figure &src)
     free_links_data(src.links);
 }
 
-int create_and_read_figure(figure &fig, FILE *in)
+int read_figure(figure &fig, FILE *in)
 {
     int err = OK;
     int n;
-    err = alloc_and_read_point_data(fig.points, in);
+    err = read_points(fig.points, in);
     if (!err)
     {
-        err = appoint_and_read_link_data(fig.links, in);
+        err = read_links(fig.links, in);
         if (err)
             free_point_data(fig.points);
     }
@@ -40,7 +40,7 @@ int load_figure_from_file(figure &fig, const char *filename)
     figure new_fig;
     FILE *in = fopen(filename, "r");
     if (in) {
-        err = create_and_read_figure(new_fig, in);
+        err = read_figure(new_fig, in);
         fclose(in);
     }
     else

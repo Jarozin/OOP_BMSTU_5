@@ -44,7 +44,7 @@ int read_link_data(links_data &dst, FILE *f)
     return err;
 }
 
-int appoint_and_read_link_data(links_data &links, FILE *in)
+int read_links(links_data &links, FILE *in)
 {
     int n = 0;
     int err = OK;

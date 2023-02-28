@@ -7,6 +7,7 @@ void Canvas::rotate()
     errors err = OK;
     QObject *parent = this->parent();
     double ax, ay, az;
+
     QLineEdit *line = parent->findChild<QLineEdit *>("ax");
     ax = line->text().toDouble();
     line = parent->findChild<QLineEdit *>("ay");
@@ -44,12 +45,16 @@ void Canvas::move() {
     QObject *parent = this->parent();
     errors err = OK;
     double dx, dy, dz;
+
+
     QLineEdit *line = parent->findChild<QLineEdit *>("dx");
     dx = line->text().toDouble();
     line = parent->findChild<QLineEdit *>("dy");
     dy = line->text().toDouble();
     line = parent->findChild<QLineEdit *>("dz");
     dz = line->text().toDouble();
+
+
     point m_point;
     create_point(m_point, dx, dy, dz);
 

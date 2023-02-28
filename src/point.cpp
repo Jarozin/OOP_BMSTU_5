@@ -76,7 +76,7 @@ int read_point_data_n(point_data &dst, int n, FILE *in)
     return err;
 }
 
-int alloc_and_read_point_data(point_data &points, FILE *in)
+int read_points(point_data &points, FILE *in)
 {
     int err = OK;
     int n = 0;
