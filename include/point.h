@@ -12,7 +12,7 @@ struct point_data{
     point *arr;
     int n;
 };
-int create_point(point &new_point, double x, double y, double z);
+int change_point(point &new_point, double x, double y, double z);
 int read_point(point &dst, FILE *in);
 
 int alloc_points(point_data &dst, int n);

@@ -2,7 +2,7 @@
 #include "error_handling.h"
 #include <iostream>
 #include "io.h"
-int create_point(point &new_point, double x, double y, double z)
+int change_point(point &new_point, double x, double y, double z)
 {
     new_point.x = x;
     new_point.y = y;

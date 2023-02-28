@@ -23,9 +23,9 @@ void Canvas::rotate()
     line = parent->findChild<QLineEdit *>("cz");
     cz = line->text().toDouble();
     point center;
-    create_point(center, cx, cy ,cz);
+    change_point(center, cx, cy ,cz);
     point rot;
-    create_point(rot, ax, ay, az);
+    change_point(rot, ax, ay, az);
 
     request req;
     init_turn(req.tu, rot, center);
@@ -56,7 +56,7 @@ void Canvas::move() {
 
 
     point m_point;
-    create_point(m_point, dx, dy, dz);
+    change_point(m_point, dx, dy, dz);
 
     request req;
     init_move(req.mo, m_point);
@@ -90,9 +90,9 @@ void Canvas::scale() {
     line = parent->findChild<QLineEdit *>("cz");
     cz = line->text().toDouble();
     point center;
-    create_point(center, cx, cy, cz);
+    change_point(center, cx, cy, cz);
     point scale_data;
-    create_point(scale_data, kx, ky, kz);
+    change_point(scale_data, kx, ky, kz);
 
     request req;
     init_scale(req.sc, scale_data, center);
