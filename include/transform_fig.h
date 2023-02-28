@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #ifndef LAB1_TRANSFORM_FIG_H
 #define LAB1_TRANSFORM_FIG_H
 #include "figure.h"

@@ -1,6 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
 #include "error_handling.h"
 #include "links.h"
 #include "io.h"
@@ -17,7 +14,7 @@ int links_alloc(links_data &connections, int len)
 
 void links_free(links_data &connections)
 {
-    if (connections.arr)
+    if (!connections.arr)
         free(connections.arr);
 }
 
@@ -51,14 +48,21 @@ int appoint_and_read_link_data(links_data &links, FILE *in)
 {
     int n = 0;
     int err = OK;
+    links_data new_links;
     err = read_amount(&n, in);
     if (!err) {
-        err = links_alloc(links, n);
+        err = links_alloc(new_links, n);
         if (!err)
         {
-            err = read_link_data(links, in);
+            err = read_link_data(new_links, in);
             if (err)
-                free_links_data(links);
+                free_links_data(new_links);
         }
     }
+    if (!err)
+    {
+        free_links_data(links);
+        links = new_links;
+    }
+    return err;
 }

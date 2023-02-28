@@ -1,6 +1,3 @@
-//
-// Created by jarozin on 26.04.22.
-//
 #include "painter.h"
 #include "task_manager.h"
 #include "transform_fig.h"

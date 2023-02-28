@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 24.04.22.
-//
-
 #ifndef LAB1_HEADERS_H
 #define LAB1_HEADERS_H
 #include <QtCore/QVariant>

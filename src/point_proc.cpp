@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 26.04.22.
-//
-
 #include "point_proc.h"
 #include <math.h>
 #include "error_handling.h"

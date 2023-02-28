@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #include "transform_fig.h"
 #include "point_proc.h"
 #include "error_handling.h"

@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #ifndef LAB1_CANVAS_H
 #define LAB1_CANVAS_H
 #include "headers.h"
@@ -11,7 +7,6 @@
 #include "task_manager.h"
 class Canvas: public QGraphicsView
 {
-    Q_OBJECT
 public:
     explicit Canvas(QWidget *parent = nullptr);
     ~Canvas();

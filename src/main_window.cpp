@@ -1,6 +1,4 @@
-//
-// Created by jarozin on 25.04.22.
-//
+
 /********************************************************************************
 ** Form generated from reading UI file 'window.ui'
 **

@@ -1,11 +1,7 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #ifndef LAB1_ERROR_HANDLING_H
 #define LAB1_ERROR_HANDLING_H
 #include <iostream>
-#include "QMessageBox"
+#include <QMessageBox>
 #include <QObject>
 
 enum errors

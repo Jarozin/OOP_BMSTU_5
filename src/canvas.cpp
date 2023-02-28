@@ -1,6 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
 #include "canvas.h"
 #include "headers.h"
 #include "figure.h"

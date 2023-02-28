@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 30.04.22.
-//
-
 #ifndef LAB1_GRAPH_H
 #define LAB1_GRAPH_H
 #include "QGraphicsView"

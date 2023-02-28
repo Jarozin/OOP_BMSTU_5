@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 30.04.22.
-//
-
 #include "graph.h"
 #include "error_handling.h"
 
@@ -13,7 +9,7 @@ int init_graph(graphics &a, QGraphicsView *gV)
 
     a.pen = QPen(Qt::black);
 
-    return 0;
+    return OK;
 }
 
 void del(graphics &a)

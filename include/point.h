@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #ifndef LAB1_POINT_H
 #define LAB1_POINT_H
 

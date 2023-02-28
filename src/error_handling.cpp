@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #include "error_handling.h"
 int error_handling(errors rc)
 {

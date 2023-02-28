@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #include "figure.h"
 #include "links.h"
 #include "point.h"
@@ -25,30 +21,34 @@ void free_figure(figure &src)
     free_links_data(src.links);
 }
 
-int create_and_read_figure(figure &my_fig, FILE *in)
+int create_and_read_figure(figure &fig, FILE *in)
 {
     int err = OK;
     int n;
-    err = alloc_and_read_point_data(my_fig.points, in);
+    err = alloc_and_read_point_data(fig.points, in);
     if (!err)
     {
-        err = appoint_and_read_link_data(my_fig.links, in);
+        err = appoint_and_read_link_data(fig.links, in);
         if (err)
-        {
-            free_point_data(my_fig.points);
-        }
+            free_point_data(fig.points);
     }
     return err;
 }
-int load_figure_from_file(figure &new_figure, const char *filename)
+int load_figure_from_file(figure &fig, const char *filename)
 {
     int err = OK;
+    figure new_fig;
     FILE *in = fopen(filename, "r");
     if (in) {
-        err = create_and_read_figure(new_figure, in);
+        err = create_and_read_figure(new_fig, in);
         fclose(in);
     }
     else
         err = FILE_NOT_FOUND;
+    if (!err)
+    {
+        free_figure(fig);
+        fig = new_fig;
+    }
     return err;
 }

@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #include "point.h"
 #include "error_handling.h"
 #include <iostream>
@@ -42,16 +38,22 @@ int read_n_points(point *arr, FILE *in, int n)
 int alloc_point_data_n(point_data &dst, int n)
 {
     int err = OK;
-    dst.n = n;
-    dst.arr = (point *)malloc(sizeof(point) * n);
-    if (!dst.arr) {
+    point_data new_data;
+    new_data.n = n;
+    new_data.arr = (point *)malloc(sizeof(point) * n);
+    if (!new_data.arr) {
         err = EMPTY_PTR_ERR;
+    }
+    if (!err)
+    {
+        free_point_data(dst);
+        dst = new_data;
     }
     return err;
 }
 void free_point_data(point_data &src)
 {
-    if (src.arr != nullptr) {
+    if (!src.arr) {
         free(src.arr);
     }
 }
@@ -78,15 +80,20 @@ int alloc_and_read_point_data(point_data &points, FILE *in)
 {
     int err = OK;
     int n = 0;
+    point_data new_points;
     err = read_amount(&n, in);
     if (!err) {
-        err = alloc_point_data_n(points, n);
+        err = alloc_point_data_n(new_points, n);
         if (!err) {
-            err = read_point_data_n(points, n, in);
-            if (err) {
-                free_point_data(points);
-            }
+            err = read_point_data_n(new_points, n, in);
         }
+    }
+    if (err)
+        free_point_data(new_points);
+    else
+    {
+        free_point_data(points);
+        points = new_points;
     }
     return err;
 }

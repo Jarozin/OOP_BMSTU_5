@@ -1,6 +1,4 @@
-//
-// Created by jarozin on 25.04.22.
-//
+
 //сделать точки хода с выбором в меню
 #include "painter.h"
 #include "headers.h"
@@ -21,10 +19,13 @@ int draw_figure_req(figure &fig, struct draw &dr)
 {
     graphics a;
     int err = init_graph(a, dr.view);
-    draw_links_data(fig.points, fig.links, a.scene);
-    set(dr.view, a);
-    dr.view->show();
-    return OK;
+    if (!err)
+    {
+        draw_links_data(fig.points, fig.links, a.scene);
+        set(dr.view, a);
+        dr.view->show();
+    }
+    return err;
 }
 int draw_links_data(point_data &points, links_data &links, QGraphicsScene *scene)
 {

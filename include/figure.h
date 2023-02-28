@@ -1,7 +1,3 @@
-//
-// Created by jarozin on 25.04.22.
-//
-
 #ifndef LAB1_FIGURE_H
 #define LAB1_FIGURE_H
 #include "links.h"
