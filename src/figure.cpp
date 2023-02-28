@@ -21,7 +21,7 @@ void free_figure(figure &src)
     free_links(src.links);
 }
 
-int read_figure(figure &fig, FILE *in)
+int load_figure(figure &fig, FILE *in)
 {
     int err = OK;
     int n;
@@ -40,7 +40,7 @@ int load_figure_from_file(figure &fig, const char *filename)
     figure new_fig;
     FILE *in = fopen(filename, "r");
     if (in) {
-        err = read_figure(new_fig, in);
+        err = load_figure(new_fig, in);
         fclose(in);
     }
     else
