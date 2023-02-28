@@ -1,68 +1,63 @@
 #include "error_handling.h"
 #include "links.h"
 #include "io.h"
-int links_alloc(links_data &connections, int len)
+int alloc_links(links_data &connections, int len)
 {
+    int err = OK;
     connections.n = len;
-
     connections.arr = (link *)malloc(sizeof(link) * len);
     if (!connections.arr)
-        return EMPTY_PTR_ERR;
+        err = EMPTY_PTR_ERR;
 
-    return OK;
-}
-
-void links_free(links_data &connections)
-{
-    if (!connections.arr)
-        free(connections.arr);
-}
-
-void free_links_data(links_data &src)
-{
-    links_free(src);
+    return err;
 }
 
 
-int read_link(link* joints, FILE* f)
+void free_links(links_data &src)
 {
-    if (fscanf(f, "%d%d", &joints->p1, &joints->p2) != 2)
-        return FILE_FORMAT_ERR;
+    if (!src.arr)
+        free(src.arr);
 
-    return OK;
 }
-
-
-int read_link_data(links_data &dst, FILE *f)
+int read_link(link &dst, FILE* f)
 {
-    int err = 0;
-    for (int i = 0; !err && i < dst.n; i++)
+    int err = OK;
+    if (f == nullptr)
+        err = EMPTY_PTR_ERR;
+    if (!err)
     {
-        if (read_link(&dst.arr[i], f))
+        if (fscanf(f, "%d%d", &dst.p1, &dst.p2) != 2)
             err = FILE_FORMAT_ERR;
     }
     return err;
 }
 
-int read_links(links_data &links, FILE *in)
+
+int read_links(links_data &dst, FILE *f)
+{
+    int err = 0;
+    if (dst.n < 1)
+        err = NO_LINKS;
+    for (int i = 0; !err && i < dst.n; i++)
+    {
+        err = read_link(dst.arr[i], f);
+    }
+    return err;
+}
+
+int load_links(links_data &links, FILE *in)
 {
     int n = 0;
     int err = OK;
-    links_data new_links;
     err = read_amount(&n, in);
     if (!err) {
-        err = links_alloc(new_links, n);
+        err = alloc_links(links, n);
         if (!err)
         {
-            err = read_link_data(new_links, in);
+            err = read_links(links, in);
             if (err)
-                free_links_data(new_links);
+                free_links(links);
         }
-    }
-    if (!err)
-    {
-        free_links_data(links);
-        links = new_links;
     }
     return err;
 }

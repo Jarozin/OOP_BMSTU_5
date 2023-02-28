@@ -17,20 +17,20 @@ figure& init()
 }
 void free_figure(figure &src)
 {
-    free_point_data(src.points);
-    free_links_data(src.links);
+    free_points(src.points);
+    free_links(src.links);
 }
 
 int read_figure(figure &fig, FILE *in)
 {
     int err = OK;
     int n;
-    err = read_points(fig.points, in);
+    err = load_points(fig.points, in);
     if (!err)
     {
-        err = read_links(fig.links, in);
+        err = load_links(fig.links, in);
         if (err)
-            free_point_data(fig.points);
+            free_points(fig.points);
     }
     return err;
 }

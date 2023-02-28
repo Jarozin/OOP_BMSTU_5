@@ -23,77 +23,47 @@ int read_point(point &dst, FILE *in)
     return err;
 }
 
-int read_n_points(point *arr, FILE *in, int n)
+int read_points(point_data &dst, FILE *in)
 {
     int err = OK;
-    if (n < 1)
+    if (dst.n < 1)
         err = NO_DOTS;
-    for (int i = 0; i < n && !err; i++)
+    for (int i = 0; i < dst.n && !err; i++)
     {
-        err = read_point(arr[i], in);
+        err = read_point(dst.arr[i], in);
     }
     return err;
 }
 
-int alloc_point_data_n(point_data &dst, int n)
+int alloc_points(point_data &dst, int n)
 {
     int err = OK;
-    point_data new_data;
-    new_data.n = n;
-    new_data.arr = (point *)malloc(sizeof(point) * n);
-    if (!new_data.arr) {
+    dst.n = n;
+    dst.arr = (point *)malloc(sizeof(point) * n);
+    if (!dst.arr) 
         err = EMPTY_PTR_ERR;
-    }
-    if (!err)
-    {
-        free_point_data(dst);
-        dst = new_data;
-    }
     return err;
 }
-void free_point_data(point_data &src)
+void free_points(point_data &src)
 {
     if (!src.arr) {
         free(src.arr);
     }
 }
 
-int read_point_data_n(point_data &dst, int n, FILE *in)
-{
-    int err = OK;
-    if (in == nullptr)
-        err = EMPTY_PTR_ERR;
-    if (!err)
-    {
-        if (n < 1)
-            err = NO_DOTS;
-        if (!err)
-        {
-            dst.n = n;
-            err = read_n_points(dst.arr, in, n);
-        }
-    }
-    return err;
-}
-
-int read_points(point_data &points, FILE *in)
+int load_points(point_data &points, FILE *in)
 {
     int err = OK;
     int n = 0;
-    point_data new_points;
     err = read_amount(&n, in);
     if (!err) {
-        err = alloc_point_data_n(new_points, n);
-        if (!err) {
-            err = read_point_data_n(new_points, n, in);
+        err = alloc_points(points, n);
+        if (!err)
+        {
+            err = read_points(points, in);
+            if (err)
+                free_points(points);
         }
-    }
-    if (err)
-        free_point_data(new_points);
-    else
-    {
-        free_point_data(points);
-        points = new_points;
     }
     return err;
 }
