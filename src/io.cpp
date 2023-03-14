@@ -2,7 +2,7 @@
 #include <cstdio>
 #include "error_handling.h"
 
-int read_amount(int* n, FILE* f)
+int read_amount(int &n, FILE* f)
 {
     int err = 0;
     int a = 0;
@@ -12,6 +12,6 @@ int read_amount(int* n, FILE* f)
     if (a <= 0)
         err = FILE_CONTENT_ERR;
     if (!err)
-        *n = a;
+        n = a;
     return err;
 }

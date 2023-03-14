@@ -49,7 +49,7 @@ int load_links(links_data &links, FILE *in)
 {
     int n = 0;
     int err = OK;
-    err = read_amount(&n, in);
+    err = read_amount(n, in);
     if (!err) {
         err = alloc_links(links, n);
         if (!err)
