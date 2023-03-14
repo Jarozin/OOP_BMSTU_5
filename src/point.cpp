@@ -56,14 +56,13 @@ int load_points(point_data &points, FILE *in)
     int err = OK;
     int n = 0;
     err = read_amount(n, in);
-    if (!err) {
+    if (!err) 
         err = alloc_points(points, n);
-        if (!err)
-        {
-            err = read_points(points, in);
-            if (err)
-                free_points(points);
-        }
+    if (!err)
+    {
+        err = read_points(points, in);
+        if (err)
+            free_points(points);
     }
     return err;
 }
