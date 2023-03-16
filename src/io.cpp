@@ -8,10 +8,10 @@ int read_amount(int &n, FILE* f)
     int a = 0;
     if (fscanf(f, "%d", &a) != 1)
         err = FILE_FORMAT_ERR;
-
-    if (a <= 0)
-        err = FILE_CONTENT_ERR;
     if (!err)
         n = a;
+    if (a <= 0)
+        err = FILE_CONTENT_ERR;
+
     return err;
 }

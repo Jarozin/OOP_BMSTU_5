@@ -51,12 +51,14 @@ int load_links(links_data &links, FILE *in)
     int err = OK;
     err = read_amount(n, in);
     if (!err)
-        err = alloc_links(links, n);
-    if (!err)
     {
-        err = read_links(links, in);
-        if (err)
-            free_links(links);
+        err = alloc_links(links, n);
+        if (!err)
+        {
+            err = read_links(links, in);
+            if (err)
+                free_links(links);
+        }
     }
     return err;
 }

@@ -39,16 +39,17 @@ int load_figure_from_file(figure &fig, const char *filename)
     int err = OK;
     figure new_fig;
     FILE *in = fopen(filename, "r");
-    if (in) {
-        err = load_figure(new_fig, in);
-        fclose(in);
-    }
-    else
+    if (!in)
         err = FILE_NOT_FOUND;
     if (!err)
     {
-        free_figure(fig);
-        fig = new_fig;
+        err = load_figure(new_fig, in);
+        fclose(in);  
+        if (!err)
+        {
+            free_figure(fig);
+            fig = new_fig;
+        }
     }
     return err;
 }
