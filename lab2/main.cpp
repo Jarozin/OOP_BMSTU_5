@@ -163,6 +163,11 @@ int main()
     std::cout << v26.div_num(5.9) << std::endl;
     std::cout << Vector<int>::difference_vectors(v26, v25) << std::endl;
     std::cout << Vector<int>::sum_vectors(v26, v25) << std::endl;
+    Vector<float> float_vector({1.5, 2.4, 9.1});
+    Vector<int> int_vector(float_vector);
+    std::cout << "Float version: " << float_vector << ", int version: " << int_vector << std::endl;
+    int_vector = float_vector * 5;
+    std::cout << "Float * 5 in int: " << int_vector << std::endl;
   }
   catch (baseError &err)
   {

@@ -18,7 +18,7 @@ int max(int num1, int num2)
 }
 
 template <typename Type>
-Vector<Type>::~Vector<Type>()
+Vector<Type>::~Vector()
 {
   if (data_list_)
     data_list_.reset();
@@ -369,6 +369,19 @@ Vector<Type>::Vector(const Vector<Type> &vec)
   for (; iter_new; iter++, iter_new++)
     *iter_new = *iter;
 }
+
+template <typename Type>
+template <typename S>
+Vector<Type>::Vector(const Vector<S> &vec)
+{
+  new_dyn_mem(vec.size());
+
+  Iterator<Type> iter_new(*this);
+  Iterator<S> iter(vec);
+  for (; iter_new; iter++, iter_new++)
+    *iter_new = *iter;
+}
+
 
 template <typename Type>
 Type &Vector<Type>::operator[](int index)

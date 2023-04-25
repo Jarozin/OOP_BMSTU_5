@@ -32,6 +32,8 @@ public:
   Vector(InputIt iter1, InputIt iter2);
   explicit Vector(const Vector<Type> &vec);
   Vector(Vector<Type> &&vec) noexcept;
+  template <typename S>
+  explicit Vector(const Vector<S> &vec);
   ~Vector() override;
 
   Vector<Type> &operator=(const Vector<Type> &vec);
