@@ -7,8 +7,9 @@
 #include "my_errors.h"
 #include <type_traits>
 
-template<typename Type>
-concept VectorType = !std::is_pointer<Type>::value && std::copyable<Type> && std::destructible<Type>;
+template <typename Type>
+concept VectorType =
+!std::is_pointer<Type>::value &&std::copyable<Type> &&std::destructible<Type>;
 
 // random access iterator
 template <VectorType Type>

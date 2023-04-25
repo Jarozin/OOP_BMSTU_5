@@ -169,7 +169,9 @@ int main()
     std::cout << "Float version: " << float_vector << ", int version: " << int_vector << std::endl;
     int_vector = float_vector * 5;
     std::cout << "Float * 5 in int: " << int_vector << std::endl;
-    Vector<std::string> string_vector({"abc", "dbe"});
+    Vector<std::string> string_vector({"First value", "Second value"});
+    for (Vector<std::string>::iterator it = string_vector.begin(); it < string_vector.end(); it++)
+      std::cout << *it << std::endl;
     //Required нас от этого защищает
     // int ptr1 = 5;
     // int ptr2 = 6;
