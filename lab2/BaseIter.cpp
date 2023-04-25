@@ -1,10 +1,11 @@
 #include "BaseIter.h"
-BaseIter::BaseIter() {
-    index = 0;
-    num_elem = 0;
-}
-BaseIter::BaseIter(const BaseIter& iter)
+BaseIter::BaseIter()
 {
-    index = iter.index;
-    num_elem = iter.num_elem;
+  index_ = 0;
+  num_elem_ = 0;
+}
+BaseIter::BaseIter(const BaseIter &iter)
+{
+  index_ = iter.index_;
+  num_elem_ = iter.num_elem_;
 }

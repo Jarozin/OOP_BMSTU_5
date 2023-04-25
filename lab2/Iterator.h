@@ -2,282 +2,282 @@
 #define class_Iter_h
 
 #include "BaseIter.h"
+#include <memory>
+#include "my_errors.h"
 
-template<class Type>
+template <class Type>
 class Vector;
 
-template<typename Type>
+template <typename Type>
 class Iterator : public BaseIter
 {
 public:
-    Iterator(const Iterator<Type>& iter);
-    Iterator(const Vector<Type>& vec);
-    ~Iterator() = default;
+  Iterator(const Iterator<Type> &iter);
+  Iterator(const Vector<Type> &vec);
+  ~Iterator() = default;
 
-    Type& operator*();
-    const Type& operator*() const;
-    Type* operator->();
-    const Type* operator->() const;
-    operator bool() const override;
-    
-    Iterator<Type>& operator=(const Iterator<Type>& iter);
+  Type &operator*();
+  const Type &operator*() const;
+  Type *operator->();
+  const Type *operator->() const;
+  operator bool() const override;
 
-    Iterator<Type>& operator+=(int n);
-    Iterator<Type> operator+(int n) const;
-    Iterator<Type>& operator++();
-    Iterator<Type> operator++(int);
-    
-    Iterator<Type>& operator-=(int n);
-    Iterator<Type> operator-(int n) const;
-    Iterator<Type>& operator--();
-    Iterator<Type> operator--(int);
+  Iterator<Type> &operator=(const Iterator<Type> &iter);
 
-    Type& operator [](int index) const;
+  Iterator<Type> &operator+=(int n);
+  Iterator<Type> operator+(int n) const;
+  Iterator<Type> &operator++();
+  Iterator<Type> operator++(int);
 
-    bool operator<=(const Iterator<Type>& b) const;
-    bool operator<(const Iterator<Type>& b) const;
-    bool operator>=(const Iterator<Type>& b) const;
-    bool operator>(const Iterator<Type>& b) const;
-    bool operator==(const Iterator<Type>& b) const;
-    bool operator!=(const Iterator<Type>& b) const;
-    
-    bool check(int line) const;
+  Iterator<Type> &operator-=(int n);
+  Iterator<Type> operator-(int n) const;
+  Iterator<Type> &operator--();
+  Iterator<Type> operator--(int);
+
+  Type &operator[](int index) const;
+
+  bool operator<=(const Iterator<Type> &b) const;
+  bool operator<(const Iterator<Type> &b) const;
+  bool operator>=(const Iterator<Type> &b) const;
+  bool operator>(const Iterator<Type> &b) const;
+  bool operator==(const Iterator<Type> &b) const;
+  bool operator!=(const Iterator<Type> &b) const;
+
+  bool check(int line) const;
 
 private:
-    std::weak_ptr<Type[]> ptr;
-    
+  std::weak_ptr<Type[]> ptr_;
+
 protected:
-    Type* get_cur_ptr() const;
+  Type *get_cur_ptr() const;
 };
 
-template<class Type>
-Type* Iterator<Type>::get_cur_ptr() const
+template <class Type>
+Type *Iterator<Type>::get_cur_ptr() const
 {
-    std::shared_ptr<Type[]> copy_ptr = ptr.lock();
-    return copy_ptr.get() + index;
+  std::shared_ptr<Type[]> copy_ptr = ptr_.lock();
+  return copy_ptr.get() + index_;
 }
 
-template<class Type>
-Iterator<Type>::Iterator(const Vector<Type>& vec)
+template <class Type>
+Iterator<Type>::Iterator(const Vector<Type> &vec)
 {
-    index = 0;
-    num_elem = vec.num_elem;
-    ptr = vec.data_list;
+  index_ = 0;
+  num_elem_ = vec.num_elem_;
+  ptr_ = vec.data_list_;
 }
 
-template<class Type>
-Iterator<Type>::Iterator(const Iterator<Type>& iter)
+template <class Type>
+Iterator<Type>::Iterator(const Iterator<Type> &iter)
 {
-    ptr = iter.ptr;
-    index = iter.index;
-    num_elem = iter.num_elem;
+  ptr_ = iter.ptr_;
+  index_ = iter.index_;
+  num_elem_ = iter.num_elem_;
 }
 
-template<class Type>
-Type& Iterator<Type>::operator*()
+template <class Type>
+Type &Iterator<Type>::operator*()
 {
-    time_t t_time = time(NULL);
-    check(__LINE__);
-    if (index < 0 || index >= num_elem)
-        throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
-    return *get_cur_ptr();
+  time_t t_time = time(NULL);
+  check(__LINE__);
+  if (index_ < 0 || index_ >= num_elem_)
+    throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+  return *get_cur_ptr();
 }
 
-template<class Type>
-const Type& Iterator<Type>::operator*() const
+template <class Type>
+const Type &Iterator<Type>::operator*() const
 {
-    time_t t_time = time(NULL);
-    check(__LINE__);
-    if (index < 0 || index >= num_elem)
-        throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
-    return *get_cur_ptr();
+  time_t t_time = time(NULL);
+  check(__LINE__);
+  if (index_ < 0 || index_ >= num_elem_)
+    throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+  return *get_cur_ptr();
 }
 
-template<class Type>
-Type* Iterator<Type>::operator->()
+template <class Type>
+Type *Iterator<Type>::operator->()
 {
-    time_t t_time = time(NULL);
-    check(__LINE__);
-    if (index < 0 || index >= num_elem)
-        throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
-    return get_cur_ptr();
+  time_t t_time = time(NULL);
+  check(__LINE__);
+  if (index_ < 0 || index_ >= num_elem_)
+    throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+  return get_cur_ptr();
 }
 
-template<class Type>
-const Type* Iterator<Type>::operator->() const
+template <class Type>
+const Type *Iterator<Type>::operator->() const
 {
-    time_t t_time = time(NULL);
-    check(__LINE__);
-    if (index < 0 || index >= num_elem)
-        throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
-    return get_cur_ptr();
+  time_t t_time = time(NULL);
+  check(__LINE__);
+  if (index_ < 0 || index_ >= num_elem_)
+    throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+  return get_cur_ptr();
 }
 
-template<class Type>
-Iterator<Type>& Iterator<Type>::operator=(const Iterator<Type>& iter)
+template <class Type>
+Iterator<Type> &Iterator<Type>::operator=(const Iterator<Type> &iter)
 {
-    check(__LINE__);
+  check(__LINE__);
 
-    ptr = iter.ptr;
-    num_elem = iter.num_elem;
-    index = iter.index;
-    return *this;
+  ptr_ = iter.ptr_;
+  num_elem_ = iter.num_elem_;
+  index_ = iter.index_;
+  return *this;
 }
 
-template<class Type>
-Iterator<Type>& Iterator<Type>::operator+=(int n)
+template <class Type>
+Iterator<Type> &Iterator<Type>::operator+=(int n)
 {
-    check(__LINE__);
-    index += n;
+  check(__LINE__);
+  index_ += n;
 
-    return *this;
+  return *this;
 }
 
-template<class Type>
+template <class Type>
 Iterator<Type> Iterator<Type>::operator+(int n) const
 {
-    check(__LINE__);
-    Iterator<Type> iter(*this);
-    iter += n;
-    
-    return iter;
+  check(__LINE__);
+  Iterator<Type> iter(*this);
+  iter += n;
+
+  return iter;
 }
 
-template<class Type>
+template <class Type>
 Iterator<Type> Iterator<Type>::operator++(int)
 {
-    check(__LINE__);
-    Iterator<Type> new_iter(*this);
-    ++(*this);
-    return new_iter;
+  check(__LINE__);
+  Iterator<Type> new_iter(*this);
+  ++(*this);
+  return new_iter;
 }
 
-template<class Type>
-Iterator<Type>& Iterator<Type>::operator++()
+template <class Type>
+Iterator<Type> &Iterator<Type>::operator++()
 {
-    check(__LINE__);
-    ++index;
-    
-    return *this;
+  check(__LINE__);
+  ++index_;
+
+  return *this;
 }
 
-template<class Type>
-Iterator<Type>& Iterator<Type>::operator-=(int n)
+template <class Type>
+Iterator<Type> &Iterator<Type>::operator-=(int n)
 {
-    check(__LINE__);
-    index -= n;
-    
-    return *this;
+  check(__LINE__);
+  index_ -= n;
+
+  return *this;
 }
 
-template<class Type>
+template <class Type>
 Iterator<Type> Iterator<Type>::operator-(int n) const
 {
-    check(__LINE__);
-    
-    Iterator<Type> iter(*this);
-    iter -= n;
-    
-    return iter;
+  check(__LINE__);
+
+  Iterator<Type> iter(*this);
+  iter -= n;
+
+  return iter;
 }
 
-template<class Type>
+template <class Type>
 Iterator<Type> Iterator<Type>::operator--(int)
 {
-    check(__LINE__);
+  check(__LINE__);
 
-    Iterator<Type> new_iter(*this);
-    --(*this);
-    
-    return new_iter;
+  Iterator<Type> new_iter(*this);
+  --(*this);
+
+  return new_iter;
 }
 
-template<class Type>
-Iterator<Type>& Iterator<Type>::operator--()
+template <class Type>
+Iterator<Type> &Iterator<Type>::operator--()
 {
-    check(__LINE__);
-    --index;
-    return *this;
+  check(__LINE__);
+  --index_;
+  return *this;
 }
 
-template<class Type>
-bool Iterator<Type>::operator<=(const Iterator<Type>& b) const
+template <class Type>
+bool Iterator<Type>::operator<=(const Iterator<Type> &b) const
 {
-    check(__LINE__);
-    
-    return this->get_cur_ptr() <= b.get_cur_ptr();
+  check(__LINE__);
+
+  return this->get_cur_ptr() <= b.get_cur_ptr();
 }
 
-template<class Type>
-bool Iterator<Type>::operator<(const Iterator<Type>& b) const
+template <class Type>
+bool Iterator<Type>::operator<(const Iterator<Type> &b) const
 {
-    check(__LINE__);
-    
-    return this->get_cur_ptr() < b.get_cur_ptr();
+  check(__LINE__);
+
+  return this->get_cur_ptr() < b.get_cur_ptr();
 }
 
-template<class Type>
-bool Iterator<Type>::operator>=(const Iterator<Type>& b) const
+template <class Type>
+bool Iterator<Type>::operator>=(const Iterator<Type> &b) const
 {
-    check(__LINE__);
-    
-    return this->get_cur_ptr() >= b.get_cur_ptr();
+  check(__LINE__);
+
+  return this->get_cur_ptr() >= b.get_cur_ptr();
 }
 
-template<class Type>
-bool Iterator<Type>::operator>(const Iterator<Type>& b) const
+template <class Type>
+bool Iterator<Type>::operator>(const Iterator<Type> &b) const
 {
-    check(__LINE__);
+  check(__LINE__);
 
-    return this->get_cur_ptr() > b.get_cur_ptr();
+  return this->get_cur_ptr() > b.get_cur_ptr();
 }
 
-template<class Type>
-bool Iterator<Type>::operator==(const Iterator<Type>& b) const
+template <class Type>
+bool Iterator<Type>::operator==(const Iterator<Type> &b) const
 {
-    check(__LINE__);
+  check(__LINE__);
 
-    return this->get_cur_ptr() == b.get_cur_ptr();
+  return this->get_cur_ptr() == b.get_cur_ptr();
 }
 
-template<class Type>
-bool Iterator<Type>::operator!=(const Iterator<Type>& b) const
+template <class Type>
+bool Iterator<Type>::operator!=(const Iterator<Type> &b) const
 {
-    check(__LINE__);
+  check(__LINE__);
 
-    return this->get_cur_ptr() != b.get_cur_ptr();
+  return this->get_cur_ptr() != b.get_cur_ptr();
 }
 
-
-template<typename Type>
-Type& Iterator<Type>::operator [](int index) const
+template <typename Type>
+Type &Iterator<Type>::operator[](int index) const
 {
-    time_t t_time = time(NULL);
-    if (index + this->index < 0 || index + this->index >= num_elem)
-        throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
-    return *(*this + index);
+  time_t t_time = time(NULL);
+  if (index + this->index_ < 0 || index + this->index_ >= num_elem_)
+    throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+  return *(*this + index);
 }
 
-template<class Type>
+template <class Type>
 Iterator<Type>::operator bool() const
 {
-    check(__LINE__);
-    
-    if (index >= num_elem || index < 0 || (num_elem == 0))
-        return false;
-    else
-        return true;
+  check(__LINE__);
+
+  if (index_ >= num_elem_ || index_ < 0 || (num_elem_ == 0))
+    return false;
+  return true;
 }
 
-template<class Type>
+template <class Type>
 bool Iterator<Type>::check(int line) const
 {
-    if (!ptr.expired())
-        return true;
-    
-    time_t t_time = time(NULL);
-    throw deletedObj(__FILE__, typeid(*this).name(), line, ctime(&t_time));
-    return false;
+  if (!ptr_.expired())
+    return true;
+
+  time_t t_time = time(NULL);
+  throw deletedObj(__FILE__, typeid(*this).name(), line, ctime(&t_time));
+  return false;
 }
 
 #endif /* class_Iter_h */

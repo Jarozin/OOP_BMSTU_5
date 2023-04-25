@@ -3,20 +3,22 @@
 
 #include <time.h>
 
-template<typename Type>
+template <typename Type>
 class Iterator;
 
-class BaseVector {
+class BaseVector
+{
 public:
-    BaseVector();
-    BaseVector(const BaseVector&);
-    virtual ~BaseVector() {};
-    
-    bool is_empty() const;
-    int get_size() const;
-    virtual int size() const = 0;
+  BaseVector();
+  BaseVector(const BaseVector &);
+  virtual ~BaseVector(){};
+
+  bool is_empty() const;
+  int get_size() const;
+  virtual int size() const = 0;
+
 protected:
-    int num_elem = 0;
+  int num_elem_ = 0;
 };
 
 #endif /* BaseVector_h */

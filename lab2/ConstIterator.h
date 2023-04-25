@@ -2,7 +2,9 @@
 #define CONSTITER_H
 
 #include "BaseIter.h"
+#include "Iterator.h"
 #include "my_errors.h"
+#include <memory>
 
 template<class Type>
 class Vector;
@@ -43,7 +45,7 @@ public:
     bool check(int line) const;
 
 private:
-    std::weak_ptr<Type[]> ptr;
+    std::weak_ptr<Type[]> ptr_;
 
 protected:
     Type* get_cur_ptr() const;
@@ -53,26 +55,26 @@ template<class Type>
 Type* ConstIterator<Type>::get_cur_ptr() const
 {
     time_t t_time = time(NULL);
-    if (index < 0 || index >= num_elem)
+    if (index_ < 0 || index_ >= num_elem_)
         throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
-    std::shared_ptr<Type[]> copy_ptr = ptr.lock();
-    return copy_ptr.get() + index;
+    std::shared_ptr<Type[]> copy_ptr = ptr_.lock();
+    return copy_ptr.get() + index_;
 }
 
 template<class Type>
 ConstIterator<Type>::ConstIterator(const Vector<Type>& vec)
 {
-    index = 0;
-    num_elem = vec.num_elem;
-    ptr = vec.data_list;
+    index_ = 0;
+    num_elem_ = vec.num_elem_;
+    ptr_ = vec.data_list_;
 }
 
 template<class Type>
 ConstIterator<Type>::ConstIterator(const ConstIterator<Type>& iter)
 {
-    ptr = iter.ptr;
-    index = iter.index;
-    num_elem = iter.num_elem;
+    ptr_ = iter.ptr_;
+    index_ = iter.index_;
+    num_elem_ = iter.num_elem_;
 }
 
 template<class Type>
@@ -80,7 +82,7 @@ const Type& ConstIterator<Type>::operator*() const
 {
     check(__LINE__);
 
-    std::shared_ptr<Type[]> copy_ptr = ptr.lock();
+    std::shared_ptr<Type[]> copy_ptr = ptr_.lock();
     return *get_cur_ptr();
 }
 
@@ -96,7 +98,7 @@ template<class Type>
 ConstIterator<Type>& ConstIterator<Type>::operator+=(int n)
 {
     check(__LINE__);
-    index += n;
+    index_ += n;
 
     return *this;
 }
@@ -115,19 +117,18 @@ template<class Type>
 ConstIterator<Type> ConstIterator<Type>::operator++(int)
 {
     check(__LINE__);
+    ConstIterator<Type> new_iter(*this);
     ++(*this);
-
-    return *this;
+    return new_iter;
 }
 
 template<class Type>
 ConstIterator<Type>& ConstIterator<Type>::operator++()
 {
     check(__LINE__);
-    ConstIterator<Type> new_iter(*this);
-    ++(*this);
+    ++index_;
 
-    return new_iter;
+    return *this;
 }
 
 template<class Type>
@@ -155,7 +156,7 @@ template<class Type>
 ConstIterator<Type>& ConstIterator<Type>::operator--()
 {
     check(__LINE__);
-    --index;
+    --index_;
 
     return *this;
 }
@@ -163,7 +164,7 @@ template<class Type>
 const Type& ConstIterator<Type>::operator [](int index) const
 {
     time_t t_time = time(NULL);
-    if (index + this->index < 0 || index + this->index >= num_elem)
+    if (index + this->index_ < 0 || index + this->index_ >= num_elem_)
         throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
     return *(*this + index);
 }
@@ -220,16 +221,15 @@ ConstIterator<Type>::operator bool() const
 {
     check(__LINE__);
 
-    if (index >= num_elem || index < 0 || (num_elem == 0))
+    if (index_ >= num_elem_ || index_ < 0 || (num_elem_ == 0))
         return false;
-    else
-        return true;
+    return true;
 }
 
 template<class Type>
 bool ConstIterator<Type>::check(int line) const
 {
-    if (!ptr.expired())
+    if (!ptr_.expired())
         return true;
 
     time_t t_time = time(NULL);
@@ -241,16 +241,16 @@ template<typename Type>
 ConstIterator<Type> &ConstIterator<Type>::operator=(const Iterator<Type> &iter) {
     check(__LINE__);
 
-    ptr = iter.ptr;
-    num_elem = iter.num_elem;
-    index = iter.index;
+    ptr_ = iter.ptr_;
+    num_elem_ = iter.num_elem_;
+    index_ = iter.index_;
     return *this;
 }
 
 template<typename Type>
 ConstIterator<Type> &ConstIterator<Type>::operator-=(int n) {
     check(__LINE__);
-    index -= n;
+    index_ -= n;
 
     return *this;
 }
