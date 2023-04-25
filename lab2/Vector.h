@@ -14,6 +14,10 @@
 #include "Iterator.h"
 #define EPS 1e-5
 
+template<typename T, typename S>
+concept convertable = std::convertible_to<T, S> || std::convertible_to<S, T>;
+
+
 template <typename Type>
 class Vector : public BaseVector
 {
@@ -68,6 +72,7 @@ public:
   template <typename S>
   Vector<Type> &operator*=(const S &mult);
   template <typename S>
+  requires convertable<Type, S>
   decltype(auto) operator*(const S &mult) const;
   template <typename S>
   Vector<Type> &mult_num(const S &mult);
@@ -75,6 +80,7 @@ public:
   template <typename S>
   Vector<Type> &operator/=(const S &div);
   template <typename S>
+  requires convertable<Type, S>
   decltype(auto) operator/(const S &div) const;
   template <typename S>
   Vector<Type> &div_num(const S &mult);
@@ -84,37 +90,44 @@ public:
 
   // скалярное умнжение
   template <class S>
+  requires convertable<Type, S>
   decltype(auto) operator^(const Vector<S> &vec) const;
   template <typename S>
+  requires convertable<Type, S>
   decltype(auto) mult_vect_scalar(const Vector<S> &vec2) const;
 
   // векторное умножение
   template <typename S>
   Vector<Type> &operator&=(const Vector<S> &vec);
   template <typename S>
+  requires convertable<Type, S>
   decltype(auto) operator&(const Vector<S> &) const;
   template <typename S>
   Vector<Type> &mult_vect_cross(const Vector<S> &vec2);
 
   // поэлементное сложение
   template <typename S>
+  requires convertable<Type, S>
   decltype(auto) operator+(const Vector<S> &) const;
   template <typename S>
   Vector<Type> &operator+=(const Vector<S> &);
   template <typename S>
   Vector<Type> &add(const Vector<S> &);
   template <typename S, typename R>
+  requires convertable<R, S>
   static decltype(auto) sum_vectors(const Vector<R> &vec1,
                                     const Vector<S> &vec2);
 
   // поэлементное вычитание
   template <typename S>
+  requires convertable<Type, S>
   decltype(auto) operator-(const Vector<S> &) const;
   template <typename S>
   Vector<Type> &sub(const Vector<S> &);
   template <typename S>
   Vector<Type> &operator-=(const Vector<S> &);
   template <typename S, typename R>
+  requires convertable<R, S>
   static decltype(auto) difference_vectors(const Vector<R> &vec1,
                                            const Vector<S> &vec2);
 
@@ -138,6 +151,7 @@ protected:
 };
 
 template <typename Type, typename S>
+requires convertable<Type, S>
 decltype(auto) operator*(const S &mult, const Vector<Type> &vec)
 {
   return vec * mult;

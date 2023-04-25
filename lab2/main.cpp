@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <utility>
+#include <string>
 
 #include "ConstIterator.h"
 #include "Vector.hpp"
@@ -168,6 +169,9 @@ int main()
     std::cout << "Float version: " << float_vector << ", int version: " << int_vector << std::endl;
     int_vector = float_vector * 5;
     std::cout << "Float * 5 in int: " << int_vector << std::endl;
+    Vector<std::string> string_vector({"abc", "dbe"});
+    //Required нас от этого защищает
+    //std::cout << string_vector + int_vector << std::endl;
   }
   catch (baseError &err)
   {

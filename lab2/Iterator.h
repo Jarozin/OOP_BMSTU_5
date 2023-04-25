@@ -5,7 +5,7 @@
 #include <memory>
 #include "my_errors.h"
 
-template <class Type>
+template <typename Type>
 class Vector;
 
 template <typename Type>

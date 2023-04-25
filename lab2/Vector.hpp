@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <iostream>
 #include <utility>
+#include <concepts>
 
 #include "Vector.h"
 #include "my_errors.h"
@@ -176,6 +177,7 @@ Type Vector<Type>::len(void) const
 
 template <typename Type>
 template <typename S>
+requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -190,6 +192,7 @@ decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
 
 template <typename Type>
 template <typename S>
+requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -215,6 +218,7 @@ Vector<Type> &Vector<Type>::operator+=(const Vector<S> &vec)
 
 template <typename Type>
 template <typename S>
+requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator-(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -325,6 +329,7 @@ Vector<Type> &Vector<Type>::operator=(const Vector<S> &vec)
     data_list_[i] = vec[i];
   return *this;
 }
+
 template <typename Type>
 Vector<Type> &Vector<Type>::operator=(const Vector<Type> &vec)
 {
@@ -381,7 +386,6 @@ Vector<Type>::Vector(const Vector<S> &vec)
   for (; iter_new; iter++, iter_new++)
     *iter_new = *iter;
 }
-
 
 template <typename Type>
 Type &Vector<Type>::operator[](int index)
@@ -443,6 +447,7 @@ bool Vector<Type>::is_orthogonality(const Vector<S> &vec) const
 
 template <typename Type>
 template <typename S, typename R>
+requires convertable<R, S>
 decltype(auto) Vector<Type>::sum_vectors(const Vector<R> &vec1,
                                          const Vector<S> &vec2)
 {
@@ -465,6 +470,7 @@ decltype(auto) Vector<Type>::sum_vectors(const Vector<R> &vec1,
 
 template <typename Type>
 template <typename S, typename R>
+requires convertable<R, S>
 decltype(auto) Vector<Type>::difference_vectors(const Vector<R> &vec1,
                                                 const Vector<S> &vec2)
 {
@@ -570,6 +576,7 @@ Vector<Type> &Vector<Type>::sub(const Vector<S> &src)
 
 template <typename Type>
 template <typename S>
+requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -586,6 +593,7 @@ decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
 
 template <typename Type>
 template <typename S>
+requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator/(const S &div) const
 {
   time_t t_time = time(NULL);
@@ -603,6 +611,7 @@ decltype(auto) Vector<Type>::operator/(const S &div) const
 
 template <typename Type>
 template <typename S>
+requires convertable<Type, S>
 decltype(auto) Vector<Type>::mult_vect_scalar(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -634,6 +643,7 @@ Vector<Type> &Vector<Type>::div_num(const S &mult)
 
 template <typename Type>
 template <typename S>
+requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator*(const S &mult) const
 {
   time_t t_time = time(NULL);
