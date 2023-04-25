@@ -118,6 +118,7 @@ Vector<Type>::Vector(InputIt iter1, InputIt iter2)
   for (auto i = iter1; i < iter2; i++, new_iter++)
     *new_iter = *i;
 }
+
 template <typename Type>
 Type &Vector<Type>::get_elem_Vector(int index)
 {
@@ -167,7 +168,7 @@ template <typename Type>
 Type Vector<Type>::len(void) const
 {
   time_t t_time = time(NULL);
-  if (num_elem_ < 0)
+  if (num_elem_ <= 0)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
   Iterator<Type> iter(*this);
@@ -183,7 +184,7 @@ template <typename S>
 decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
-  if (num_elem_ < 0 || num_elem_ != vec.size())
+  if (num_elem_ <= 0 || num_elem_ != vec.size())
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
   Vector<decltype((*this)[0] + vec[0])> new_vector(num_elem_);
@@ -203,7 +204,6 @@ decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
   Vector<decltype((*this)[0] + vec[0])> new_vector(num_elem_);
   for (int i = 0; i < num_elem_; i++)
     new_vector[i] = (*this)[i] + vec[i];
-  // new_vector = sum_vectors(*this, vec);
   return new_vector;
 }
 
@@ -212,7 +212,7 @@ template <typename S>
 Vector<Type> &Vector<Type>::operator+=(const Vector<S> &vec)
 {
   time_t t_time = time(NULL);
-  if (num_elem_ < 0 || vec.size() < 0 || num_elem_ != vec.size())
+  if (num_elem_ <= 0 || num_elem_ != vec.size())
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
   return *this = *this + vec;
@@ -223,7 +223,7 @@ template <typename S>
 decltype(auto) Vector<Type>::operator-(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
-  if (num_elem_ <= 0 || vec.size() <= 0 || num_elem_ != vec.size())
+  if (num_elem_ <= 0 || num_elem_ != vec.size())
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
   int max_len = max(num_elem_, vec.size());
@@ -240,7 +240,7 @@ template <typename S>
 Vector<Type> &Vector<Type>::operator-=(const Vector<S> &vec)
 {
   time_t t_time = time(NULL);
-  if (num_elem_ < 0 || vec.size() < 0 || num_elem_ != vec.size())
+  if (num_elem_ <= 0 || num_elem_ != vec.size())
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
   return *this = *this - vec;
 }
@@ -250,12 +250,12 @@ template <typename S>
 Vector<Type> &Vector<Type>::operator*=(const S &mult)
 {
   time_t t_time = time(NULL);
-  if (num_elem_ < 0)
+  if (num_elem_ <= 0)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
-  Iterator<Type> iter(*this);
-  for (; iter; iter++)
-    *iter *= mult;
+  for (auto &iter : *this)
+    iter *= mult;
+
 
   return *this;
 }
@@ -269,9 +269,8 @@ Vector<Type> &Vector<Type>::operator/=(const S &div)
     throw zero_divError(__FILE__, typeid(*this).name(), __LINE__,
                         ctime(&t_time));
 
-  Iterator<Type> iter(*this);
-  for (; iter; iter++)
-    *iter /= div;
+  for (auto &iter : *this)
+    iter /= div;
 
   return *this;
 }
@@ -284,8 +283,8 @@ Type Vector<Type>::sum_all_elem()
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
   Type sum = 0;
-  for (auto iter = this->cbegin(); iter; iter++)
-    sum += *iter;
+  for (const auto iter : *this)
+    sum += iter;
 
   return sum;
 }
@@ -308,8 +307,7 @@ bool Vector<Type>::is_single() const
 {
   if (abs(this->len() - 1) < EPS)
     return true;
-  else
-    return false;
+  return false;
 }
 
 template <typename Type>
@@ -432,8 +430,7 @@ bool Vector<Type>::is_collinearity(const Vector<S> &vec) const
 {
   if (this->angle_between_vectors(vec) < EPS)
     return true;
-  else
-    return false;
+  return false;
 }
 
 template <typename Type>
@@ -442,8 +439,7 @@ bool Vector<Type>::is_orthogonality(const Vector<S> &vec) const
 {
   if (abs(this->angle_between_vectors(vec) - 90) < EPS)
     return true;
-  else
-    return false;
+  return false;
 }
 
 template <typename Type>
@@ -579,7 +575,7 @@ template <typename S>
 decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
-  if (num_elem_ < 0 || vec.size() < 0 || num_elem_ != vec.size())
+  if (num_elem_ <= 0 || num_elem_ != vec.size())
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
   Vector<decltype((*this)[0] + vec[0])> result(3);
   result[0] = (*this)[0];
@@ -649,7 +645,6 @@ decltype(auto) Vector<Type>::operator*(const S &mult) const
   Vector<decltype((*this)[0] + mult)> new_vector(num_elem_);
   for (int i = 0; i < num_elem_; i++)
     new_vector[i] = (*this)[i] * mult;
-  // new_vector = sum_vectors(*this, vec);
   return new_vector;
 }
 

@@ -18,8 +18,6 @@ int main()
 {
   try
   {
-    auto print = [](const int &n)
-    { std::cout << " " << n; };
 
     std::cout << "Test constructors\n\n";
 

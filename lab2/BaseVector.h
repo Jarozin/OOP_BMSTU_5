@@ -1,8 +1,6 @@
 #ifndef BaseVector_h
 #define BaseVector_h
 
-#include <time.h>
-
 template <typename Type>
 class Iterator;
 
