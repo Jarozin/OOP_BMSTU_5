@@ -14,6 +14,7 @@ class ConstIterator : public BaseIter
 {
 public:
     ConstIterator(const ConstIterator<Type> &iter);
+    ConstIterator(ConstIterator<Type> &&iter);
     ConstIterator(const Vector<Type> &vec);
     ~ConstIterator() = default;
 
@@ -22,6 +23,7 @@ public:
     operator bool() const override;
 
     ConstIterator<Type> &operator=(const Iterator<Type> &iter);
+    ConstIterator<Type> &operator=(Iterator<Type> &&iter);
 
     ConstIterator<Type> &operator+=(int n);
     ConstIterator<Type> operator+(int n) const;
@@ -73,6 +75,14 @@ template <class Type>
 ConstIterator<Type>::ConstIterator(const ConstIterator<Type> &iter)
 {
     ptr_ = iter.ptr_;
+    index_ = iter.index_;
+    num_elem_ = iter.num_elem_;
+}
+
+template <class Type>
+ConstIterator<Type>::ConstIterator(ConstIterator<Type> &&iter)
+{
+    ptr_ = std::move(iter.ptr_);
     index_ = iter.index_;
     num_elem_ = iter.num_elem_;
 }
@@ -247,6 +257,18 @@ ConstIterator<Type> &ConstIterator<Type>::operator=(const Iterator<Type> &iter)
     index_ = iter.index_;
     return *this;
 }
+
+template <typename Type>
+ConstIterator<Type> &ConstIterator<Type>::operator=(Iterator<Type> &&iter)
+{
+    check(__LINE__);
+
+    ptr_ = std::move(iter.ptr_);
+    num_elem_ = iter.num_elem_;
+    index_ = iter.index_;
+    return *this;
+}
+
 
 template <typename Type>
 ConstIterator<Type> &ConstIterator<Type>::operator-=(int n)

@@ -13,6 +13,7 @@ class Iterator : public BaseIter
 {
 public:
   Iterator(const Iterator<Type> &iter);
+  Iterator(Iterator<Type> &&iter);
   Iterator(const Vector<Type> &vec);
   ~Iterator() = default;
 
@@ -23,6 +24,7 @@ public:
   operator bool() const override;
 
   Iterator<Type> &operator=(const Iterator<Type> &iter);
+  Iterator<Type> &operator=(Iterator<Type> &&iter);
 
   Iterator<Type> &operator+=(int n);
   Iterator<Type> operator+(int n) const;
@@ -76,6 +78,15 @@ Iterator<Type>::Iterator(const Iterator<Type> &iter)
 }
 
 template <class Type>
+Iterator<Type>::Iterator(Iterator<Type> &&iter)
+{
+  ptr_ = std::move(iter.ptr_);
+  index_ = iter.index_;
+  num_elem_ = iter.num_elem_;
+}
+
+
+template <class Type>
 Type &Iterator<Type>::operator*()
 {
   time_t t_time = time(NULL);
@@ -125,6 +136,18 @@ Iterator<Type> &Iterator<Type>::operator=(const Iterator<Type> &iter)
   index_ = iter.index_;
   return *this;
 }
+
+template <class Type>
+Iterator<Type> &Iterator<Type>::operator=(Iterator<Type> &&iter)
+{
+  check(__LINE__);
+
+  ptr_ = std::move(iter.ptr_);
+  num_elem_ = iter.num_elem_;
+  index_ = iter.index_;
+  return *this;
+}
+
 
 template <class Type>
 Iterator<Type> &Iterator<Type>::operator+=(int n)
