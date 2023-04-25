@@ -22,6 +22,14 @@ concept is_null_constractable = requires{
   Type(0);
 };
 
+template<typename Iter, typename Type>
+concept is_iterable = requires(Iter it, Iter it2) {
+  it++;
+  ++it;
+  it--;
+  --it;
+  it < it2;
+};
 
 
 template <VectorType Type>
@@ -38,18 +46,18 @@ public:
   Vector(int num_elements, Type var, ...);
   Vector(std::initializer_list<Type> args);
   // iterator начала и конца, не зависит от типов
-  template <class InputIt>
+  template <typename InputIt>
   Vector(InputIt iter1, InputIt iter2);
   explicit Vector(const Vector<Type> &vec);
   Vector(Vector<Type> &&vec) noexcept;
-  template <typename S>
+  template <VectorType S>
   explicit Vector(const Vector<S> &vec);
   ~Vector() override;
 
   Vector<Type> &operator=(const Vector<Type> &vec);
   Vector<Type> &operator=(Vector<Type> &&vec) noexcept;
   Vector<Type> &operator=(std::initializer_list<Type> args);
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &operator=(const Vector<S> &vec);
 
   Type &operator[](int index);
@@ -75,73 +83,73 @@ public:
   Vector<Type> get_single_vector() const;
 
   // умножение и деление на число
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &operator*=(const S &mult);
-  template <typename S>
+  template <VectorType S>
   requires convertable<Type, S>
   decltype(auto) operator*(const S &mult) const;
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &mult_num(const S &mult);
 
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &operator/=(const S &div);
-  template <typename S>
+  template <VectorType S>
   requires convertable<Type, S>
   decltype(auto) operator/(const S &div) const;
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &div_num(const S &mult);
 
   // унарный минус
   Vector<Type> operator-();
 
   // скалярное умнжение
-  template <class S>
+  template <VectorType S>
   requires convertable<Type, S>
   decltype(auto) operator^(const Vector<S> &vec) const;
-  template <typename S>
+  template <VectorType S>
   requires convertable<Type, S>
   decltype(auto) mult_vect_scalar(const Vector<S> &vec2) const;
 
   // векторное умножение
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &operator&=(const Vector<S> &vec);
-  template <typename S>
+  template <VectorType S>
   requires convertable<Type, S>
   decltype(auto) operator&(const Vector<S> &) const;
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &mult_vect_cross(const Vector<S> &vec2);
 
   // поэлементное сложение
-  template <typename S>
+  template <VectorType S>
   requires convertable<Type, S>
   decltype(auto) operator+(const Vector<S> &) const;
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &operator+=(const Vector<S> &);
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &add(const Vector<S> &);
-  template <typename S, typename R>
+  template <VectorType S, typename R>
   requires convertable<R, S>
   static decltype(auto) sum_vectors(const Vector<R> &vec1,
                                     const Vector<S> &vec2);
 
   // поэлементное вычитание
-  template <typename S>
+  template <VectorType S>
   requires convertable<Type, S>
   decltype(auto) operator-(const Vector<S> &) const;
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &sub(const Vector<S> &);
-  template <typename S>
+  template <VectorType S>
   Vector<Type> &operator-=(const Vector<S> &);
-  template <typename S, typename R>
+  template <VectorType S, typename R>
   requires convertable<R, S>
   static decltype(auto) difference_vectors(const Vector<R> &vec1,
                                            const Vector<S> &vec2);
 
-  template <typename S>
+  template <VectorType S>
   double angle_between_vectors(const Vector<S> &) const;
-  template <typename S>
+  template <VectorType S>
   bool is_collinearity(const Vector<S> &) const;
-  template <typename S>
+  template <VectorType S>
   bool is_orthogonality(const Vector<S> &) const;
 
   bool operator==(const Vector<Type> &) const;
@@ -156,7 +164,7 @@ protected:
   void new_dyn_mem(int);
 };
 
-template <typename Type, typename S>
+template <typename Type, VectorType S>
 requires convertable<Type, S>
 decltype(auto) operator*(const S &mult, const Vector<Type> &vec)
 {

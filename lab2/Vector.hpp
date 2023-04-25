@@ -177,7 +177,7 @@ Type Vector<Type>::len(void) const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
 {
@@ -192,7 +192,7 @@ decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
 {
@@ -207,7 +207,7 @@ decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::operator+=(const Vector<S> &vec)
 {
   time_t t_time = time(NULL);
@@ -218,7 +218,7 @@ Vector<Type> &Vector<Type>::operator+=(const Vector<S> &vec)
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator-(const Vector<S> &vec) const
 {
@@ -233,7 +233,7 @@ decltype(auto) Vector<Type>::operator-(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::operator-=(const Vector<S> &vec)
 {
   time_t t_time = time(NULL);
@@ -243,7 +243,7 @@ Vector<Type> &Vector<Type>::operator-=(const Vector<S> &vec)
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::operator*=(const S &mult)
 {
   time_t t_time = time(NULL);
@@ -257,7 +257,7 @@ Vector<Type> &Vector<Type>::operator*=(const S &mult)
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::operator/=(const S &div)
 {
   time_t t_time = time(NULL);
@@ -290,7 +290,7 @@ Type Vector<Type>::sum_all_elem() const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 double Vector<Type>::angle_between_vectors(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -319,7 +319,7 @@ bool Vector<Type>::is_zero() const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::operator=(const Vector<S> &vec)
 {
   if (this->size() != vec.size())
@@ -377,7 +377,7 @@ Vector<Type>::Vector(const Vector<Type> &vec)
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type>::Vector(const Vector<S> &vec)
 {
   new_dyn_mem(vec.size());
@@ -429,7 +429,7 @@ int Vector<Type>::size() const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 bool Vector<Type>::is_collinearity(const Vector<S> &vec) const
 {
   if (this->angle_between_vectors(vec) < EPS)
@@ -438,7 +438,7 @@ bool Vector<Type>::is_collinearity(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 bool Vector<Type>::is_orthogonality(const Vector<S> &vec) const
 {
   if (abs(this->angle_between_vectors(vec) - 90) < EPS)
@@ -447,7 +447,7 @@ bool Vector<Type>::is_orthogonality(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <typename S, typename R>
+template <VectorType S, typename R>
 requires convertable<R, S>
 decltype(auto) Vector<Type>::sum_vectors(const Vector<R> &vec1,
                                          const Vector<S> &vec2)
@@ -470,7 +470,7 @@ decltype(auto) Vector<Type>::sum_vectors(const Vector<R> &vec1,
 }
 
 template <VectorType Type>
-template <typename S, typename R>
+template <VectorType S, typename R>
 requires convertable<R, S>
 decltype(auto) Vector<Type>::difference_vectors(const Vector<R> &vec1,
                                                 const Vector<S> &vec2)
@@ -534,7 +534,7 @@ Vector<Type>::Vector(Vector<Type> &&vec) noexcept
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::operator&=(const Vector<S> &vec)
 {
   time_t t_time = time(NULL);
@@ -548,7 +548,7 @@ Vector<Type> &Vector<Type>::operator&=(const Vector<S> &vec)
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::mult_vect_cross(const Vector<S> &vec2)
 {
   Vector<Type> result(3);
@@ -563,20 +563,20 @@ Vector<Type> &Vector<Type>::mult_vect_cross(const Vector<S> &vec2)
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::add(const Vector<S> &src)
 {
   return *this += src;
 }
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::sub(const Vector<S> &src)
 {
   return *this -= src;
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
 {
@@ -593,7 +593,7 @@ decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator/(const S &div) const
 {
@@ -611,7 +611,7 @@ decltype(auto) Vector<Type>::operator/(const S &div) const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::mult_vect_scalar(const Vector<S> &vec) const
 {
@@ -629,21 +629,21 @@ decltype(auto) Vector<Type>::mult_vect_scalar(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::mult_num(const S &mult)
 {
   return *this *= mult;
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 Vector<Type> &Vector<Type>::div_num(const S &mult)
 {
   return *this /= mult;
 }
 
 template <VectorType Type>
-template <typename S>
+template <VectorType S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator*(const S &mult) const
 {

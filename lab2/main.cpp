@@ -171,6 +171,9 @@ int main()
     std::cout << "Float * 5 in int: " << int_vector << std::endl;
     Vector<std::string> string_vector({"abc", "dbe"});
     //Required нас от этого защищает
+    // int ptr1 = 5;
+    // int ptr2 = 6;
+    //Vector<int *> ptr_vector(&ptr1, &ptr2);
     //std::cout << string_vector + int_vector << std::endl;
   }
   catch (baseError &err)

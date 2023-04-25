@@ -5,11 +5,12 @@
 #include <memory>
 #include <concepts>
 #include "my_errors.h"
+#include <type_traits>
 
 template<typename Type>
-concept VectorType = std::copyable<Type> || std::destructible<Type>;
+concept VectorType = !std::is_pointer<Type>::value && std::copyable<Type> && std::destructible<Type>;
 
-//random access iterator
+// random access iterator
 template <VectorType Type>
 class Vector;
 
@@ -90,7 +91,6 @@ Iterator<Type>::Iterator(Iterator<Type> &&iter)
   num_elem_ = iter.num_elem_;
 }
 
-
 template <VectorType Type>
 Type &Iterator<Type>::operator*()
 {
@@ -152,7 +152,6 @@ Iterator<Type> &Iterator<Type>::operator=(Iterator<Type> &&iter)
   index_ = iter.index_;
   return *this;
 }
-
 
 template <VectorType Type>
 Iterator<Type> &Iterator<Type>::operator+=(int n)
