@@ -154,6 +154,7 @@ int main()
     Vector<int> v26({1, 2, 3});
     std::cout << v26.add(v25) << " " << v26 << std::endl;
     std::cout << v26.sub(v25) << std::endl;
+    std::cout << 5 * v26 << "=" << v26 * 5 << std::endl;
     std::cout << (v26 *= 5) << std::endl;
     std::cout << (v26 /= 5) << std::endl;
     std::cout << v26.mult_num(5) << std::endl;

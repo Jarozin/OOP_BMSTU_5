@@ -135,6 +135,12 @@ protected:
   void new_dyn_mem(int);
 };
 
+template <typename Type, typename S>
+decltype(auto) operator*(const S &mult, const Vector<Type> &vec)
+{
+  return vec * mult;
+}
+
 template <typename Type>
 std::ostream &operator<<(std::ostream &os, const Vector<Type> &vec)
 {
