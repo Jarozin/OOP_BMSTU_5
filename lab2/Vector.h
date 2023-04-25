@@ -38,6 +38,8 @@ public:
   Vector(int num_elements, Type *vec);
   Vector(int num_elements, Type var, ...);
   Vector(std::initializer_list<Type> args);
+  template <typename Container>
+  Vector(const Container container);
   // iterator начала и конца, не зависит от типов
   template <typename InputIt>
   Vector(InputIt iter1, InputIt iter2);

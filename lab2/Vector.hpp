@@ -72,6 +72,18 @@ Vector<Type>::Vector(int num_elements, Type vec, ...)
 }
 
 template <VectorType Type>
+template <typename Container>
+Vector<Type>::Vector(const Container container)
+{
+  new_dyn_mem(container.size());
+  auto my_it = this->begin();
+  for (const auto& it : container)
+  {
+    *my_it = it;
+    my_it++;
+  }
+};
+template <VectorType Type>
 Vector<Type>::Vector(int num_elements, Type *vec)
 {
   time_t t_time = time(NULL);

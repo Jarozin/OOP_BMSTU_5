@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <utility>
 #include <string>
+#include <vector>
 
 #include "ConstIterator.h"
 #include "Vector.hpp"
@@ -172,6 +173,9 @@ int main()
     Vector<std::string> string_vector({"First value", "Second value"});
     for (Vector<std::string>::iterator it = string_vector.begin(); it < string_vector.end(); it++)
       std::cout << *it << std::endl;
+    std::vector<int> stl_v{1, 2, 3};
+    Vector<int> container(stl_v);
+    std::cout << container << std::endl;
     //Required нас от этого защищает
     // int ptr1 = 5;
     // int ptr2 = 6;
