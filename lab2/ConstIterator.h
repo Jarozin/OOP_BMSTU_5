@@ -6,10 +6,10 @@
 #include "my_errors.h"
 #include <memory>
 
-template <class Type>
+template <VectorType Type>
 class Vector;
 
-template <typename Type>
+template <VectorType Type>
 class ConstIterator : public BaseIter
 {
 public:
@@ -53,7 +53,7 @@ protected:
     Type *get_cur_ptr() const;
 };
 
-template <class Type>
+template <VectorType Type>
 Type *ConstIterator<Type>::get_cur_ptr() const
 {
     time_t t_time = time(NULL);
@@ -63,7 +63,7 @@ Type *ConstIterator<Type>::get_cur_ptr() const
     return copy_ptr.get() + index_;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type>::ConstIterator(const Vector<Type> &vec)
 {
     index_ = 0;
@@ -71,7 +71,7 @@ ConstIterator<Type>::ConstIterator(const Vector<Type> &vec)
     ptr_ = vec.data_list_;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type>::ConstIterator(const ConstIterator<Type> &iter)
 {
     ptr_ = iter.ptr_;
@@ -79,7 +79,7 @@ ConstIterator<Type>::ConstIterator(const ConstIterator<Type> &iter)
     num_elem_ = iter.num_elem_;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type>::ConstIterator(ConstIterator<Type> &&iter)
 {
     ptr_ = std::move(iter.ptr_);
@@ -87,7 +87,7 @@ ConstIterator<Type>::ConstIterator(ConstIterator<Type> &&iter)
     num_elem_ = iter.num_elem_;
 }
 
-template <class Type>
+template <VectorType Type>
 const Type &ConstIterator<Type>::operator*() const
 {
     check(__LINE__);
@@ -96,7 +96,7 @@ const Type &ConstIterator<Type>::operator*() const
     return *get_cur_ptr();
 }
 
-template <class Type>
+template <VectorType Type>
 const Type *ConstIterator<Type>::operator->() const
 {
     check(__LINE__);
@@ -104,7 +104,7 @@ const Type *ConstIterator<Type>::operator->() const
     return get_cur_ptr();
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type> &ConstIterator<Type>::operator+=(int n)
 {
     check(__LINE__);
@@ -113,7 +113,7 @@ ConstIterator<Type> &ConstIterator<Type>::operator+=(int n)
     return *this;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type> ConstIterator<Type>::operator+(int n) const
 {
     check(__LINE__);
@@ -123,7 +123,7 @@ ConstIterator<Type> ConstIterator<Type>::operator+(int n) const
     return iter;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type> ConstIterator<Type>::operator++(int)
 {
     check(__LINE__);
@@ -132,7 +132,7 @@ ConstIterator<Type> ConstIterator<Type>::operator++(int)
     return new_iter;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type> &ConstIterator<Type>::operator++()
 {
     check(__LINE__);
@@ -141,7 +141,7 @@ ConstIterator<Type> &ConstIterator<Type>::operator++()
     return *this;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type> ConstIterator<Type>::operator-(int n) const
 {
     check(__LINE__);
@@ -152,7 +152,7 @@ ConstIterator<Type> ConstIterator<Type>::operator-(int n) const
     return iter;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type> ConstIterator<Type>::operator--(int)
 {
     check(__LINE__);
@@ -162,7 +162,7 @@ ConstIterator<Type> ConstIterator<Type>::operator--(int)
     return new_iter;
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type> &ConstIterator<Type>::operator--()
 {
     check(__LINE__);
@@ -170,7 +170,7 @@ ConstIterator<Type> &ConstIterator<Type>::operator--()
 
     return *this;
 }
-template <class Type>
+template <VectorType Type>
 const Type &ConstIterator<Type>::operator[](int index) const
 {
     time_t t_time = time(NULL);
@@ -178,7 +178,7 @@ const Type &ConstIterator<Type>::operator[](int index) const
         throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
     return *(*this + index);
 }
-template <class Type>
+template <VectorType Type>
 bool ConstIterator<Type>::operator<=(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
@@ -186,7 +186,7 @@ bool ConstIterator<Type>::operator<=(const ConstIterator<Type> &b) const
     return this->get_cur_ptr() <= b.get_cur_ptr();
 }
 
-template <class Type>
+template <VectorType Type>
 bool ConstIterator<Type>::operator<(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
@@ -194,7 +194,7 @@ bool ConstIterator<Type>::operator<(const ConstIterator<Type> &b) const
     return this->get_cur_ptr() < b.get_cur_ptr();
 }
 
-template <class Type>
+template <VectorType Type>
 bool ConstIterator<Type>::operator>=(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
@@ -202,7 +202,7 @@ bool ConstIterator<Type>::operator>=(const ConstIterator<Type> &b) const
     return this->get_cur_ptr() >= b.get_cur_ptr();
 }
 
-template <class Type>
+template <VectorType Type>
 bool ConstIterator<Type>::operator>(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
@@ -210,7 +210,7 @@ bool ConstIterator<Type>::operator>(const ConstIterator<Type> &b) const
     return this->get_cur_ptr() > b.get_cur_ptr();
 }
 
-template <class Type>
+template <VectorType Type>
 bool ConstIterator<Type>::operator==(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
@@ -218,7 +218,7 @@ bool ConstIterator<Type>::operator==(const ConstIterator<Type> &b) const
     return this->get_cur_ptr() == b.get_cur_ptr();
 }
 
-template <class Type>
+template <VectorType Type>
 bool ConstIterator<Type>::operator!=(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
@@ -226,7 +226,7 @@ bool ConstIterator<Type>::operator!=(const ConstIterator<Type> &b) const
     return this->get_cur_ptr() != b.get_cur_ptr();
 }
 
-template <class Type>
+template <VectorType Type>
 ConstIterator<Type>::operator bool() const
 {
     check(__LINE__);
@@ -236,7 +236,7 @@ ConstIterator<Type>::operator bool() const
     return true;
 }
 
-template <class Type>
+template <VectorType Type>
 bool ConstIterator<Type>::check(int line) const
 {
     if (!ptr_.expired())
@@ -247,7 +247,7 @@ bool ConstIterator<Type>::check(int line) const
     return false;
 }
 
-template <typename Type>
+template <VectorType Type>
 ConstIterator<Type> &ConstIterator<Type>::operator=(const Iterator<Type> &iter)
 {
     check(__LINE__);
@@ -258,7 +258,7 @@ ConstIterator<Type> &ConstIterator<Type>::operator=(const Iterator<Type> &iter)
     return *this;
 }
 
-template <typename Type>
+template <VectorType Type>
 ConstIterator<Type> &ConstIterator<Type>::operator=(Iterator<Type> &&iter)
 {
     check(__LINE__);
@@ -270,7 +270,7 @@ ConstIterator<Type> &ConstIterator<Type>::operator=(Iterator<Type> &&iter)
 }
 
 
-template <typename Type>
+template <VectorType Type>
 ConstIterator<Type> &ConstIterator<Type>::operator-=(int n)
 {
     check(__LINE__);

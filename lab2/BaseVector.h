@@ -1,7 +1,8 @@
 #ifndef BaseVector_h
 #define BaseVector_h
+#include "Iterator.h"
 
-template <typename Type>
+template <VectorType Type>
 class Iterator;
 
 class BaseVector

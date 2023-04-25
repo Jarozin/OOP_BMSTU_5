@@ -18,20 +18,21 @@ int max(int num1, int num2)
   return num2;
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type>::~Vector()
 {
   if (data_list_)
     data_list_.reset();
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type>::Vector()
 {
   new_dyn_mem(0);
 }
 
-template <typename Type>
+template <VectorType Type>
+requires is_null_constractable<Type>
 Vector<Type>::Vector(int num_elements)
 {
   time_t t_time = time(NULL);
@@ -47,7 +48,7 @@ Vector<Type>::Vector(int num_elements)
     iter = Type(0);
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type>::Vector(int num_elements, Type vec, ...)
 {
   time_t t_time = time(NULL);
@@ -69,7 +70,7 @@ Vector<Type>::Vector(int num_elements, Type vec, ...)
   va_end(ap);
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type>::Vector(int num_elements, Type *vec)
 {
   time_t t_time = time(NULL);
@@ -83,7 +84,7 @@ Vector<Type>::Vector(int num_elements, Type *vec)
     *iter = vec[i];
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type>::Vector(std::initializer_list<Type> args)
 {
   if (args.size() == 0)
@@ -99,7 +100,7 @@ Vector<Type>::Vector(std::initializer_list<Type> args)
   }
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename InputIt>
 Vector<Type>::Vector(InputIt iter1, InputIt iter2)
 {
@@ -115,7 +116,7 @@ Vector<Type>::Vector(InputIt iter1, InputIt iter2)
     *new_iter = *i;
 }
 
-template <typename Type>
+template <VectorType Type>
 Type &Vector<Type>::get_elem_Vector(int index)
 {
   time_t t_time = time(NULL);
@@ -125,7 +126,7 @@ Type &Vector<Type>::get_elem_Vector(int index)
   return *(this->begin() + index);
 }
 
-template <typename Type>
+template <VectorType Type>
 const Type &Vector<Type>::get_elem_Vector(int index) const
 {
   time_t t_time = time(NULL);
@@ -135,7 +136,7 @@ const Type &Vector<Type>::get_elem_Vector(int index) const
   return *(this->cbegin() + index);
 }
 
-template <typename Type>
+template <VectorType Type>
 bool Vector<Type>::operator==(const Vector<Type> &vec) const
 {
   if (num_elem_ == vec.num_elem_)
@@ -152,7 +153,7 @@ bool Vector<Type>::operator==(const Vector<Type> &vec) const
   return true;
 }
 
-template <typename Type>
+template <VectorType Type>
 bool Vector<Type>::operator!=(const Vector<Type> &vec) const
 {
   if (*this == vec)
@@ -160,7 +161,7 @@ bool Vector<Type>::operator!=(const Vector<Type> &vec) const
   return true;
 }
 
-template <typename Type>
+template <VectorType Type>
 Type Vector<Type>::len(void) const
 {
   time_t t_time = time(NULL);
@@ -175,7 +176,7 @@ Type Vector<Type>::len(void) const
   return sqrt(sum);
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
@@ -190,7 +191,7 @@ decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
   return new_vector.sum_all_elem();
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
@@ -205,7 +206,7 @@ decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
   return new_vector;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::operator+=(const Vector<S> &vec)
 {
@@ -216,7 +217,7 @@ Vector<Type> &Vector<Type>::operator+=(const Vector<S> &vec)
   return *this = *this + vec;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator-(const Vector<S> &vec) const
@@ -231,7 +232,7 @@ decltype(auto) Vector<Type>::operator-(const Vector<S> &vec) const
   return new_vector;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::operator-=(const Vector<S> &vec)
 {
@@ -241,7 +242,7 @@ Vector<Type> &Vector<Type>::operator-=(const Vector<S> &vec)
   return *this = *this - vec;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::operator*=(const S &mult)
 {
@@ -255,7 +256,7 @@ Vector<Type> &Vector<Type>::operator*=(const S &mult)
   return *this;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::operator/=(const S &div)
 {
@@ -273,7 +274,7 @@ Vector<Type> &Vector<Type>::operator/=(const S &div)
   return *this;
 }
 
-template <typename Type>
+template <VectorType Type>
 Type Vector<Type>::sum_all_elem() const
 {
   time_t t_time = time(NULL);
@@ -288,7 +289,7 @@ Type Vector<Type>::sum_all_elem() const
   return sum;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 double Vector<Type>::angle_between_vectors(const Vector<S> &vec) const
 {
@@ -301,7 +302,7 @@ double Vector<Type>::angle_between_vectors(const Vector<S> &vec) const
   return acos(angle) * 180 / M_PI;
 }
 
-template <typename Type>
+template <VectorType Type>
 bool Vector<Type>::is_single() const
 {
   if (abs(this->len() - 1) < EPS)
@@ -309,7 +310,7 @@ bool Vector<Type>::is_single() const
   return false;
 }
 
-template <typename Type>
+template <VectorType Type>
 bool Vector<Type>::is_zero() const
 {
   if (abs(this->len()) < EPS)
@@ -317,7 +318,7 @@ bool Vector<Type>::is_zero() const
   return false;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::operator=(const Vector<S> &vec)
 {
@@ -330,7 +331,7 @@ Vector<Type> &Vector<Type>::operator=(const Vector<S> &vec)
   return *this;
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type> &Vector<Type>::operator=(const Vector<Type> &vec)
 {
   if (this->size() != vec.size())
@@ -341,7 +342,7 @@ Vector<Type> &Vector<Type>::operator=(const Vector<Type> &vec)
     data_list_[i] = vec[i];
   return *this;
 }
-template <typename Type>
+template <VectorType Type>
 Vector<Type> &Vector<Type>::operator=(std::initializer_list<Type> args)
 {
   new_dyn_mem(int(args.size()));
@@ -356,7 +357,7 @@ Vector<Type> &Vector<Type>::operator=(std::initializer_list<Type> args)
   return *this;
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type> &Vector<Type>::operator=(Vector<Type> &&vec) noexcept
 {
   num_elem_ = vec.size();
@@ -364,7 +365,7 @@ Vector<Type> &Vector<Type>::operator=(Vector<Type> &&vec) noexcept
   return *this;
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type>::Vector(const Vector<Type> &vec)
 {
   new_dyn_mem(vec.size());
@@ -375,7 +376,7 @@ Vector<Type>::Vector(const Vector<Type> &vec)
     *iter_new = *iter;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type>::Vector(const Vector<S> &vec)
 {
@@ -387,19 +388,19 @@ Vector<Type>::Vector(const Vector<S> &vec)
     *iter_new = *iter;
 }
 
-template <typename Type>
+template <VectorType Type>
 Type &Vector<Type>::operator[](int index)
 {
   return get_elem_Vector(index);
 }
 
-template <typename Type>
+template <VectorType Type>
 const Type &Vector<Type>::operator[](int index) const
 {
   return get_elem_Vector(index);
 }
 
-template <typename Type>
+template <VectorType Type>
 bool Vector<Type>::set_elem_Vector(int index, const Type &num)
 {
   if (index < 0 || index >= num_elem_)
@@ -409,7 +410,7 @@ bool Vector<Type>::set_elem_Vector(int index, const Type &num)
   return true;
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type> Vector<Type>::get_single_vector() const
 {
   Vector<Type> new_vector(*this);
@@ -421,13 +422,13 @@ Vector<Type> Vector<Type>::get_single_vector() const
   return new_vector;
 }
 
-template <typename Type>
+template <VectorType Type>
 int Vector<Type>::size() const
 {
   return num_elem_;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 bool Vector<Type>::is_collinearity(const Vector<S> &vec) const
 {
@@ -436,7 +437,7 @@ bool Vector<Type>::is_collinearity(const Vector<S> &vec) const
   return false;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 bool Vector<Type>::is_orthogonality(const Vector<S> &vec) const
 {
@@ -445,7 +446,7 @@ bool Vector<Type>::is_orthogonality(const Vector<S> &vec) const
   return false;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S, typename R>
 requires convertable<R, S>
 decltype(auto) Vector<Type>::sum_vectors(const Vector<R> &vec1,
@@ -468,7 +469,7 @@ decltype(auto) Vector<Type>::sum_vectors(const Vector<R> &vec1,
   return result;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S, typename R>
 requires convertable<R, S>
 decltype(auto) Vector<Type>::difference_vectors(const Vector<R> &vec1,
@@ -491,7 +492,7 @@ decltype(auto) Vector<Type>::difference_vectors(const Vector<R> &vec1,
   return result;
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type> Vector<Type>::operator-()
 {
   Vector<Type> new_vector(*this);
@@ -502,7 +503,7 @@ Vector<Type> Vector<Type>::operator-()
 }
 
 // пересоздает массив с умным указателем
-template <typename Type>
+template <VectorType Type>
 void Vector<Type>::new_dyn_mem(int num_elements)
 {
   data_list_.reset();
@@ -512,19 +513,19 @@ void Vector<Type>::new_dyn_mem(int num_elements)
   data_list_ = sp_temp;
 }
 
-template <typename Type>
+template <VectorType Type>
 Iterator<Type> Vector<Type>::begin()
 {
   return Iterator<Type>(*this);
 }
 
-template <typename Type>
+template <VectorType Type>
 Iterator<Type> Vector<Type>::end()
 {
   return Iterator<Type>(*this) + num_elem_;
 }
 
-template <typename Type>
+template <VectorType Type>
 Vector<Type>::Vector(Vector<Type> &&vec) noexcept
 {
   num_elem_ = vec.size();
@@ -532,7 +533,7 @@ Vector<Type>::Vector(Vector<Type> &&vec) noexcept
   data_list_ = std::move(vec.data_list_);
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::operator&=(const Vector<S> &vec)
 {
@@ -546,7 +547,7 @@ Vector<Type> &Vector<Type>::operator&=(const Vector<S> &vec)
   return *this;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::mult_vect_cross(const Vector<S> &vec2)
 {
@@ -561,20 +562,20 @@ Vector<Type> &Vector<Type>::mult_vect_cross(const Vector<S> &vec2)
   return *this;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::add(const Vector<S> &src)
 {
   return *this += src;
 }
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::sub(const Vector<S> &src)
 {
   return *this -= src;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
@@ -591,7 +592,7 @@ decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
   return result;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator/(const S &div) const
@@ -609,7 +610,7 @@ decltype(auto) Vector<Type>::operator/(const S &div) const
   return new_vector;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::mult_vect_scalar(const Vector<S> &vec) const
@@ -627,21 +628,21 @@ decltype(auto) Vector<Type>::mult_vect_scalar(const Vector<S> &vec) const
   return sum;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::mult_num(const S &mult)
 {
   return *this *= mult;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 Vector<Type> &Vector<Type>::div_num(const S &mult)
 {
   return *this /= mult;
 }
 
-template <typename Type>
+template <VectorType Type>
 template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator*(const S &mult) const
@@ -656,13 +657,13 @@ decltype(auto) Vector<Type>::operator*(const S &mult) const
   return new_vector;
 }
 
-template <typename Type>
+template <VectorType Type>
 ConstIterator<Type> Vector<Type>::cbegin() const
 {
   return ConstIterator<Type>(*this);
 }
 
-template <typename Type>
+template <VectorType Type>
 ConstIterator<Type> Vector<Type>::cend() const
 {
   return ConstIterator<Type>(*this) + num_elem_;

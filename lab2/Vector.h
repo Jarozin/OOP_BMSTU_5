@@ -17,8 +17,14 @@
 template<typename T, typename S>
 concept convertable = std::convertible_to<T, S> || std::convertible_to<S, T>;
 
+template<typename Type>
+concept is_null_constractable = requires{
+  Type(0);
+};
 
-template <typename Type>
+
+
+template <VectorType Type>
 class Vector : public BaseVector
 {
 public:
