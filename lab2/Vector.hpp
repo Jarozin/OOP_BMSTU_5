@@ -7,6 +7,7 @@
 #include <iostream>
 #include <utility>
 #include <concepts>
+#include <algorithm>
 
 #include "Vector.h"
 #include "my_errors.h"
@@ -139,26 +140,13 @@ const Type &Vector<Type>::get_elem_Vector(int index) const
 template <VectorType Type>
 bool Vector<Type>::operator==(const Vector<Type> &vec) const
 {
-  if (num_elem_ == vec.num_elem_)
-  {
-    auto iter1 = this->cbegin();
-    auto iter2 = vec.cbegin();
-
-    for (; iter1; iter1++, iter2++)
-      if (fabs(*iter1 - *iter2) > EPS)
-        return false;
-  }
-  else
-    return false;
-  return true;
+  return std::equal(this->cbegin(), this->cend(), vec.cbegin(), vec.cend());
 }
 
 template <VectorType Type>
 bool Vector<Type>::operator!=(const Vector<Type> &vec) const
 {
-  if (*this == vec)
-    return false;
-  return true;
+  return !(*this == vec);
 }
 
 template <VectorType Type>

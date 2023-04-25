@@ -8,8 +8,8 @@
 #include <type_traits>
 
 template <typename Type>
-concept VectorType =
-!std::is_pointer<Type>::value &&std::copyable<Type> &&std::destructible<Type>;
+concept VectorType = !
+std::is_pointer<Type>::value &&std::copyable<Type> &&std::destructible<Type>;
 
 // random access iterator
 template <VectorType Type>
@@ -19,6 +19,12 @@ template <VectorType Type>
 class Iterator : public BaseIter
 {
 public:
+  using iterator = Iterator;
+  using iterator_category = std::random_access_iterator_tag;
+  using difference_type = typename Vector<Type>::difference_type;
+  using value_type = typename Vector<Type>::value_type;
+  using reference = value_type &;
+  using pointer = value_type *;
   Iterator(const Iterator<Type> &iter);
   Iterator(Iterator<Type> &&iter);
   Iterator(const Vector<Type> &vec);

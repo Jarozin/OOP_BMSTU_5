@@ -13,6 +13,12 @@ template <VectorType Type>
 class ConstIterator : public BaseIter
 {
 public:
+    using iterator = ConstIterator;
+    using iterator_category = std::random_access_iterator_tag;
+    using difference_type = typename Vector<Type>::difference_type;
+    using value_type = typename Vector<Type>::value_type;
+    using reference = value_type &;
+    using pointer = value_type *;
     ConstIterator(const ConstIterator<Type> &iter);
     ConstIterator(ConstIterator<Type> &&iter);
     ConstIterator(const Vector<Type> &vec);
@@ -56,9 +62,6 @@ protected:
 template <VectorType Type>
 Type *ConstIterator<Type>::get_cur_ptr() const
 {
-    time_t t_time = time(NULL);
-    if (index_ < 0 || index_ >= num_elem_)
-        throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
     std::shared_ptr<Type[]> copy_ptr = ptr_.lock();
     return copy_ptr.get() + index_;
 }
@@ -268,7 +271,6 @@ ConstIterator<Type> &ConstIterator<Type>::operator=(Iterator<Type> &&iter)
     index_ = iter.index_;
     return *this;
 }
-
 
 template <VectorType Type>
 ConstIterator<Type> &ConstIterator<Type>::operator-=(int n)

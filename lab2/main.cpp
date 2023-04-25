@@ -111,7 +111,7 @@ int main()
               << "\n";
     std::cout << "Are two vectors equal? {3, 4, 0} and {3, 4, 0}: "
               << (v3 == v6) << "\n";
-    std::cout << "Are two vectors not equal? {3, 4, 0} and {3, 4, 0}: "
+    std::cout << "Are two vectors unequal? {3, 4, 0} and {3, 4, 0}: "
               << (v3 != v6) << "\n";
 
     Vector<int> v21({5, 2, 3, 4});
