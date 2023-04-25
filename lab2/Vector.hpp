@@ -398,9 +398,8 @@ Vector<Type> Vector<Type>::get_single_vector() const
   Vector<Type> new_vector(*this);
   Type len = this->len();
 
-  Iterator<Type> iter(new_vector);
-  for (; iter; iter++)
-    *iter /= len;
+  for (auto &iter : new_vector)
+    iter /= len;
 
   return new_vector;
 }
@@ -477,9 +476,8 @@ template <typename Type>
 Vector<Type> Vector<Type>::operator-()
 {
   Vector<Type> new_vector(*this);
-  Iterator<Type> iter(new_vector);
-  for (; iter; iter++)
-    *iter = -*iter;
+  for (auto &iter : new_vector)
+    iter = -iter;
 
   return new_vector;
 }
@@ -611,14 +609,14 @@ template <typename Type>
 template <typename S>
 Vector<Type> &Vector<Type>::mult_num(const S &mult)
 {
-  return *this = (*this) *= mult;
+  return *this *= mult;
 }
 
 template <typename Type>
 template <typename S>
 Vector<Type> &Vector<Type>::div_num(const S &mult)
 {
-  return *this = *this /= mult;
+  return *this /= mult;
 }
 
 template <typename Type>
