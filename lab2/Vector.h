@@ -130,7 +130,7 @@ private:
   std::shared_ptr<Type[]> data_list_;
 
 protected:
-  Type sum_all_elem();
+  Type sum_all_elem() const;
 
   void new_dyn_mem(int);
 };

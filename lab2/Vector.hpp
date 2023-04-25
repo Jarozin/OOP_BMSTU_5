@@ -5,6 +5,7 @@
 
 #include <cstddef>
 #include <iostream>
+#include <utility>
 
 #include "Vector.h"
 #include "my_errors.h"
@@ -26,8 +27,7 @@ Vector<Type>::~Vector<Type>()
 template <typename Type>
 Vector<Type>::Vector()
 {
-  num_elem_ = 0;
-  new_dyn_mem(num_elem_);
+  new_dyn_mem(0);
 }
 
 template <typename Type>
@@ -37,14 +37,13 @@ Vector<Type>::Vector(int num_elements)
   if (num_elements <= 0)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
-  num_elem_ = num_elements;
-  new_dyn_mem(num_elem_);
+  new_dyn_mem(num_elements);
 
   if (!data_list_)
     throw memError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
-  for (auto iter = this->begin(); iter; iter++)
-    *iter = Type(0);
+  for (auto &iter : *this)
+    iter = Type(0);
 }
 
 template <typename Type>
@@ -54,18 +53,16 @@ Vector<Type>::Vector(int num_elements, Type vec, ...)
   if (num_elements < 1)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
-  num_elem_ = num_elements;
-  new_dyn_mem(num_elem_);
+  new_dyn_mem(num_elements);
 
   if (!data_list_)
     throw memError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
-  Iterator<Type> iter(*this);
   va_list ap;
   va_start(ap, vec);
-  for (; iter; iter++)
+  for (auto &iter : *this)
   {
-    *iter = vec;
+    iter = vec;
     vec = va_arg(ap, Type);
   }
   va_end(ap);
@@ -78,8 +75,7 @@ Vector<Type>::Vector(int num_elements, Type *vec)
   if (num_elements <= 0)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
-  num_elem_ = num_elements;
-  new_dyn_mem(num_elem_);
+  new_dyn_mem(num_elements);
 
   Iterator<Type> iter(*this);
   for (int i = 0; iter; i++, iter++)
@@ -92,8 +88,7 @@ Vector<Type>::Vector(std::initializer_list<Type> args)
   if (args.size() == 0)
     Vector();
 
-  num_elem_ = int(args.size());
-  new_dyn_mem(num_elem_);
+  new_dyn_mem(int(args.size()));
 
   Iterator<Type> iter(*this);
   for (auto &element : args)
@@ -171,7 +166,7 @@ Type Vector<Type>::len(void) const
   if (num_elem_ <= 0)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
-  Iterator<Type> iter(*this);
+  ConstIterator<Type> iter(*this);
   double sum = 0;
   for (; iter; iter++)
     sum += *iter * *iter;
@@ -189,10 +184,10 @@ decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
 
   Vector<decltype((*this)[0] + vec[0])> new_vector(num_elem_);
   for (int i = 0; i < new_vector.size(); i++)
-    if (i < vec.size() && i < this->size())
-      new_vector[i] = (*this)[i] * vec[i];
+    new_vector[i] = (*this)[i] * vec[i];
   return new_vector.sum_all_elem();
 }
+
 template <typename Type>
 template <typename S>
 decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
@@ -226,12 +221,9 @@ decltype(auto) Vector<Type>::operator-(const Vector<S> &vec) const
   if (num_elem_ <= 0 || num_elem_ != vec.size())
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
-  int max_len = max(num_elem_, vec.size());
-  Vector<decltype((*this)[0] + vec[0])> new_vector(max_len);
-  for (int i = 0; i < max_len; i++)
-    if (i < vec.size() && i < this->size())
-      new_vector[i] = (*this)[i] - vec[i];
-  // new_vector = sum_vectors(*this, vec);
+  Vector<decltype((*this)[0] + vec[0])> new_vector(num_elem_);
+  for (int i = 0; i < new_vector.size(); i++)
+    new_vector[i] = (*this)[i] - vec[i];
   return new_vector;
 }
 
@@ -256,7 +248,6 @@ Vector<Type> &Vector<Type>::operator*=(const S &mult)
   for (auto &iter : *this)
     iter *= mult;
 
-
   return *this;
 }
 
@@ -265,6 +256,9 @@ template <typename S>
 Vector<Type> &Vector<Type>::operator/=(const S &div)
 {
   time_t t_time = time(NULL);
+  if (num_elem_ <= 0)
+    throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+
   if (!div)
     throw zero_divError(__FILE__, typeid(*this).name(), __LINE__,
                         ctime(&t_time));
@@ -276,15 +270,16 @@ Vector<Type> &Vector<Type>::operator/=(const S &div)
 }
 
 template <typename Type>
-Type Vector<Type>::sum_all_elem()
+Type Vector<Type>::sum_all_elem() const
 {
   time_t t_time = time(NULL);
   if (num_elem_ <= 0)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
 
+  ConstIterator<Type> iter(*this);
   Type sum = 0;
-  for (const auto iter : *this)
-    sum += iter;
+  for (; iter; iter++)
+    sum += *iter;
 
   return sum;
 }
@@ -313,10 +308,9 @@ bool Vector<Type>::is_single() const
 template <typename Type>
 bool Vector<Type>::is_zero() const
 {
-  if (this->len() == 0)
+  if (abs(this->len()) < EPS)
     return true;
-  else
-    return false;
+  return false;
 }
 
 template <typename Type>
@@ -325,8 +319,7 @@ Vector<Type> &Vector<Type>::operator=(const Vector<S> &vec)
 {
   if (this->size() != vec.size())
   {
-    num_elem_ = vec.size();
-    new_dyn_mem(num_elem_);
+    new_dyn_mem(vec.size());
   }
   for (int i = 0; i < num_elem_; i++)
     data_list_[i] = vec[i];
@@ -337,8 +330,7 @@ Vector<Type> &Vector<Type>::operator=(const Vector<Type> &vec)
 {
   if (this->size() != vec.size())
   {
-    num_elem_ = vec.size();
-    new_dyn_mem(num_elem_);
+    new_dyn_mem(vec.size());
   }
   for (int i = 0; i < num_elem_; i++)
     data_list_[i] = vec[i];
@@ -347,8 +339,7 @@ Vector<Type> &Vector<Type>::operator=(const Vector<Type> &vec)
 template <typename Type>
 Vector<Type> &Vector<Type>::operator=(std::initializer_list<Type> args)
 {
-  num_elem_ = int(args.size());
-  new_dyn_mem(num_elem_);
+  new_dyn_mem(int(args.size()));
 
   Iterator<Type> iter(*this);
   for (auto &element : args)
@@ -364,18 +355,14 @@ template <typename Type>
 Vector<Type> &Vector<Type>::operator=(Vector<Type> &&vec) noexcept
 {
   num_elem_ = vec.size();
-  new_dyn_mem(num_elem_);
-  data_list_ = vec.data_list_;
-  vec.data_list_.reset();
-
+  data_list_ = std::move(vec.data_list_);
   return *this;
 }
 
 template <typename Type>
 Vector<Type>::Vector(const Vector<Type> &vec)
 {
-  num_elem_ = vec.size();
-  new_dyn_mem(num_elem_);
+  new_dyn_mem(vec.size());
 
   Iterator<Type> iter_new(*this);
   Iterator<Type> iter(vec);
@@ -502,6 +489,7 @@ template <typename Type>
 void Vector<Type>::new_dyn_mem(int num_elements)
 {
   data_list_.reset();
+  num_elem_ = num_elements;
   std::shared_ptr<Type[]> sp_temp(new Type[num_elements],
                                   std::default_delete<Type[]>());
   data_list_ = sp_temp;
@@ -523,9 +511,8 @@ template <typename Type>
 Vector<Type>::Vector(Vector<Type> &&vec) noexcept
 {
   num_elem_ = vec.size();
-  new_dyn_mem(num_elem_);
-  data_list_ = vec.data_list_;
-  vec.data_list_.reset();
+  // Shared ptr сам чистит при присв. move
+  data_list_ = std::move(vec.data_list_);
 }
 
 template <typename Type>

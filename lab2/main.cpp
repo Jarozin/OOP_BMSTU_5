@@ -3,6 +3,7 @@
 #include <exception>
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 
 #include "ConstIterator.h"
 #include "Vector.hpp"
@@ -39,6 +40,30 @@ int main()
     std::cout << "From existing vector:\n";
     Vector<double> v5(v3);
     std::cout << v5 << "\n";
+
+    std::cout << "Move semancics:\n";
+    Vector<double> vm(std::move(v5));
+    std::cout << vm << std::endl;
+    try
+    {
+      std::cout << v5 << std::endl;
+    }
+    catch(const std::exception& e)
+    {
+      std::cerr << e.what() << std::endl << std::endl;
+    }
+
+    std::cout << "Move semancics with = operator:\n";
+    v5 = std::move(vm);
+    std::cout << v5 << std::endl;
+    try
+    {
+      std::cout << vm << std::endl;
+    }
+    catch(const std::exception& e)
+    {
+      std::cerr << e.what() << std::endl << std::endl;
+    }
 
     std::cout << "\nTest methods\n\n";
 
