@@ -115,7 +115,6 @@ Vector<Type>::Vector(std::initializer_list<Type> args)
 
 template <VectorType Type>
 template <typename InputIt>
-//requires std::random_access_iterator<InputIt>
 Vector<Type>::Vector(InputIt &iter1, InputIt &iter2)
 {
   time_t t_time = time(NULL);

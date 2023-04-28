@@ -43,7 +43,6 @@ public:
   Vector(const Container container);
   // iterator начала и конца, не зависит от типов
   template <typename InputIt>
-  //requires std::random_access_iterator<InputIt>
   Vector(InputIt &iter1, InputIt &iter2);
   explicit Vector(const Vector<Type> &vec);
   Vector(Vector<Type> &&vec) noexcept;

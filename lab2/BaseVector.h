@@ -10,7 +10,7 @@ class BaseVector
 public:
   BaseVector();
   BaseVector(const BaseVector &);
-  virtual ~BaseVector(){};
+  virtual ~BaseVector() = 0;
 
   bool is_empty() const;
   int get_size() const;
