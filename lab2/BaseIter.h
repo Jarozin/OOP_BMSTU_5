@@ -6,7 +6,7 @@ class BaseIter
 public:
   BaseIter();
   BaseIter(const BaseIter &);
-  virtual ~BaseIter() = default;
+  virtual ~BaseIter() = 0;
   virtual explicit operator bool() const = 0;
 
 protected:

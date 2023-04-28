@@ -12,8 +12,7 @@ public:
   BaseVector(const BaseVector &);
   virtual ~BaseVector() = 0;
 
-  bool is_empty() const;
-  int get_size() const;
+
   virtual int size() const = 0;
 
 protected:

@@ -11,7 +11,6 @@ template <typename Type>
 concept VectorType = !
 std::is_pointer<Type>::value &&std::copyable<Type> &&std::destructible<Type>;
 
-// random access iterator
 template <VectorType Type>
 class Vector;
 
