@@ -49,6 +49,8 @@ public:
   Iterator<Type> &operator--();
   Iterator<Type> operator--(int);
 
+  difference_type operator-(const Iterator<Type> &iter);
+
   Type &operator[](int index) const;
 
   bool operator<=(const Iterator<Type> &b) const;
@@ -241,7 +243,7 @@ bool Iterator<Type>::operator<=(const Iterator<Type> &b) const
 {
   check(__LINE__);
 
-  return this->get_cur_ptr() <= b.get_cur_ptr();
+  return !(*this > b);
 }
 
 template <VectorType Type>
@@ -249,7 +251,7 @@ bool Iterator<Type>::operator<(const Iterator<Type> &b) const
 {
   check(__LINE__);
 
-  return this->get_cur_ptr() < b.get_cur_ptr();
+  return this->get_cur_ptr() + index_ < b.get_cur_ptr() + b.index_;
 }
 
 template <VectorType Type>
@@ -257,7 +259,7 @@ bool Iterator<Type>::operator>=(const Iterator<Type> &b) const
 {
   check(__LINE__);
 
-  return this->get_cur_ptr() >= b.get_cur_ptr();
+  return !(*this < b);
 }
 
 template <VectorType Type>
@@ -265,7 +267,7 @@ bool Iterator<Type>::operator>(const Iterator<Type> &b) const
 {
   check(__LINE__);
 
-  return this->get_cur_ptr() > b.get_cur_ptr();
+  return !(*this < b) && !(*this == b);
 }
 
 template <VectorType Type>
@@ -273,7 +275,7 @@ bool Iterator<Type>::operator==(const Iterator<Type> &b) const
 {
   check(__LINE__);
 
-  return this->get_cur_ptr() == b.get_cur_ptr();
+  return this->get_cur_ptr() + index_ == b.get_cur_ptr() + b.index_;
 }
 
 template <VectorType Type>
@@ -281,7 +283,7 @@ bool Iterator<Type>::operator!=(const Iterator<Type> &b) const
 {
   check(__LINE__);
 
-  return this->get_cur_ptr() != b.get_cur_ptr();
+  return !(*this == b);
 }
 
 template <VectorType Type>
@@ -312,6 +314,12 @@ bool Iterator<Type>::check(int line) const
   time_t t_time = time(NULL);
   throw deletedObj(__FILE__, typeid(*this).name(), line, ctime(&t_time));
   return false;
+}
+
+template <VectorType Type>
+typename Iterator<Type>::difference_type Iterator<Type>::operator-(const Iterator<Type> &iter)
+{
+  return index_ - iter.index_;
 }
 
 #endif /* class_Iter_h */

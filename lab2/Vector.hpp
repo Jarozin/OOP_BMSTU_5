@@ -115,12 +115,11 @@ Vector<Type>::Vector(std::initializer_list<Type> args)
 
 template <VectorType Type>
 template <typename InputIt>
-Vector<Type>::Vector(InputIt iter1, InputIt iter2)
+//requires std::random_access_iterator<InputIt>
+Vector<Type>::Vector(InputIt &iter1, InputIt &iter2)
 {
   time_t t_time = time(NULL);
-  num_elem_ = 0;
-  for (auto i = iter1; i < iter2; i++)
-    num_elem_++;
+  num_elem_ = std::distance(iter1, iter2);
   if (num_elem_ <= 0)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
   new_dyn_mem(num_elem_);

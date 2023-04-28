@@ -186,7 +186,7 @@ bool ConstIterator<Type>::operator<=(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
 
-    return this->get_cur_ptr() <= b.get_cur_ptr();
+    return !(*this > b);
 }
 
 template <VectorType Type>
@@ -194,7 +194,7 @@ bool ConstIterator<Type>::operator<(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
 
-    return this->get_cur_ptr() < b.get_cur_ptr();
+    return this->get_cur_ptr() + index_ < b.get_cur_ptr() + b.index_;
 }
 
 template <VectorType Type>
@@ -202,7 +202,7 @@ bool ConstIterator<Type>::operator>=(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
 
-    return this->get_cur_ptr() >= b.get_cur_ptr();
+    return !(*this < b);
 }
 
 template <VectorType Type>
@@ -210,7 +210,7 @@ bool ConstIterator<Type>::operator>(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
 
-    return this->get_cur_ptr() > b.get_cur_ptr();
+    return !(*this < b) && !(*this == b);
 }
 
 template <VectorType Type>
@@ -218,7 +218,7 @@ bool ConstIterator<Type>::operator==(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
 
-    return this->get_cur_ptr() == b.get_cur_ptr();
+    return this->get_cur_ptr() + index_ == b.get_cur_ptr() + b.index_;
 }
 
 template <VectorType Type>
@@ -226,7 +226,7 @@ bool ConstIterator<Type>::operator!=(const ConstIterator<Type> &b) const
 {
     check(__LINE__);
 
-    return this->get_cur_ptr() != b.get_cur_ptr();
+    return !(*this == b);
 }
 
 template <VectorType Type>

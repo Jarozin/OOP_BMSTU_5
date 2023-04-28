@@ -129,8 +129,7 @@ int main()
     *a = 4;
     *(a + 1) = 55;
     Vector<int> v22(it1, it2);
-    std::cout << v22 << std::endl;
-
+    std::cout << "From iterators" << v22 << std::endl;
     Vector<int> v23(a, b);
     std::cout << v23 << std::endl;
     it1++;
