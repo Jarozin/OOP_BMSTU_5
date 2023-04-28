@@ -16,13 +16,14 @@ public:
     using iterator = ConstIterator;
     using iterator_category = std::random_access_iterator_tag;
     using difference_type = typename Vector<Type>::difference_type;
-    using value_type = typename Vector<Type>::value_type;
+    using value_type = const typename Vector<Type>::value_type;
     using reference = value_type &;
     using pointer = value_type *;
     ConstIterator(const ConstIterator<Type> &iter);
     ConstIterator(ConstIterator<Type> &&iter);
     ConstIterator(const Vector<Type> &vec);
     ~ConstIterator() = default;
+    ConstIterator(const Iterator<Type> &iter);
 
     const Type &operator*() const;
     const Type *operator->() const;
@@ -60,7 +61,11 @@ private:
 protected:
     Type *get_cur_ptr() const;
 };
-
+template <VectorType Type>
+Iterator<Type> operator+(const int& n, const ConstIterator<Type> &it)
+{
+  return it + n;
+}
 template <VectorType Type>
 Type *ConstIterator<Type>::get_cur_ptr() const
 {
@@ -78,6 +83,14 @@ ConstIterator<Type>::ConstIterator(const Vector<Type> &vec)
 
 template <VectorType Type>
 ConstIterator<Type>::ConstIterator(const ConstIterator<Type> &iter)
+{
+    ptr_ = iter.ptr_;
+    index_ = iter.index_;
+    num_elem_ = iter.num_elem_;
+}
+
+template <VectorType Type>
+ConstIterator<Type>::ConstIterator(const Iterator<Type> &iter)
 {
     ptr_ = iter.ptr_;
     index_ = iter.index_;

@@ -122,7 +122,6 @@ int main()
     std::cout << v21 - v11 << std::endl;
     Iterator<int> it1(v21);
     Iterator<int> it2(v21);
-    // it1 = it2;
     it2 += 3;
     int *a = new int[2];
     int *b = a + 2;

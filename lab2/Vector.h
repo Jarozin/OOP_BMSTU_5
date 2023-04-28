@@ -29,7 +29,7 @@ class Vector : public BaseVector
 public:
   using value_type = Type;
   using size_type = size_t;
-  using difference_type = std::ptrdiff_t;
+  using difference_type = int;
   using iterator = Iterator<Type>;
   using const_iterator = ConstIterator<Type>;
 

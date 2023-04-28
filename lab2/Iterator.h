@@ -34,7 +34,7 @@ public:
   const Type &operator*() const;
   Type *operator->();
   const Type *operator->() const;
-  operator bool() const override;
+  explicit operator bool() const override;
 
   Iterator<Type> &operator=(const Iterator<Type> &iter);
   Iterator<Type> &operator=(Iterator<Type> &&iter);
@@ -68,6 +68,12 @@ private:
 protected:
   Type *get_cur_ptr() const;
 };
+
+template <VectorType Type>
+Iterator<Type> operator+(const int& n, const Iterator<Type> &it)
+{
+  return it + n;
+}
 
 template <VectorType Type>
 Type *Iterator<Type>::get_cur_ptr() const
