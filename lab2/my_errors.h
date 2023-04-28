@@ -69,4 +69,13 @@ public:
   virtual const char *what() const noexcept { return err_info_.c_str(); }
 };
 
+
+class iteratorPtrError : public baseError
+{
+public:
+  iteratorPtrError(std::string filename, std::string classname, int line,
+             const char *time, std::string info = "Iterators have different pointers")
+      : baseError(filename, classname, line, time, info){};
+  virtual const char *what() const noexcept { return err_info_.c_str(); }
+};
 #endif /* _errors_h */
