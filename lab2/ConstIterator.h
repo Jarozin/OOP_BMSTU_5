@@ -41,6 +41,8 @@ public:
     ConstIterator<Type> &operator--();
     ConstIterator<Type> operator--(int);
 
+    difference_type operator-(const ConstIterator<Type> &iter);
+
     const Type &operator[](int index) const;
 
     bool operator<=(const ConstIterator<Type> &b) const;
@@ -281,4 +283,9 @@ ConstIterator<Type> &ConstIterator<Type>::operator-=(int n)
     return *this;
 }
 
+template <VectorType Type>
+typename ConstIterator<Type>::difference_type ConstIterator<Type>::operator-(const ConstIterator<Type> &iter)
+{
+  return index_ - iter.index_;
+}
 #endif // CONSTITER_H
