@@ -286,6 +286,12 @@ ConstIterator<Type> &ConstIterator<Type>::operator-=(int n)
 template <VectorType Type>
 typename ConstIterator<Type>::difference_type ConstIterator<Type>::operator-(const ConstIterator<Type> &iter)
 {
+  if (this->ptr_.lock() != iter.ptr_.lock())
+  {
+    time_t t_time = time(NULL);
+    throw iteratorPtrError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+  }
   return index_ - iter.index_;
 }
+
 #endif // CONSTITER_H
