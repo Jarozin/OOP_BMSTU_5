@@ -1,82 +1,80 @@
 #ifndef _errors_h
 #define _errors_h
 
-#include <string.h>
-
+#include <string>
+#include "stdio.h"
 #include <exception>
 
 class baseError : public std::exception
 {
 public:
   //Сделать сырой буфер вместо string(error не должен выделять память)
-  baseError(std::string filename, std::string classname, int line,
-            const char *time, std::string info = "Error") noexcept
+  baseError(const char * filename, const char * classname, int line,
+            const char *time, const char * info = "Error") noexcept
   {
-    err_info_ = "\nFile name: " + filename + "\nClass: " + classname +
-                "\nLine#: " + std::to_string(line) + "\nTime: " + time +
-                "Info: " + info;
+    sprintf(err_info_, "\nFile name: %s\nClass: %s\nLine#: %d\nTime: %sInfo: %s", filename, classname, line, time, info);
   }
   virtual const char *what() const noexcept override
   {
-    return err_info_.c_str();
+    return err_info_;
   }
 
 protected:
-  std::string err_info_;
+  char err_info_[250];
 };
 
 class memError : public baseError
 {
 public:
-  memError(std::string filename, std::string classname, int line,
-           const char *time, std::string info = "Memory error") noexcept
+  memError(const char * filename, const char * classname, int line,
+           const char *time, const char * info = "Memory error") noexcept
       : baseError(filename, classname, line, time, info){};
-  virtual const char *what() const noexcept { return err_info_.c_str(); }
+  virtual const char *what() const noexcept { return err_info_; }
 };
 
 class emptyError : public baseError
 {
 public:
-  emptyError(std::string filename, std::string classname, int line,
-             const char *time, std::string info = "Try to use empty vector") noexcept
+  emptyError(const char * filename, const char * classname, int line,
+             const char *time, const char * info = "Try to use empty vector") noexcept
       : baseError(filename, classname, line, time, info){};
-  virtual const char *what() const noexcept { return err_info_.c_str(); }
+  virtual const char *what() const noexcept { return err_info_; }
 };
 
 class indexError : public baseError
 {
 public:
-  indexError(std::string filename, std::string classname, int line,
-             const char *time, std::string info = "Index out of range") noexcept
+  indexError(const char * filename, const char * classname, int line,
+             const char *time, const char * info = "Index out of range") noexcept
       : baseError(filename, classname, line, time, info){};
-  virtual const char *what() const noexcept { return err_info_.c_str(); }
+  virtual const char *what() const noexcept { return err_info_; }
 };
 
 class zero_divError : public baseError
 {
 public:
-  zero_divError(std::string filename, std::string classname, int line,
-                const char *time, std::string info = "Zero division error") noexcept
+  zero_divError(const char * filename, const char * classname, int line,
+                const char *time, const char * info = "Zero division error") noexcept
       : baseError(filename, classname, line, time, info){};
-  virtual const char *what() const noexcept { return err_info_.c_str(); }
+  virtual const char *what() const noexcept { return err_info_; }
 };
 
 class deletedObj : public baseError
 {
 public:
-  deletedObj(std::string filename, std::string classname, int line,
-             const char *time, std::string info = "Work with deleted object") noexcept
+  deletedObj(const char * filename, const char * classname, int line,
+             const char *time, const char * info = "Work with deleted object") noexcept
       : baseError(filename, classname, line, time, info){};
-  virtual const char *what() const noexcept { return err_info_.c_str(); }
+  virtual const char *what() const noexcept { return err_info_; }
 };
 
 
 class iteratorPtrError : public baseError
 {
 public:
-  iteratorPtrError(std::string filename, std::string classname, int line,
-             const char *time, std::string info = "Iterators have different pointers") noexcept
+  iteratorPtrError(const char * filename, const char * classname, int line,
+             const char *time, const char * info = "Iterators have different pointers") noexcept
       : baseError(filename, classname, line, time, info){};
-  virtual const char *what() const noexcept { return err_info_.c_str(); }
+  virtual const char *what() const noexcept { return err_info_; }
 };
 #endif /* _errors_h */
