@@ -494,9 +494,26 @@ Iterator<Type> Vector<Type>::begin()
 template <VectorType Type>
 ConstIterator<Type> Vector<Type>::begin() const
 {
-  return this->cbegin();
+  return cbegin();
 }
 
+template <VectorType Type>
+ReverseIterator<Type> Vector<Type>::rbegin()
+{
+  return ReverseIterator<Type>(*this);
+}
+
+template <VectorType Type>
+ReverseConstIterator<Type> Vector<Type>::crbegin() const
+{
+  return ReverseConstIterator<Type>(*this);
+}
+
+template <VectorType Type>
+ReverseConstIterator<Type> Vector<Type>::rbegin() const
+{
+  return crbegin();
+}
 
 template <VectorType Type>
 Iterator<Type> Vector<Type>::end()
@@ -507,8 +524,27 @@ Iterator<Type> Vector<Type>::end()
 template <VectorType Type>
 ConstIterator<Type> Vector<Type>::end() const
 {
-  return this->cend();
+  return cend();
 }
+
+template <VectorType Type>
+ReverseIterator<Type> Vector<Type>::rend()
+{
+  return ReverseIterator<Type>(*this) + size();
+}
+
+template <VectorType Type>
+ReverseConstIterator<Type> Vector<Type>::crend() const
+{
+  return ReverseConstIterator<Type>(*this) + size();
+}
+
+template <VectorType Type>
+ReverseConstIterator<Type> Vector<Type>::rend() const
+{
+  return crend();
+}
+
 
 template <VectorType Type>
 Vector<Type>::Vector(Vector<Type> &&vec) noexcept

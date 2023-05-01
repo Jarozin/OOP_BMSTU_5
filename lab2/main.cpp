@@ -172,6 +172,10 @@ int main()
     std::vector<int> stl_v{1, 2, 3};
     Vector<int> container(stl_v);
     std::cout << container << std::endl;
+    std::cout << v2 << std::endl;
+    for (auto it = v2.rbegin(); it < v2.rend(); it++)
+      std::cout << *it << " ";
+    std::cout << std::endl;
     //Required нас от этого защищает
     // int ptr1 = 5;
     // int ptr2 = 6;

@@ -3,6 +3,8 @@
 
 #include <stdarg.h>
 
+#include "ReverseIterator.h"
+#include "ReverseConstIterator.h"
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -52,6 +54,8 @@ public:
   using difference_type = int;
   using iterator = Iterator<Type>;
   using const_iterator = ConstIterator<Type>;
+  using reverse_iterator = ReverseIterator<Type>;
+  using const_reverse_iterator = ReverseConstIterator<Type>;
 
   Vector();
   explicit Vector(int num_elements);
@@ -86,10 +90,18 @@ public:
   Iterator<Type> begin();
   ConstIterator<Type> begin() const;
   ConstIterator<Type> cbegin() const;
+
+  ReverseIterator<Type> rbegin();
+  ReverseConstIterator<Type> rbegin() const;
+  ReverseConstIterator<Type> crbegin() const;
+
   Iterator<Type> end();
   ConstIterator<Type> end() const;
   ConstIterator<Type> cend() const;
 
+  ReverseIterator<Type> rend();
+  ReverseConstIterator<Type> rend() const;
+  ReverseConstIterator<Type> crend() const;
   // нахождение длины стороны из координат в векторе
   auto len() const;
 
@@ -181,7 +193,8 @@ private:
   std::shared_ptr<Type[]> data_list_;
   friend class Iterator<Type>;
   friend class ConstIterator<Type>;
-
+  friend class ReverseIterator<Type>;
+  friend class ReverseConstIterator<Type>;
 protected:
   Type sum_all_elem() const;
 
