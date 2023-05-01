@@ -339,7 +339,7 @@ typename ReverseIterator<Type>::difference_type ReverseIterator<Type>::operator-
     time_t t_time = time(NULL);
     throw iteratorPtrError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
   }
-  return index_ - iter.index_;
+  return iter.index_ - index_;
 }
 
 #endif /* class_Iter_h */
