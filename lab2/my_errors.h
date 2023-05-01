@@ -1,7 +1,6 @@
 #ifndef _errors_h
 #define _errors_h
 
-#include <string>
 #include "stdio.h"
 #include <exception>
 
