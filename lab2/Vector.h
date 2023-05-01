@@ -20,8 +20,8 @@ concept convertable = std::convertible_to<T, S> || std::convertible_to<S, T>;
 
 template <typename Type>
 concept is_null_constractable = requires {
-                                  Type(0);
-                                };
+  Type(0);
+};
 
 template <typename Type, typename S>
 concept is_multiplyable = requires(Type t, S s) {
@@ -31,6 +31,16 @@ concept is_multiplyable = requires(Type t, S s) {
 template <typename Type, typename S>
 concept is_divisible = requires(Type t, S s) {
   t / s;
+};
+
+template <typename Type, typename S>
+concept is_addible = requires(Type t, S s) {
+  t + s;
+};
+
+template <typename Type, typename S>
+concept is_substractable = requires(Type t, S s) {
+  t - s;
 };
 
 template <VectorType Type>
@@ -96,7 +106,7 @@ public:
   requires is_multiplyable<Type,S>
   Vector<Type> &operator*=(const S &mult);
   template <typename S>
-  requires convertable<Type, S>
+  requires convertable<Type, S> && is_multiplyable<Type,S>
   decltype(auto) operator*(const S &mult) const;
   template <typename S>
   requires is_multiplyable<Type,S>
@@ -106,7 +116,7 @@ public:
   requires is_divisible<Type,S>
   Vector<Type> &operator/=(const S &div);
   template <typename S>
-  requires convertable<Type, S>
+  requires convertable<Type, S> && is_divisible<Type,S>
   decltype(auto) operator/(const S &div) const;
   template <typename S>
   requires is_divisible<Type,S>
@@ -117,37 +127,43 @@ public:
 
   // скалярное умнжение
   template <VectorType S>
-    requires convertable<Type, S>
+  requires convertable<Type, S> && is_multiplyable<Type,S>
   decltype(auto) operator^(const Vector<S> &vec) const;
   template <VectorType S>
-    requires convertable<Type, S> decltype(auto)
-  mult_vect_scalar(const Vector<S> &vec2) const;
+  requires convertable<Type, S> && is_multiplyable<Type,S>
+  decltype(auto) mult_vect_scalar(const Vector<S> &vec2) const;
 
   // векторное умножение
   template <VectorType S>
   Vector<Type> &operator&=(const Vector<S> &vec);
   template <VectorType S>
-    requires convertable<Type, S> decltype(auto)
-  operator&(const Vector<S> &) const;
+  requires convertable<Type, S>
+  decltype(auto) operator&(const Vector<S> &) const;
   template <VectorType S>
+  requires convertable<Type,S> && is_multiplyable<Type,S> &&
+  (is_substractable<Type,Type> || is_substractable<S,S>)
   Vector<Type> &mult_vect_cross(const Vector<S> &vec2);
 
   // поэлементное сложение
   template <VectorType S>
-    requires convertable<Type, S> decltype(auto)
-  operator+(const Vector<S> &) const;
+  requires convertable<Type, S> && is_addible<Type,S>
+  decltype(auto) operator+(const Vector<S> &) const;
   template <VectorType S>
+  requires is_addible<Type,S>
   Vector<Type> &operator+=(const Vector<S> &);
   template <VectorType S>
+  requires is_addible<Type,S>
   Vector<Type> &add(const Vector<S> &);
 
   // поэлементное вычитание
   template <VectorType S>
-    requires convertable<Type, S> decltype(auto)
-  operator-(const Vector<S> &) const;
+  requires convertable<Type, S>
+  decltype(auto) operator-(const Vector<S> &) const;
   template <VectorType S>
+  requires is_substractable<Type,S>
   Vector<Type> &sub(const Vector<S> &);
   template <VectorType S>
+  requires is_substractable<Type,S>
   Vector<Type> &operator-=(const Vector<S> &);
 
   template <VectorType S>
@@ -171,16 +187,22 @@ protected:
   void new_dyn_mem(int);
 };
 
-
-template <VectorType S, typename R>
-  requires convertable<R, S>
-decltype(auto) difference_vectors(const Vector<R> &vec1,
-                                  const Vector<S> &vec2);
-
-template <VectorType S, typename R>
-  requires convertable<R, S>
+template <VectorType S, VectorType R>
+requires convertable<R, S>
 decltype(auto) sum_vectors(const Vector<R> &vec1,
-                           const Vector<S> &vec2);
+                                         const Vector<S> &vec2)
+{
+  return vec1 + vec2;
+}
+
+template <VectorType S, typename R>
+requires convertable<R, S>
+decltype(auto) difference_vectors(const Vector<R> &vec1,
+                                                const Vector<S> &vec2)
+{
+  return vec1 - vec2;
+}
+
 
 template <typename Type, VectorType S>
   requires convertable<Type, S> decltype(auto)

@@ -177,7 +177,7 @@ auto Vector<Type>::len(void) const
 
 template <VectorType Type>
 template <VectorType S>
-requires convertable<Type, S>
+requires convertable<Type, S> && is_multiplyable<Type,S>
 decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -192,7 +192,7 @@ decltype(auto) Vector<Type>::operator^(const Vector<S> &vec) const
 
 template <VectorType Type>
 template <VectorType S>
-requires convertable<Type, S>
+requires convertable<Type, S> && is_addible<Type,S>
 decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -207,6 +207,7 @@ decltype(auto) Vector<Type>::operator+(const Vector<S> &vec) const
 
 template <VectorType Type>
 template <VectorType S>
+requires is_addible<Type,S>
 Vector<Type> &Vector<Type>::operator+=(const Vector<S> &vec)
 {
   time_t t_time = time(NULL);
@@ -233,6 +234,7 @@ decltype(auto) Vector<Type>::operator-(const Vector<S> &vec) const
 
 template <VectorType Type>
 template <VectorType S>
+requires is_substractable<Type,S>
 Vector<Type> &Vector<Type>::operator-=(const Vector<S> &vec)
 {
   time_t t_time = time(NULL);
@@ -461,22 +463,6 @@ bool Vector<Type>::is_orthogonality(const Vector<S> &vec) const
   return false;
 }
 
-template <VectorType S, VectorType R>
-requires convertable<R, S>
-decltype(auto) sum_vectors(const Vector<R> &vec1,
-                                         const Vector<S> &vec2)
-{
-  return vec1 + vec2;
-}
-
-template <VectorType S, typename R>
-requires convertable<R, S>
-decltype(auto) difference_vectors(const Vector<R> &vec1,
-                                                const Vector<S> &vec2)
-{
-  return vec1 - vec2;
-}
-
 template <VectorType Type>
 Vector<Type> Vector<Type>::operator-()
 {
@@ -547,6 +533,8 @@ Vector<Type> &Vector<Type>::operator&=(const Vector<S> &vec)
 
 template <VectorType Type>
 template <VectorType S>
+requires convertable<Type,S> && is_multiplyable<Type,S> &&
+(is_substractable<Type,Type> || is_substractable<S,S>)
 Vector<Type> &Vector<Type>::mult_vect_cross(const Vector<S> &vec2)
 {
   Vector<Type> result(3);
@@ -562,12 +550,14 @@ Vector<Type> &Vector<Type>::mult_vect_cross(const Vector<S> &vec2)
 
 template <VectorType Type>
 template <VectorType S>
+requires is_addible<Type,S>
 Vector<Type> &Vector<Type>::add(const Vector<S> &src)
 {
   return *this += src;
 }
 template <VectorType Type>
 template <VectorType S>
+requires is_substractable<Type,S>
 Vector<Type> &Vector<Type>::sub(const Vector<S> &src)
 {
   return *this -= src;
@@ -592,7 +582,7 @@ decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
 
 template <VectorType Type>
 template <typename S>
-requires convertable<Type, S>
+requires convertable<Type, S> && is_divisible<Type,S>
 decltype(auto) Vector<Type>::operator/(const S &div) const
 {
   time_t t_time = time(NULL);
@@ -610,7 +600,7 @@ decltype(auto) Vector<Type>::operator/(const S &div) const
 
 template <VectorType Type>
 template <VectorType S>
-requires convertable<Type, S>
+requires convertable<Type, S> && is_multiplyable<Type,S>
 decltype(auto) Vector<Type>::mult_vect_scalar(const Vector<S> &vec) const
 {
   time_t t_time = time(NULL);
@@ -644,7 +634,7 @@ Vector<Type> &Vector<Type>::div_num(const S &mult)
 
 template <VectorType Type>
 template <typename S>
-requires convertable<Type, S>
+requires convertable<Type, S> && is_multiplyable<Type,S>
 decltype(auto) Vector<Type>::operator*(const S &mult) const
 {
   time_t t_time = time(NULL);
