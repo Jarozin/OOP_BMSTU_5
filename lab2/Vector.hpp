@@ -73,7 +73,7 @@ Vector<Type>::Vector(int num_elements, Type vec, ...)
 
 template <VectorType Type>
 template <typename Container>
-Vector<Type>::Vector(const Container container)
+Vector<Type>::Vector(const Container& container)
 {
   new_dyn_mem(container.size());
   auto my_it = this->begin();
@@ -83,6 +83,7 @@ Vector<Type>::Vector(const Container container)
     my_it++;
   }
 };
+
 template <VectorType Type>
 Vector<Type>::Vector(int num_elements, Type *vec)
 {
@@ -160,7 +161,7 @@ bool Vector<Type>::operator!=(const Vector<Type> &vec) const
 }
 
 template <VectorType Type>
-Type Vector<Type>::len(void) const
+auto Vector<Type>::len(void) const
 {
   time_t t_time = time(NULL);
   if (num_elem_ <= 0)
@@ -241,13 +242,13 @@ Vector<Type> &Vector<Type>::operator-=(const Vector<S> &vec)
 }
 
 template <VectorType Type>
-template <VectorType S>
+template <typename S>
+requires is_multiplyable<Type,S>
 Vector<Type> &Vector<Type>::operator*=(const S &mult)
 {
   time_t t_time = time(NULL);
   if (num_elem_ <= 0)
     throw emptyError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
-
   for (auto &iter : *this)
     iter *= mult;
 
@@ -255,7 +256,8 @@ Vector<Type> &Vector<Type>::operator*=(const S &mult)
 }
 
 template <VectorType Type>
-template <VectorType S>
+template <typename S>
+requires is_divisible<Type,S>
 Vector<Type> &Vector<Type>::operator/=(const S &div)
 {
   time_t t_time = time(NULL);
@@ -364,6 +366,21 @@ Vector<Type> &Vector<Type>::operator=(Vector<Type> &&vec) noexcept
 }
 
 template <VectorType Type>
+template <typename Container>
+Vector<Type> &Vector<Type>::operator=(const Container &container)
+{
+  new_dyn_mem(container.size());
+  auto my_it = this->begin();
+  for (const auto& it : container)
+  {
+    *my_it = it;
+    my_it++;
+  }
+  return *this;
+}
+
+
+template <VectorType Type>
 Vector<Type>::Vector(const Vector<Type> &vec)
 {
   new_dyn_mem(vec.size());
@@ -444,50 +461,20 @@ bool Vector<Type>::is_orthogonality(const Vector<S> &vec) const
   return false;
 }
 
-template <VectorType Type>
-template <VectorType S, typename R>
+template <VectorType S, VectorType R>
 requires convertable<R, S>
-decltype(auto) Vector<Type>::sum_vectors(const Vector<R> &vec1,
+decltype(auto) sum_vectors(const Vector<R> &vec1,
                                          const Vector<S> &vec2)
 {
-  int max_len = max(vec1.size(), vec2.size());
-  Vector<decltype(vec1[0] + vec2[0])> result(max_len);
-  Iterator<decltype(vec1[0] + vec2[0])> iter_result(result);
-  Iterator<R> iter_vec1(vec1);
-  Iterator<S> iter_vec2(vec2);
-  for (int i = 0; iter_result; i++, iter_result++, iter_vec1++, iter_vec2++)
-  {
-    if (i >= vec1.size())
-      *iter_result = *iter_vec2;
-    else if (i >= vec2.size())
-      *iter_result = *iter_vec1;
-    else
-      *iter_result = *iter_vec1 + *iter_vec2;
-  }
-  return result;
+  return vec1 + vec2;
 }
 
-template <VectorType Type>
 template <VectorType S, typename R>
 requires convertable<R, S>
-decltype(auto) Vector<Type>::difference_vectors(const Vector<R> &vec1,
+decltype(auto) difference_vectors(const Vector<R> &vec1,
                                                 const Vector<S> &vec2)
 {
-  int max_len = max(vec1.size(), vec2.size());
-  Vector<decltype(vec1[0] + vec2[0])> result(max_len);
-  Iterator<decltype(vec1[0] + vec2[0])> iter_result(result);
-  Iterator<R> iter_vec1(vec1);
-  Iterator<S> iter_vec2(vec2);
-  for (int i = 0; iter_result; i++, iter_result++, iter_vec1++, iter_vec2++)
-  {
-    if (i > vec1.size())
-      *iter_result = -*iter_vec2;
-    else if (i > vec2.size())
-      *iter_result = *iter_vec1;
-    else
-      *iter_result = *iter_vec1 - *iter_vec2;
-  }
-  return result;
+  return vec1 - vec2;
 }
 
 template <VectorType Type>
@@ -518,9 +505,22 @@ Iterator<Type> Vector<Type>::begin()
 }
 
 template <VectorType Type>
+ConstIterator<Type> Vector<Type>::begin() const
+{
+  return this->cbegin();
+}
+
+
+template <VectorType Type>
 Iterator<Type> Vector<Type>::end()
 {
   return Iterator<Type>(*this) + num_elem_;
+}
+
+template <VectorType Type>
+ConstIterator<Type> Vector<Type>::end() const
+{
+  return this->cend();
 }
 
 template <VectorType Type>
@@ -591,7 +591,7 @@ decltype(auto) Vector<Type>::operator&(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <VectorType S>
+template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator/(const S &div) const
 {
@@ -627,21 +627,23 @@ decltype(auto) Vector<Type>::mult_vect_scalar(const Vector<S> &vec) const
 }
 
 template <VectorType Type>
-template <VectorType S>
+template <typename S>
+requires is_multiplyable<Type,S>
 Vector<Type> &Vector<Type>::mult_num(const S &mult)
 {
   return *this *= mult;
 }
 
 template <VectorType Type>
-template <VectorType S>
+template <typename S>
+requires is_divisible<Type,S>
 Vector<Type> &Vector<Type>::div_num(const S &mult)
 {
   return *this /= mult;
 }
 
 template <VectorType Type>
-template <VectorType S>
+template <typename S>
 requires convertable<Type, S>
 decltype(auto) Vector<Type>::operator*(const S &mult) const
 {

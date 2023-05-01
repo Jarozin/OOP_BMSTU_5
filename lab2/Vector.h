@@ -23,6 +23,16 @@ concept is_null_constractable = requires {
                                   Type(0);
                                 };
 
+template <typename Type, typename S>
+concept is_multiplyable = requires(Type t, S s) {
+  t * s;
+};
+
+template <typename Type, typename S>
+concept is_divisible = requires(Type t, S s) {
+  t / s;
+};
+
 template <VectorType Type>
 class Vector : public BaseVector
 {
@@ -40,7 +50,7 @@ public:
   Vector(int num_elements, Type var, ...);
   Vector(std::initializer_list<Type> args);
   template <typename Container>
-  Vector(const Container container);
+  Vector(const Container &container);
   // iterator начала и конца, не зависит от типов
   template <typename InputIt>
   Vector(InputIt &iter1, InputIt &iter2);
@@ -55,53 +65,60 @@ public:
   Vector<Type> &operator=(std::initializer_list<Type> args);
   template <VectorType S>
   Vector<Type> &operator=(const Vector<S> &vec);
-
-  Type &operator[](int index);
-  const Type &operator[](int index) const;
+  template <typename Container>
+  Vector<Type> &operator=(const Container &container);
 
   bool is_zero() const;
   bool is_single() const;
   int size() const override;
 
   Iterator<Type> begin();
+  ConstIterator<Type> begin() const;
   ConstIterator<Type> cbegin() const;
   Iterator<Type> end();
+  ConstIterator<Type> end() const;
   ConstIterator<Type> cend() const;
 
   // нахождение длины стороны из координат в векторе
-  Type len() const;
+  auto len() const;
 
   Type &get_elem_Vector(int index);
   const Type &get_elem_Vector(int index) const;
   bool set_elem_Vector(int index, const Type &vec);
+  Type &operator[](int index);
+  const Type &operator[](int index) const;
 
   // приводит вектор к единичному(в длину)
   Vector<Type> get_single_vector() const;
 
   // умножение и деление на число
-  template <VectorType S>
+  template <typename S>
+  requires is_multiplyable<Type,S>
   Vector<Type> &operator*=(const S &mult);
-  template <VectorType S>
+  template <typename S>
   requires convertable<Type, S>
   decltype(auto) operator*(const S &mult) const;
-  template <VectorType S>
+  template <typename S>
+  requires is_multiplyable<Type,S>
   Vector<Type> &mult_num(const S &mult);
 
-  template <VectorType S>
+  template <typename S>
+  requires is_divisible<Type,S>
   Vector<Type> &operator/=(const S &div);
-  template <VectorType S>
-    requires convertable<Type, S>
+  template <typename S>
+  requires convertable<Type, S>
   decltype(auto) operator/(const S &div) const;
-  template <VectorType S>
-  Vector<Type> &div_num(const S &mult);
+  template <typename S>
+  requires is_divisible<Type,S>
+  Vector<Type> &div_num(const S &div);
 
   // унарный минус
   Vector<Type> operator-();
 
   // скалярное умнжение
   template <VectorType S>
-    requires convertable<Type, S> decltype(auto)
-  operator^(const Vector<S> &vec) const;
+    requires convertable<Type, S>
+  decltype(auto) operator^(const Vector<S> &vec) const;
   template <VectorType S>
     requires convertable<Type, S> decltype(auto)
   mult_vect_scalar(const Vector<S> &vec2) const;
@@ -123,10 +140,6 @@ public:
   Vector<Type> &operator+=(const Vector<S> &);
   template <VectorType S>
   Vector<Type> &add(const Vector<S> &);
-  template <VectorType S, typename R>
-    requires convertable<R, S>
-  static decltype(auto) sum_vectors(const Vector<R> &vec1,
-                                    const Vector<S> &vec2);
 
   // поэлементное вычитание
   template <VectorType S>
@@ -136,10 +149,6 @@ public:
   Vector<Type> &sub(const Vector<S> &);
   template <VectorType S>
   Vector<Type> &operator-=(const Vector<S> &);
-  template <VectorType S, typename R>
-    requires convertable<R, S>
-  static decltype(auto) difference_vectors(const Vector<R> &vec1,
-                                           const Vector<S> &vec2);
 
   template <VectorType S>
   double angle_between_vectors(const Vector<S> &) const;
@@ -162,12 +171,24 @@ protected:
   void new_dyn_mem(int);
 };
 
+
+template <VectorType S, typename R>
+  requires convertable<R, S>
+decltype(auto) difference_vectors(const Vector<R> &vec1,
+                                  const Vector<S> &vec2);
+
+template <VectorType S, typename R>
+  requires convertable<R, S>
+decltype(auto) sum_vectors(const Vector<R> &vec1,
+                           const Vector<S> &vec2);
+
 template <typename Type, VectorType S>
   requires convertable<Type, S> decltype(auto)
 operator*(const S &mult, const Vector<Type> &vec)
 {
   return vec * mult;
 }
+
 
 template <typename Type>
 std::ostream &operator<<(std::ostream &os, const Vector<Type> &vec)

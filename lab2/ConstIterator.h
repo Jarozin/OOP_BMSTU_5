@@ -19,6 +19,7 @@ public:
     using value_type = const typename Vector<Type>::value_type;
     using reference = value_type &;
     using pointer = value_type *;
+    using size_type = typename Vector<Type>::size_type;
     ConstIterator(const ConstIterator<Type> &iter);
     ConstIterator(ConstIterator<Type> &&iter);
     ConstIterator(const Vector<Type> &vec);

@@ -8,6 +8,7 @@
 class baseError : public std::exception
 {
 public:
+  //Сделать сырой буфер вместо string(error не должен выделять память)
   baseError(std::string filename, std::string classname, int line,
             const char *time, std::string info = "Error") noexcept
   {

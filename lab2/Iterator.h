@@ -8,8 +8,8 @@
 #include <type_traits>
 
 template <typename Type>
-concept VectorType = !
-std::is_pointer<Type>::value &&std::copyable<Type> &&std::destructible<Type>;
+concept VectorType =
+!std::is_pointer<Type>::value &&std::copyable<Type> &&std::destructible<Type>;
 
 template <VectorType Type>
 class Vector;
@@ -24,6 +24,8 @@ public:
   using value_type = typename Vector<Type>::value_type;
   using reference = value_type &;
   using pointer = value_type *;
+  using size_type = typename Vector<Type>::size_type;
+
   Iterator(const Iterator<Type> &iter);
   Iterator(Iterator<Type> &&iter);
   Iterator(const Vector<Type> &vec);
@@ -50,7 +52,9 @@ public:
 
   difference_type operator-(const Iterator<Type> &iter);
 
-  Type &operator[](int index) const;
+  Type &operator[](int index);
+  const Type &operator[](int index) const;
+
 
   bool operator<=(const Iterator<Type> &b) const;
   bool operator<(const Iterator<Type> &b) const;
@@ -292,7 +296,16 @@ bool Iterator<Type>::operator!=(const Iterator<Type> &b) const
 }
 
 template <VectorType Type>
-Type &Iterator<Type>::operator[](int index) const
+Type &Iterator<Type>::operator[](int index)
+{
+  time_t t_time = time(NULL);
+  if (index + this->index_ < 0 || index + this->index_ >= num_elem_)
+    throw indexError(__FILE__, typeid(*this).name(), __LINE__, ctime(&t_time));
+  return *(*this + index);
+}
+
+template <VectorType Type>
+const Type &Iterator<Type>::operator[](int index) const
 {
   time_t t_time = time(NULL);
   if (index + this->index_ < 0 || index + this->index_ >= num_elem_)
