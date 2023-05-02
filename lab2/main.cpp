@@ -127,8 +127,6 @@ int main()
     int *b = a + 2;
     *a = 4;
     *(a + 1) = 55;
-    Vector<int> v23(a, b);
-    std::cout << v23 << std::endl;
     it1++;
     std::cout << it1[0] << " " << it1[1] << std::endl;
     std::cout << *it1 << " " << *(it1 + 1) << std::endl;

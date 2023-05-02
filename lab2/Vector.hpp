@@ -73,6 +73,7 @@ Vector<Type>::Vector(int num_elements, Type vec, ...)
 
 template <VectorType Type>
 template <typename Container>
+requires convertable<typename Container::value_type, Type>
 Vector<Type>::Vector(const Container& container)
 {
   new_dyn_mem(container.size());
@@ -116,7 +117,8 @@ Vector<Type>::Vector(std::initializer_list<Type> args)
 
 template <VectorType Type>
 template <typename InputIt>
-requires std::random_access_iterator<InputIt>
+requires std::random_access_iterator<InputIt> &&
+convertable<typename InputIt::value_type, InputIt>
 Vector<Type>::Vector(InputIt &iter1, InputIt &iter2)
 {
   time_t t_time = time(NULL);

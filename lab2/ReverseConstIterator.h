@@ -21,6 +21,7 @@ public:
     using reference = value_type &;
     using pointer = value_type *;
     using size_type = typename Vector<Type>::size_type;
+
     ReverseConstIterator(const ReverseConstIterator<Type> &iter);
     ReverseConstIterator(ReverseConstIterator<Type> &&iter);
     ReverseConstIterator(const Vector<Type> &vec);
