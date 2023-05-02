@@ -73,7 +73,7 @@ Vector<Type>::Vector(int num_elements, Type vec, ...)
 
 template <VectorType Type>
 template <typename Container>
-requires convertable<typename Container::value_type, Type>&&
+requires std::convertible_to<typename Container::value_type, Type>&&
 VectorType<typename Container::value_type>
 Vector<Type>::Vector(const Container& container)
 {
@@ -119,7 +119,7 @@ Vector<Type>::Vector(std::initializer_list<Type> args)
 template <VectorType Type>
 template <typename InputIt>
 requires std::random_access_iterator<InputIt> &&
-convertable<typename InputIt::value_type, InputIt>&&
+std::convertible_to<typename InputIt::value_type, Type>&&
 VectorType<typename InputIt::value_type>
 Vector<Type>::Vector(InputIt &iter1, InputIt &iter2)
 {
@@ -374,7 +374,7 @@ Vector<Type> &Vector<Type>::operator=(Vector<Type> &&vec) noexcept
 
 template <VectorType Type>
 template <typename Container>
-requires convertable<typename Container::value_type, Type> &&
+requires std::convertible_to<typename Container::value_type, Type> &&
 VectorType<typename Container::value_type>
 Vector<Type> &Vector<Type>::operator=(const Container &container)
 {

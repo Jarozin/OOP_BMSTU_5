@@ -64,13 +64,13 @@ public:
   Vector(int num_elements, Type var, ...);
   Vector(std::initializer_list<Type> args);
   template <typename Container>
-  requires convertable<typename Container::value_type, Type> &&
+  requires std::convertible_to<typename Container::value_type, Type> &&
   VectorType<typename Container::value_type>
   Vector(const Container &container);
   // iterator начала и конца, не зависит от типов
   template <typename InputIt>
   requires std::random_access_iterator<InputIt> &&
-  convertable<typename InputIt::value_type, InputIt>&&
+  std::convertible_to<typename InputIt::value_type, Type>&&
   VectorType<typename InputIt::value_type>
   Vector(InputIt &iter1, InputIt &iter2);
   explicit Vector(const Vector<Type> &vec);
@@ -85,7 +85,7 @@ public:
   template <VectorType S>
   Vector<Type> &operator=(const Vector<S> &vec);
   template <typename Container>
-  requires convertable<typename Container::value_type, Type> &&
+  requires std::convertible_to<typename Container::value_type, Type> &&
   VectorType<typename Container::value_type>
   Vector<Type> &operator=(const Container &container);
 
