@@ -7,7 +7,7 @@
 class baseError : public std::exception
 {
 public:
-  baseError(const char * filename, const char * classname, int line,
+  baseError(const char *filename, const char *classname, int line,
             const char *time, const char * info = "Error") noexcept
   {
     sprintf(err_info_, "\nFile name: %s\nClass: %s\nLine#: %d\nTime: %sInfo: %s", filename, classname, line, time, info);

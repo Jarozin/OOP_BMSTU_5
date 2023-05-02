@@ -9,7 +9,7 @@
 
 template <typename Type>
 concept VectorType =
-!std::is_pointer<Type>::value &&std::copyable<Type> &&std::destructible<Type>;
+!std::is_pointer<Type>::value && std::copyable<Type> && std::destructible<Type>;
 
 template <VectorType Type>
 class Vector;

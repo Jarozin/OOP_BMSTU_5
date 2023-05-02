@@ -85,6 +85,8 @@ public:
   template <VectorType S>
   Vector<Type> &operator=(const Vector<S> &vec);
   template <typename Container>
+  requires convertable<typename Container::value_type, Type> &&
+  VectorType<typename Container::value_type>
   Vector<Type> &operator=(const Container &container);
 
   bool is_zero() const;

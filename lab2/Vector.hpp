@@ -374,6 +374,8 @@ Vector<Type> &Vector<Type>::operator=(Vector<Type> &&vec) noexcept
 
 template <VectorType Type>
 template <typename Container>
+requires convertable<typename Container::value_type, Type> &&
+VectorType<typename Container::value_type>
 Vector<Type> &Vector<Type>::operator=(const Container &container)
 {
   new_dyn_mem(container.size());
