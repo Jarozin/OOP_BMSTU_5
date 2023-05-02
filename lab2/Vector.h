@@ -64,12 +64,14 @@ public:
   Vector(int num_elements, Type var, ...);
   Vector(std::initializer_list<Type> args);
   template <typename Container>
-  requires convertable<typename Container::value_type, Type>
+  requires convertable<typename Container::value_type, Type> &&
+  VectorType<typename Container::value_type>
   Vector(const Container &container);
   // iterator начала и конца, не зависит от типов
   template <typename InputIt>
   requires std::random_access_iterator<InputIt> &&
-  convertable<typename InputIt::value_type, InputIt>
+  convertable<typename InputIt::value_type, InputIt>&&
+  VectorType<typename InputIt::value_type>
   Vector(InputIt &iter1, InputIt &iter2);
   explicit Vector(const Vector<Type> &vec);
   Vector(Vector<Type> &&vec) noexcept;
