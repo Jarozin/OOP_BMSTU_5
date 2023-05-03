@@ -26,22 +26,22 @@ concept is_null_constractable = requires {
 };
 
 template <typename Type, typename S>
-concept is_multiplyable = requires(Type t, S s) {
+concept is_multiplyable = std::convertible_to<S,Type> && requires(Type t, S s) {
   t * s;
 };
 
 template <typename Type, typename S>
-concept is_divisible = requires(Type t, S s) {
+concept is_divisible = std::convertible_to<S,Type> && requires(Type t, S s) {
   t / s;
 };
 
 template <typename Type, typename S>
-concept is_addible = requires(Type t, S s) {
+concept is_addible = std::convertible_to<S,Type> && requires(Type t, S s) {
   t + s;
 };
 
 template <typename Type, typename S>
-concept is_substractable = requires(Type t, S s) {
+concept is_substractable = std::convertible_to<S,Type> && requires(Type t, S s) {
   t - s;
 };
 
@@ -208,25 +208,25 @@ protected:
 };
 
 template <VectorType S, VectorType R>
-requires convertable<R, S>
+requires is_addible<R, S>
 decltype(auto) sum_vectors(const Vector<R> &vec1,
-                                         const Vector<S> &vec2)
+                           const Vector<S> &vec2)
 {
   return vec1 + vec2;
 }
 
-template <VectorType S, typename R>
-requires convertable<R, S>
+template <VectorType S, VectorType R>
+requires is_substractable<S, R>
 decltype(auto) difference_vectors(const Vector<R> &vec1,
-                                                const Vector<S> &vec2)
+                                  const Vector<S> &vec2)
 {
   return vec1 - vec2;
 }
 
 
-template <typename Type, VectorType S>
-  requires convertable<Type, S> decltype(auto)
-operator*(const S &mult, const Vector<Type> &vec)
+template <VectorType Type, typename S>
+requires is_multiplyable<Type, S>
+decltype(auto) operator*(const S &mult, const Vector<Type> &vec)
 {
   return vec * mult;
 }
