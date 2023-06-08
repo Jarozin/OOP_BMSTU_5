@@ -1,5 +1,6 @@
-#pragma o#include <iostream>nce
+#pragma once
 
+#include <iostream>
 #include <memory>
 
 #include <libconfig.h++>

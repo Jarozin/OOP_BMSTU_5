@@ -22,11 +22,11 @@ void Doors::start_openning() {
     return;
 
   if (current_state == CLOSED) {
-    current_state = OPENNING;
+    current_state = OPENING;
     qDebug() << "Doors are opening...";
     doors_open_timer.start(DOORS_TIME);
   } else {
-    current_state = OPENNING;
+    current_state = OPENING;
     qDebug() << "Doors are opening...";
     int t = doors_close_timer.remainingTime();
     doors_close_timer.stop();
@@ -48,7 +48,7 @@ void Doors::start_closing() {
 }
 
 void Doors::open() {
-  if (current_state != OPENNING)
+  if (current_state != OPENING)
     return;
 
   current_state = OPENED;

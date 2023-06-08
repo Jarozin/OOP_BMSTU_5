@@ -6,7 +6,7 @@
 
 class Doors : public QObject {
   Q_OBJECT
-  enum doors_state { OPENNING, OPENED, CLOSING, CLOSED };
+  enum doors_state { OPENING, OPENED, CLOSING, CLOSED };
 
 public:
   explicit Doors(QObject *parent = nullptr);

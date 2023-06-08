@@ -27,7 +27,6 @@ public slots:
 private:
   int current_floor;
   int target;
-  bool new_target;
   cabin_state current_state;
   direction current_direction;
   Doors doors;

@@ -5,7 +5,7 @@
 #include <QDebug>
 
 Cabin::Cabin(QObject *parent)
-    : QObject(parent), current_floor(1), target(-1), new_target(false),
+    : QObject(parent), current_floor(1), target(-1),
       current_state(STOP), current_direction(STAY) {
   crossing_floor_timer.setSingleShot(true);
 
@@ -20,7 +20,7 @@ Cabin::Cabin(QObject *parent)
 }
 
 void Cabin::cabin_move() {
-  if (new_target && current_state == WAIT) {
+  if (current_state == WAIT) {
     current_state = MOVE;
 
     if (current_floor == target) {
@@ -33,8 +33,6 @@ void Cabin::cabin_move() {
   }
 
   if (current_state == MOVE) {
-    current_state = MOVE;
-
     current_floor += current_direction;
 
     if (current_floor == target) {
@@ -56,13 +54,18 @@ void Cabin::cabin_stopping() {
 }
 
 void Cabin::cabin_call(int floor, direction dir) {
-  if (current_state != STOP)
+  if (current_state != STOP && current_state != MOVE)
     return;
+  if (current_state == STOP)
+  {
+    current_state = WAIT;
+    target = floor;
 
-  new_target = true;
-  current_state = WAIT;
-  target = floor;
-
-  current_direction = dir;
+    current_direction = dir;
+  }
+  else
+  {
+    target = floor;
+  }
   emit cabin_called();
 }
