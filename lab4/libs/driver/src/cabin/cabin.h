@@ -18,11 +18,13 @@ signals:
   void cabin_crossing_floor(int floor, direction d);
   void cabin_reached_target(int floor);
   void cabin_stopped(int floor);
+  void cabin_recalled(int floor);
 
 public slots:
   void cabin_move();
   void cabin_stopping();
   void cabin_call(int floor, direction dir);
+  void cabin_recall(int floor);
 
 private:
   int current_floor;
