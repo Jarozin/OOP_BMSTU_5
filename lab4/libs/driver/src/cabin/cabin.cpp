@@ -57,8 +57,6 @@ void Cabin::cabin_stopping() {
 }
 
 void Cabin::cabin_call(int floor, direction dir) {
-  if (current_state != STOP && current_state != MOVE)
-    return;
   if (current_state == STOP)
   {
     if (floor == current_floor)
@@ -73,8 +71,7 @@ void Cabin::cabin_call(int floor, direction dir) {
   }
   else
   {
-    if (floor == current_floor)
-      return;
-    target = floor;
+    if (floor != current_floor)
+      target = floor;
   }
 }
