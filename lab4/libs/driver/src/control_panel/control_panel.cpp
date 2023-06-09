@@ -37,13 +37,9 @@ void ControlPanel::achieved_floor(int floor) {
     cur_target = -1;
     find_new_target();
   }
-
+  current_state = FREE;
   if (next_target(floor)) {
-    cur_direction = (cur_floor > cur_target) ? DOWN : UP;
-
     emit set_target(floor, cur_direction);
-  } else {
-    current_state = FREE;
   }
 }
 
