@@ -45,11 +45,14 @@ void Cabin::cabin_move() {
 }
 
 void Cabin::cabin_stopping() {
-  if (current_state != MOVE)
+  if (current_state != MOVE && current_state != STOP)
     return;
 
-  current_state = STOP;
-  qDebug() << "Stopped at floor " << QString::number(current_floor) << ".";
+  if (current_state == MOVE)
+  {
+    current_state = STOP;
+    qDebug() << "Stopped at floor " << QString::number(current_floor) << ".";
+  }
   emit cabin_stopped(current_floor);
 }
 
@@ -58,9 +61,13 @@ void Cabin::cabin_call(int floor, direction dir) {
     return;
   if (current_state == STOP)
   {
+    if (floor == current_floor)
+    {
+      emit(cabin_reached_target(floor));
+      return;
+    }
     current_state = WAIT;
     target = floor;
-
     current_direction = dir;
   }
   else
