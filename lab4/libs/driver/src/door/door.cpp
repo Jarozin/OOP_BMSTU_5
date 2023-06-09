@@ -18,7 +18,7 @@ Doors::Doors(QObject *parent) : QObject(parent), current_state(CLOSED) {
 }
 
 void Doors::start_openning() {
-  if (CLOSED != current_state && CLOSING != current_state)
+  if (current_state != CLOSED && current_state != CLOSING)
     return;
 
   if (current_state == CLOSED) {

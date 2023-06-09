@@ -17,7 +17,6 @@ Cabin::Cabin(QObject *parent)
   QObject::connect(&doors, SIGNAL(closed_doors()), this, SLOT(cabin_move()));
   QObject::connect(&crossing_floor_timer, SIGNAL(timeout()), this,
                    SLOT(cabin_move()));
-  QObject::connect(this, SIGNAL(cabin_recalled(int)), this, SLOT(cabin_recall(int)));
 }
 
 void Cabin::cabin_move() {
@@ -74,15 +73,8 @@ void Cabin::cabin_call(int floor, direction dir) {
   }
   else
   {
-    emit cabin_recalled(floor);
+    if (floor == current_floor)
+      return;
+    target = floor;
   }
-}
-
-void Cabin::cabin_recall(int floor)
-{
-  if (current_state != MOVE)
-    return;
-  if (floor == current_floor)
-    return;
-  target = floor;
 }
